@@ -14,14 +14,14 @@ async function Uguu(buffer, filename) {
 
   const res = await axios.post("https://uguu.se/upload.php", form, {
     headers: form.getHeaders(),
-    timeout: 30000,
+    timeout: 45000,
   });
 
   if (res.data?.files?.[0]?.url) {
     return res.data.files[0].url;
   }
 
-  throw new Error("Upload ke Uguu gagal");
+  throw new Error("Upload ke Uguu gagal atau response tidak valid");
 }
 
 async function Img2Img(prompt, imageBuffer, filename = "upload.png") {
@@ -31,13 +31,13 @@ async function Img2Img(prompt, imageBuffer, filename = "upload.png") {
     const apiKey = "fgsiapi-acd5b96-6d";
     const startUrl = `${FCSI_API}?apikey=${apiKey}&prompt=${encodeURIComponent(prompt)}&url=${encodeURIComponent(imageUrl)}`;
 
-    const start = await axios.get(startUrl, { timeout: 30000 });
+    const start = await axios.get(startUrl, { timeout: 45000 });
 
     const pollUrl = start.data?.data?.pollUrl;
     if (!pollUrl) {
       return {
         status: false,
-        error: start.data?.error || "Gagal memulai proses img2img",
+        error: start.data?.error || "Gagal memulai proses img2img dari server FGSI",
       };
     }
 
@@ -47,24 +47,27 @@ async function Img2Img(prompt, imageBuffer, filename = "upload.png") {
     for (let i = 0; i < maxAttempts; i++) {
       const poll = await axios.get(pollUrl, { timeout: 30000 });
 
-      if (!poll.data?.status) {
-        return { status: false, error: "Polling gagal" };
+      if (!poll.data?.status && !poll.data?.data) {
+        await new Promise((r) => setTimeout(r, 2000));
+        continue;
       }
 
-      if (poll.data.data?.status === "Success") {
-        result = poll.data.data.result;
+      const statusVal = poll.data.data?.status || poll.data.status;
+
+      if (statusVal === "Success" || statusVal === true) {
+        result = poll.data.data?.result || poll.data.result;
         break;
       }
 
-      if (poll.data.data?.status === "Failed") {
-        return { status: false, error: "Proses img2img gagal" };
+      if (statusVal === "Failed") {
+        return { status: false, error: "Proses rendering AI img2img gagal" };
       }
 
       await new Promise((r) => setTimeout(r, 2000));
     }
 
     if (!result) {
-      return { status: false, error: "Timeout menunggu hasil" };
+      return { status: false, error: "Timeout menunggu hasil render AI" };
     }
 
     return { status: true, prompt, imageUrl, result };
@@ -95,15 +98,19 @@ export default async function handler(req, res) {
         }
 
         let imageBuffer = base64Image;
-        if (typeof base64Image === 'string' && base64Image.startsWith('data:image')) {
+        if (typeof base64Image === 'string' && base64Image.includes('base64,')) {
             const base64Data = base64Image.split(';base64,').pop();
             imageBuffer = Buffer.from(base64Data, 'base64');
+        } else if (typeof base64Image === 'string' && base64Image.startsWith('http')) {
+            const response = await axios.get(base64Image, { responseType: 'arraybuffer', timeout: 30000 });
+            imageBuffer = Buffer.from(response.data);
         }
 
         const resData = await Img2Img(prompt, imageBuffer, filename || 'upload.png');
         return res.status(200).json(resData);
 
     } catch (err) {
-        return res.status(500).json({ status: false, error: err.message });
+        console.error("Img2Img Server Error:", err);
+        return res.status(500).json({ status: false, error: err.message || "Terjadi kesalahan internal server" });
     }
 }

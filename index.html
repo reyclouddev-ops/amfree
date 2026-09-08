@@ -74,6 +74,13 @@
                     </svg>
                     <span>Rayleigh AI Chat</span>
                 </a>
+                <a href="/nontonanime" class="flex items-center space-x-2.5 px-4 py-2.5 text-xs text-slate-200 hover:bg-[#1e2330] transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>ReyAnime Streaming</span>
+                </a>
                 <a href="https://mustikapayment.com/l/donasi-untuk-reycloud" target="_blank" class="flex items-center space-x-2.5 px-4 py-2.5 text-xs text-slate-200 hover:bg-[#1e2330] transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -98,7 +105,7 @@
         <!-- 1. Running Text Pengumuman Gacor -->
         <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl py-2 px-3 overflow-hidden whitespace-nowrap relative shadow-inner">
             <div class="inline-block animate-marquee text-[11px] text-amber-300 font-medium">
-                ⚠️ <strong class="text-white">INFO GACOR REYCLOUDSHP:</strong> Fitur AI Upscaler, Downloader, & Rayleigh AI Chat kini sudah resmi dirilis! 🚀✨
+                ⚠️ <strong class="text-white">INFO GACOR REYCLOUDSHP:</strong> Fitur ReyAnime Streaming & Rayleigh AI Chat kini sudah resmi dirilis! 🚀✨
             </div>
         </div>
 
@@ -123,15 +130,21 @@
                 <span>Buka Generator Alight Motion</span>
             </a>
 
-            <div class="grid grid-cols-3 gap-1.5">
+            <div class="grid grid-cols-2 gap-2">
                 <a href="/tools" class="w-full bg-card-theme hover:opacity-90 border border-theme rounded-xl py-3 px-2 text-cyan-400 font-bold text-[11px] flex items-center justify-center space-x-1 shadow transition-all text-center">
                     <span>✨ Upscaler</span>
                 </a>
                 <a href="/downloader" class="w-full bg-card-theme hover:opacity-90 border border-theme rounded-xl py-3 px-2 text-pink-400 font-bold text-[11px] flex items-center justify-center space-x-1 shadow transition-all text-center">
                     <span>📥 Downloader</span>
                 </a>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
                 <a href="/chatai" class="w-full bg-card-theme hover:opacity-90 border border-theme rounded-xl py-3 px-2 text-amber-400 font-bold text-[11px] flex items-center justify-center space-x-1 shadow transition-all text-center">
                     <span>🤖 AI Chat</span>
+                </a>
+                <a href="/nontonanime" class="w-full bg-card-theme hover:opacity-90 border border-theme rounded-xl py-3 px-2 text-orange-400 font-bold text-[11px] flex items-center justify-center space-x-1 shadow transition-all text-center">
+                    <span>⛩️ ReyAnime</span>
                 </a>
             </div>
             
@@ -151,7 +164,7 @@
             </div>
             <div class="stat-card bg-card-theme border border-theme rounded-xl p-3 text-center space-y-1 transition-colors duration-300">
                 <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Tools Active</span>
-                <p class="text-xs font-bold text-cyan-400 font-mono">4 Services</p>
+                <p class="text-xs font-bold text-cyan-400 font-mono">5 Services</p>
             </div>
             <div class="stat-card bg-card-theme border border-theme rounded-xl p-3 text-center space-y-1 transition-colors duration-300">
                 <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Success Rate</span>
@@ -214,7 +227,6 @@
             const themeIcon = document.getElementById('themeIcon');
             const brandTitle = document.getElementById('brandTitle');
 
-            // Custom style sheets injection atau class toggle untuk card background
             const cards = document.querySelectorAll('.bg-card-theme');
             const borders = document.querySelectorAll('.border-theme');
             const innerBoxes = document.querySelectorAll('.inner-box');
@@ -240,7 +252,6 @@
                     ib.style.borderColor = '#cbd5e1';
                 });
             } else {
-                // Default / Dark Theme
                 body.style.backgroundColor = '#0d0f12';
                 body.style.color = '#f8fafc';
                 navHeader.style.backgroundColor = '#151922';
@@ -269,10 +280,8 @@
             applyTheme(currentTheme);
         }
 
-        // Jalankan tema saat load awal
         applyTheme(currentTheme);
 
-        // Widget Jam, Tanggal, dan Hari Realtime Indonesia
         function updateLiveClock() {
             const now = new Date();
             const hours = String(now.getHours()).padStart(2, '0');

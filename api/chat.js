@@ -119,7 +119,10 @@ GAYA BICARA: Bahasa Indonesia, santai, ramah, natural, mudah dipahami, tidak ber
         headers: {
           "Content-Type": "application/json",
           "x-api-key": "sk-gfdSPQt3496tsUQwBPYOnaIHyV5LeOlngMhUFrhyajHzruPe",
-          "anthropic-version": "2023-06-01"
+          "anthropic-version": "2023-06-01",
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+          "Origin": "https://tabitoken.com",
+          "Referer": "https://tabitoken.com/"
         },
         timeout: 180000
       }

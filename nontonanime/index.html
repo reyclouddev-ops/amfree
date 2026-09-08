@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReyCloud - Nonton Anime Sub Indo</title>
+    <title>ReyCloud - ReyAnime Hub</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         body { background-color: #0d0f12; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
@@ -23,7 +23,7 @@
                     <div class="flex items-center space-x-1.5">
                         <span class="font-extrabold text-sm tracking-wide text-white">REY<span class="text-orange-400">ANIME</span></span>
                     </div>
-                    <span class="text-[10px] tracking-widest text-slate-400 font-semibold uppercase">STREAMING SUBSCRIBER</span>
+                    <span id="navSubtitle" class="text-[10px] tracking-widest text-slate-400 font-semibold uppercase">STREAMING HUB</span>
                 </div>
             </div>
             
@@ -32,11 +32,12 @@
             </a>
         </div>
 
-        <!-- Search & Tab Menu -->
-        <div class="space-y-3">
+        <!-- ================= VIEW 1: HOME / KATALOG ================= -->
+        <div id="viewHome" class="space-y-3">
             <div class="flex items-center space-x-2">
                 <input type="text" id="searchInput" placeholder="Cari judul anime..." 
-                    class="flex-1 bg-[#151922] border border-[#232936] rounded-xl px-4 py-3 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-orange-500 transition-colors">
+                    class="flex-1 bg-[#151922] border border-[#232936] rounded-xl px-4 py-3 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-orange-500 transition-colors"
+                    onkeypress="if(event.key==='Enter') searchAnime()">
                 <button onclick="searchAnime()" 
                     class="bg-orange-500 hover:bg-orange-400 text-slate-950 font-bold px-4 py-3 rounded-xl text-xs transition-all shadow cursor-pointer">
                     Cari
@@ -51,22 +52,48 @@
                     📚 Katalog Anime
                 </button>
             </div>
+
+            <div id="contentContainer" class="grid grid-cols-2 gap-3 pt-1">
+                <!-- Grid Anime Cards Loaded Disini -->
+            </div>
         </div>
 
-        <!-- Main Display Container -->
-        <div id="contentContainer" class="grid grid-cols-2 gap-3">
-            <!-- Data Anime Loaded Dinamis -->
+        <!-- ================= VIEW 2: DETAIL ANIME ================= -->
+        <div id="viewDetail" class="hidden space-y-4">
+            <button onclick="switchView('home')" class="flex items-center space-x-1.5 text-xs font-bold text-orange-400 hover:text-orange-300 transition-colors cursor-pointer">
+                <span>← Kembali ke Katalog</span>
+            </button>
+
+            <div id="detailContent" class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-4">
+                <div class="text-center py-10 text-orange-400 animate-pulse text-xs">Memuat informasi anime...</div>
+            </div>
         </div>
 
-        <!-- Detail Modal / Viewer -->
-        <div id="detailModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-3">
-            <div class="bg-[#151922] border border-[#232936] rounded-2xl w-full max-w-md max-h-[90vh] flex flex-col p-4 space-y-4 shadow-2xl">
-                <div class="flex items-center justify-between border-b border-[#232936] pb-3">
-                    <h3 id="modalTitle" class="text-xs font-bold text-white truncate max-w-[280px]">Detail Anime</h3>
-                    <button onclick="closeModal()" class="text-slate-400 hover:text-white text-sm font-bold px-2 py-1">✕</button>
+        <!-- ================= VIEW 3: STREAMING ROOM ================= -->
+        <div id="viewWatch" class="hidden space-y-4">
+            <button onclick="switchView('detail')" class="flex items-center space-x-1.5 text-xs font-bold text-orange-400 hover:text-orange-300 transition-colors cursor-pointer">
+                <span>← Kembali ke Detail Anime</span>
+            </button>
+
+            <div class="bg-[#151922] border border-[#232936] rounded-2xl p-4 shadow-xl space-y-3">
+                <div id="playerTitle" class="text-xs font-bold text-white tracking-wide truncate">Menyiapkan Video...</div>
+                
+                <div class="relative w-full rounded-xl overflow-hidden border border-[#232936] bg-black aspect-video flex items-center justify-center shadow-lg">
+                    <div id="playerLoading" class="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-10 space-y-2">
+                        <div class="w-6 h-6 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+                        <span class="text-[11px] text-orange-400 animate-pulse font-medium">Mengekstrak Stream...</span>
+                    </div>
+                    <iframe id="videoIframe" src="" class="w-full h-full" allowfullscreen></iframe>
                 </div>
-                <div id="modalBody" class="flex-1 overflow-y-auto space-y-3 text-xs text-slate-300">
-                    <!-- Detail Episode & Player -->
+
+                <!-- Tombol Navigasi Episode -->
+                <div class="grid grid-cols-2 gap-2 pt-1">
+                    <button id="btnPrev" onclick="navigateEp('prev')" class="bg-[#1e2330] hover:bg-[#2b3344] text-slate-300 font-bold py-2.5 rounded-xl text-xs border border-[#2b3344] transition-all cursor-pointer">
+                        ← Sebelumnya
+                    </button>
+                    <button id="btnNext" onclick="navigateEp('next')" class="bg-orange-500 hover:bg-orange-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs transition-all cursor-pointer">
+                        Selanjutnya →
+                    </button>
                 </div>
             </div>
         </div>
@@ -74,10 +101,30 @@
     </div>
 
     <script>
-        let currentTab = 'latest';
+        let currentDetailData = null;
+        let currentEpisodeIndex = 0;
+
+        function switchView(viewName) {
+            document.getElementById('viewHome').classList.add('hidden');
+            document.getElementById('viewDetail').classList.add('hidden');
+            document.getElementById('viewWatch').classList.add('hidden');
+
+            const subtitle = document.getElementById('navSubtitle');
+
+            if (viewName === 'home') {
+                document.getElementById('viewHome').classList.remove('hidden');
+                subtitle.textContent = "STREAMING HUB";
+                document.getElementById('videoIframe').src = ''; // Hentikan video saat keluar
+            } else if (viewName === 'detail') {
+                document.getElementById('viewDetail').classList.remove('hidden');
+                subtitle.textContent = "INFORMATION";
+            } else if (viewName === 'watch') {
+                document.getElementById('viewWatch').classList.remove('hidden');
+                subtitle.textContent = "HD PLAYER";
+            }
+        }
 
         async function loadTab(tab) {
-            currentTab = tab;
             document.getElementById('tabLatest').className = tab === 'latest' ? "py-2.5 rounded-xl text-xs font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer" : "py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
             document.getElementById('tabCatalog').className = tab === 'catalog' ? "py-2.5 rounded-xl text-xs font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer" : "py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
 
@@ -128,67 +175,82 @@
         }
 
         async function openDetail(slug) {
-            const modal = document.getElementById('detailModal');
-            const modalBody = document.getElementById('modalBody');
-            const modalTitle = document.getElementById('modalTitle');
-            
-            modal.classList.remove('hidden');
-            modalBody.innerHTML = `<div class="text-center py-10 text-orange-400 animate-pulse">Mengambil detail anime...</div>`;
+            switchView('detail');
+            const container = document.getElementById('detailContent');
+            container.innerHTML = `<div class="text-center py-10 text-orange-400 animate-pulse text-xs">Memuat informasi anime...</div>`;
 
             try {
                 const res = await fetch(`/api/anime?action=detail&slug=${slug}`);
                 const json = await res.json();
-                const d = json.data;
+                currentDetailData = json.data;
 
-                modalTitle.textContent = d.title;
-                modalBody.innerHTML = `
-                    <div class="flex space-x-3">
-                        <img src="${d.poster}" class="w-24 h-32 object-cover rounded-xl border border-[#232936]">
-                        <p class="text-[11px] text-slate-400 line-clamp-6">${d.synopsis || 'Tidak ada sinopsis.'}</p>
+                container.innerHTML = `
+                    <div class="flex space-x-3.5">
+                        <img src="${currentDetailData.poster}" class="w-28 h-40 object-cover rounded-xl border border-[#232936] shrink-0 shadow">
+                        <div class="space-y-1.5">
+                            <h2 class="text-xs font-bold text-white uppercase tracking-wide">${currentDetailData.title}</h2>
+                            <p class="text-[10px] font-semibold text-orange-400">Total Episode: ${currentDetailData.total_episodes}</p>
+                            <p class="text-[11px] text-slate-400 line-clamp-5 leading-relaxed">${currentDetailData.synopsis || 'Tidak ada sinopsis.'}</p>
+                        </div>
                     </div>
-                    <div>
-                        <h4 class="text-xs font-bold text-white mb-2">Daftar Episode (${d.total_episodes}):</h4>
-                        <div class="grid grid-cols-2 gap-1.5 max-h-48 overflow-y-auto pr-1">
-                            ${d.episodes.map(ep => `
-                                <button onclick="playEpisode('${ep.slug}')" class="bg-[#0d0f12] hover:bg-orange-500 hover:text-slate-950 border border-[#232936] rounded-lg p-2 text-left text-[11px] font-medium text-slate-200 transition-colors truncate">
-                                    ${ep.title}
+
+                    <div class="border-t border-[#232936] pt-3 space-y-2.5">
+                        <h4 class="text-xs font-bold text-white uppercase tracking-wider">Pilih Episode</h4>
+                        <div class="grid grid-cols-3 gap-1.5 max-h-64 overflow-y-auto pr-1">
+                            ${currentDetailData.episodes.map((ep, idx) => `
+                                <button onclick="openWatchRoom(${idx})" class="bg-[#0d0f12] hover:bg-orange-500 hover:text-slate-950 border border-[#232936] rounded-xl p-2.5 text-center text-[11px] font-medium text-slate-200 transition-colors truncate cursor-pointer shadow">
+                                    Ep ${ep.episode || (idx + 1)}
                                 </button>
                             `).join('')}
                         </div>
                     </div>
                 `;
             } catch (err) {
-                modalBody.innerHTML = `<div class="text-red-400 text-center">Gagal memuat detail: ${err.message}</div>`;
+                container.innerHTML = `<div class="text-red-400 text-center text-xs">Gagal memuat detail: ${err.message}</div>`;
             }
         }
 
-        async function playEpisode(episodeSlug) {
-            const modalBody = document.getElementById('modalBody');
-            modalBody.innerHTML = `<div class="text-center py-10 text-orange-400 animate-pulse">Mengekstrak stream video...</div>`;
+        async function openWatchRoom(index) {
+            if (!currentDetailData || !currentDetailData.episodes[index]) return;
+            currentEpisodeIndex = index;
+            const ep = currentDetailData.episodes[index];
+
+            switchView('watch');
+            document.getElementById('playerTitle').textContent = `${currentDetailData.title} - ${ep.title || 'Episode'}`;
+            document.getElementById('playerLoading').classList.remove('hidden');
+            document.getElementById('videoIframe').src = '';
 
             try {
-                const res = await fetch(`/api/anime?action=stream&slug=${episodeSlug}`);
+                const res = await fetch(`/api/anime?action=stream&slug=${ep.slug}`);
                 const json = await res.json();
                 const s = json.data;
 
-                modalBody.innerHTML = `
-                    <div class="space-y-3">
-                        <h4 class="text-xs font-bold text-white">${s.title}</h4>
-                        ${s.embed_url ? `<iframe src="${s.embed_url}" class="w-full aspect-video rounded-xl border border-[#232936]" allowfullscreen></iframe>` : '<p class="text-red-400 text-center">Embed video tidak tersedia.</p>'}
-                        ${s.direct_stream ? `<a href="${s.direct_stream}" target="_blank" class="block w-full text-center bg-orange-500 hover:bg-orange-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs">Buka Link Stream Langsung (HLS/MP4)</a>` : ''}
-                        <button onclick="openDetail('${episodeSlug.split('-episode-')[0]}')" class="w-full bg-[#1e2330] hover:bg-[#2b3344] text-slate-300 font-bold py-2 rounded-xl text-xs">Kembali ke Daftar Episode</button>
-                    </div>
-                `;
+                document.getElementById('playerLoading').classList.add('hidden');
+                if (s.embed_url) {
+                    document.getElementById('videoIframe').src = s.embed_url;
+                } else if (s.direct_stream) {
+                    document.getElementById('videoIframe').src = s.direct_stream;
+                } else {
+                    alert('Sumber video stream tidak tersedia.');
+                }
             } catch (err) {
-                modalBody.innerHTML = `<div class="text-red-400 text-center">Gagal memuat video: ${err.message}</div>`;
+                document.getElementById('playerLoading').classList.add('hidden');
+                alert('Gagal memuat stream: ' + err.message);
             }
         }
 
-        function closeModal() {
-            document.getElementById('detailModal').classList.add('hidden');
+        function navigateEp(direction) {
+            if (!currentDetailData) return;
+            // List episode biasanya berurutan terbalik, sesuaikan indeksnya
+            const nextIdx = direction === 'next' ? currentEpisodeIndex - 1 : currentEpisodeIndex + 1;
+            if (nextIdx >= 0 && nextIdx < currentDetailData.episodes.length) {
+                openWatchRoom(nextIdx);
+            } else {
+                alert(direction === 'next' ? 'Ini adalah episode terbaru.' : 'Ini adalah episode pertama.');
+            }
         }
 
-        // Load tab terbaru saat pertama buka
+        // Load awal tampilan home
         loadTab('latest');
     </script>
 </body>
