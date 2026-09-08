@@ -236,10 +236,20 @@ export async function getEpisodeStream(episodeSlug) {
   const embedUrl = (html.match(/<div id="videoku"[^>]*>[\s\S]*?<iframe[^>]*(?:data-src|src)="([^"]+)"/i) || [])[1]?.replace(/&amp;/g, '&') || null;
   const directHls = embedUrl ? await extractStream(embedUrl) : null;
 
+  // Ambil juga link alternatif download dari halaman episode
+  const downloads = [];
+  for (const dm of html.matchAll(/<div class="listlink"[^>]*>([\s\S]*?)<\/div>/gi)) {
+    for (const am of dm[1].matchAll(/<a\s+[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/gi)) {
+      downloads.push({ server: cleanText(am[2]), url: am[1] });
+    }
+  }
+
   return wrapRes({
     title: rawTitle,
     embed_url: embedUrl,
-    direct_stream: directHls
+    direct_stream: directHls,
+    download_links: downloads,
+    original_page_url: finalUrl
   }, `Stream episode ${rawTitle}`);
 }
 

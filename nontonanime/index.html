@@ -54,7 +54,7 @@
             </div>
 
             <div id="contentContainer" class="grid grid-cols-2 gap-3 pt-1">
-                <!-- Grid Anime Cards Loaded Disini -->
+                <!-- Grid Anime Cards -->
             </div>
         </div>
 
@@ -75,18 +75,29 @@
                 <span>← Kembali ke Detail Anime</span>
             </button>
 
+            <!-- Video Player Box -->
             <div class="bg-[#151922] border border-[#232936] rounded-2xl p-4 shadow-xl space-y-3">
                 <div id="playerTitle" class="text-xs font-bold text-white tracking-wide truncate">Menyiapkan Video...</div>
                 
-                <div class="relative w-full rounded-xl overflow-hidden border border-[#232936] bg-black aspect-video flex items-center justify-center shadow-lg">
+                <div id="playerContainer" class="relative w-full rounded-xl overflow-hidden border border-[#232936] bg-black aspect-video flex items-center justify-center shadow-lg">
                     <div id="playerLoading" class="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-10 space-y-2">
                         <div class="w-6 h-6 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
                         <span class="text-[11px] text-orange-400 animate-pulse font-medium">Mengekstrak Stream...</span>
                     </div>
-                    <iframe id="videoIframe" src="" class="w-full h-full" allowfullscreen></iframe>
+                    <iframe id="videoIframe" src="" class="w-full h-full hidden" allowfullscreen></iframe>
+                    <video id="nativeVideo" controls class="w-full h-full hidden"></video>
                 </div>
 
-                <!-- Tombol Navigasi Episode -->
+                <!-- Fallback Tombol Alternatif -->
+                <div id="fallbackBox" class="hidden bg-[#0d0f12] border border-orange-500/30 rounded-xl p-3 text-center space-y-2">
+                    <p class="text-[11px] text-orange-300 font-medium">⚠️ Pemutar diblokir situs sumber. Pilih opsi berikut:</p>
+                    <div id="downloadLinksContainer" class="flex flex-wrap gap-1.5 justify-center"></div>
+                    <a id="btnBukaAsli" href="" target="_blank" class="inline-block w-full bg-orange-500 hover:bg-orange-400 text-slate-950 font-bold py-2 rounded-xl text-xs transition-all">
+                        Buka Sumber Asli di Tab Baru 🚀
+                    </a>
+                </div>
+
+                <!-- Tombol Navigasi Episode (Prev & Next) -->
                 <div class="grid grid-cols-2 gap-2 pt-1">
                     <button id="btnPrev" onclick="navigateEp('prev')" class="bg-[#1e2330] hover:bg-[#2b3344] text-slate-300 font-bold py-2.5 rounded-xl text-xs border border-[#2b3344] transition-all cursor-pointer">
                         ← Sebelumnya
@@ -94,6 +105,29 @@
                     <button id="btnNext" onclick="navigateEp('next')" class="bg-orange-500 hover:bg-orange-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs transition-all cursor-pointer">
                         Selanjutnya →
                     </button>
+                </div>
+            </div>
+
+            <!-- DETAIL & LIST EPISODE DI BAWAH VIDEO (EFEK LAMPU AKTIF) -->
+            <div class="bg-[#151922] border border-[#232936] rounded-2xl p-4 shadow-xl space-y-3">
+                <div class="flex items-center space-x-3">
+                    <img id="watchPoster" src="" class="w-16 h-22 object-cover rounded-xl border border-[#232936] shrink-0 shadow">
+                    <div class="space-y-1 overflow-hidden">
+                        <h3 id="watchAnimeTitle" class="text-xs font-bold text-white uppercase truncate">Judul Anime</h3>
+                        <p id="watchEpisodeTitle" class="text-[10px] font-semibold text-orange-400">Episode -</p>
+                        <p id="watchSynopsis" class="text-[10px] text-slate-400 line-clamp-2 leading-relaxed">Sinopsis...</p>
+                    </div>
+                </div>
+
+                <div class="border-t border-[#232936] pt-3 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-xs font-bold text-white uppercase tracking-wider">Daftar Episode</h4>
+                        <span class="text-[10px] text-orange-400 font-medium">💡 Episode Aktif Menyala</span>
+                    </div>
+                    <!-- List Episode Interaktif dengan Glow Effect -->
+                    <div id="watchEpisodeList" class="grid grid-cols-3 gap-1.5 max-h-48 overflow-y-auto pr-1">
+                        <!-- Loaded by JS -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -114,7 +148,8 @@
             if (viewName === 'home') {
                 document.getElementById('viewHome').classList.remove('hidden');
                 subtitle.textContent = "STREAMING HUB";
-                document.getElementById('videoIframe').src = ''; // Hentikan video saat keluar
+                document.getElementById('videoIframe').src = '';
+                document.getElementById('nativeVideo').src = '';
             } else if (viewName === 'detail') {
                 document.getElementById('viewDetail').classList.remove('hidden');
                 subtitle.textContent = "INFORMATION";
@@ -216,9 +251,28 @@
             const ep = currentDetailData.episodes[index];
 
             switchView('watch');
-            document.getElementById('playerTitle').textContent = `${currentDetailData.title} - ${ep.title || 'Episode'}`;
+            
+            // Set Info di Bawah Video (Judul Anime, Poster, Sinopsis)
+            document.getElementById('watchPoster').src = currentDetailData.poster || '';
+            document.getElementById('watchAnimeTitle').textContent = currentDetailData.title;
+            document.getElementById('watchEpisodeTitle').textContent = `Episode ${ep.episode || (index + 1)}`;
+            document.getElementById('watchSynopsis').textContent = currentDetailData.synopsis || 'Tidak ada sinopsis.';
+
+            // Render Ulang List Episode dengan Efek Lampu Menyala (Glow Active) pada Episode yang Diputar
+            renderWatchEpisodeList();
+
+            document.getElementById('playerTitle').textContent = `${currentDetailData.title} - Episode ${ep.episode || (index + 1)}`;
             document.getElementById('playerLoading').classList.remove('hidden');
-            document.getElementById('videoIframe').src = '';
+            
+            const iframe = document.getElementById('videoIframe');
+            const nativeVideo = document.getElementById('nativeVideo');
+            const fallbackBox = document.getElementById('fallbackBox');
+            
+            iframe.classList.add('hidden');
+            nativeVideo.classList.add('hidden');
+            fallbackBox.classList.add('hidden');
+            iframe.src = '';
+            nativeVideo.src = '';
 
             try {
                 const res = await fetch(`/api/anime?action=stream&slug=${ep.slug}`);
@@ -226,22 +280,52 @@
                 const s = json.data;
 
                 document.getElementById('playerLoading').classList.add('hidden');
-                if (s.embed_url) {
-                    document.getElementById('videoIframe').src = s.embed_url;
-                } else if (s.direct_stream) {
-                    document.getElementById('videoIframe').src = s.direct_stream;
-                } else {
-                    alert('Sumber video stream tidak tersedia.');
+
+                if (s.direct_stream) {
+                    nativeVideo.src = s.direct_stream;
+                    nativeVideo.classList.remove('hidden');
+                } else if (s.embed_url) {
+                    iframe.src = s.embed_url;
+                    iframe.classList.remove('hidden');
                 }
+
+                document.getElementById('btnBukaAsli').href = s.original_page_url;
+                const dlContainer = document.getElementById('downloadLinksContainer');
+                dlContainer.innerHTML = (s.download_links || []).slice(0, 3).map(d => `
+                    <a href="${d.url}" target="_blank" class="bg-[#1e2330] hover:bg-[#2b3344] text-orange-400 font-semibold px-3 py-1.5 rounded-lg text-[10px] border border-[#2b3344]">
+                        📥 ${d.server}
+                    </a>
+                `).join('');
+
+                fallbackBox.classList.remove('hidden');
+
             } catch (err) {
                 document.getElementById('playerLoading').classList.add('hidden');
                 alert('Gagal memuat stream: ' + err.message);
             }
         }
 
+        // Render List Episode di Ruang Nonton dengan Efek Lampu Menyala (Glow/Active)
+        function renderWatchEpisodeList() {
+            const container = document.getElementById('watchEpisodeList');
+            if (!currentDetailData) return;
+
+            container.innerHTML = currentDetailData.episodes.map((ep, idx) => {
+                const isActive = idx === currentEpisodeIndex;
+                const btnClass = isActive 
+                    ? "bg-orange-500 text-slate-950 font-bold rounded-lg p-2 text-center text-[11px] shadow-lg shadow-orange-500/30 border border-orange-400 scale-[1.02] transition-all cursor-pointer"
+                    : "bg-[#0d0f12] hover:bg-orange-500 hover:text-slate-950 border border-[#232936] rounded-lg p-2 text-center text-[11px] font-medium text-slate-200 transition-colors truncate cursor-pointer";
+                
+                return `
+                    <button onclick="openWatchRoom(${idx})" class="${btnClass}">
+                        Ep ${ep.episode || (idx + 1)}
+                    </button>
+                `;
+            }).join('');
+        }
+
         function navigateEp(direction) {
             if (!currentDetailData) return;
-            // List episode biasanya berurutan terbalik, sesuaikan indeksnya
             const nextIdx = direction === 'next' ? currentEpisodeIndex - 1 : currentEpisodeIndex + 1;
             if (nextIdx >= 0 && nextIdx < currentDetailData.episodes.length) {
                 openWatchRoom(nextIdx);
@@ -250,7 +334,6 @@
             }
         }
 
-        // Load awal tampilan home
         loadTab('latest');
     </script>
 </body>
