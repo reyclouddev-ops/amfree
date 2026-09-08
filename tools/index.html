@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReyCloud - AI Image Upscaler</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        body { background-color: #0d0f12; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-start p-3 sm:p-6 relative">
+
+    <div class="w-full max-w-md space-y-4">
+        
+        <!-- Top Navbar Logo / Header -->
+        <div class="flex items-center justify-between bg-[#151922] border border-[#232936] rounded-2xl p-4 shadow-lg relative">
+            <div class="flex items-center space-x-2.5">
+                <div class="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-bold">
+                    R
+                </div>
+                <div>
+                    <div class="flex items-center space-x-1.5">
+                        <span class="font-extrabold text-sm tracking-wide text-white">REYCLOUD<span class="text-cyan-400">TOOLS</span></span>
+                    </div>
+                    <span class="text-[10px] tracking-widest text-slate-400 font-semibold uppercase">AI UTILITY</span>
+                </div>
+            </div>
+            
+            <a href="/" class="px-3 py-1.5 rounded-xl bg-[#1e2330] border border-[#2b3344] text-[11px] text-slate-300 hover:text-white transition-all font-medium">
+                Kembali ke AM
+            </a>
+        </div>
+
+        <div class="space-y-1 px-1">
+            <div class="text-[11px] text-slate-400">ReyCloud <span class="text-cyan-400 font-bold tracking-wide">AI IMAGE UPSCALER</span></div>
+            <p class="text-[11px] text-slate-400 leading-relaxed">Tingkatkan resolusi dan kejernihan gambar secara otomatis menggunakan teknologi AI.</p>
+        </div>
+
+        <!-- UTILITY BOX: AI UPSCALER -->
+        <div class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-5">
+            <div class="flex items-start space-x-3.5">
+                <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-cyan-400 shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-sm font-bold text-white tracking-tight">AI Image Upscaler HD</h2>
+                    <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Upload gambar Anda untuk proses peningkatan kualitas.</p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">PILIH FILE GAMBAR</label>
+                    <input type="file" id="imageFileInput" accept="image/*" 
+                        class="w-full bg-[#0d0f12] border border-[#232936] rounded-xl px-4 py-2.5 text-xs text-slate-300 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-cyan-500/10 file:text-cyan-400 hover:file:bg-cyan-500/20 cursor-pointer">
+                </div>
+                <button onclick="processUpscale()" id="btnProcessUpscale"
+                    class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-3.5 rounded-xl text-xs transition-all shadow cursor-pointer">
+                    Mulai Upscale Gambar
+                </button>
+            </div>
+
+            <div id="upscaleLoading" class="hidden text-center py-6 space-y-3">
+                <div class="inline-block w-7 h-7 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+                <p class="text-xs text-cyan-400 animate-pulse font-medium">Sedang memproses & menjernihkan gambar...</p>
+            </div>
+
+            <div id="upscaleResultBox" class="hidden space-y-3 bg-[#0d0f12] border border-cyan-500/30 rounded-2xl p-4 text-center">
+                <div class="flex items-center justify-center space-x-2 text-cyan-400 font-bold text-xs">
+                    <span>✨</span>
+                    <span>Upscale Berhasil!</span>
+                </div>
+                <img id="upscaleResultImg" src="" alt="Upscaled" class="w-full rounded-xl border border-[#232936] max-h-60 object-contain mx-auto">
+                <a id="upscaleDownloadBtn" href="" target="_blank" class="inline-block w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs transition-all">
+                    Unduh Gambar HD
+                </a>
+            </div>
+        </div>
+
+        <div class="pt-2 text-center text-[11px] text-slate-400">
+            <span>ReyCloudSHP Upscaler Engine</span>
+        </div>
+
+    </div>
+
+    <script>
+        async function processUpscale() {
+            const fileInput = document.getElementById('imageFileInput');
+            const btnProcess = document.getElementById('btnProcessUpscale');
+            const loading = document.getElementById('upscaleLoading');
+            const resultBox = document.getElementById('upscaleResultBox');
+
+            if (!fileInput.files || fileInput.files.length === 0) {
+                return alert('Pilih file gambar terlebih dahulu!');
+            }
+
+            const file = fileInput.files[0];
+            btnProcess.classList.add('hidden');
+            loading.classList.remove('hidden');
+            resultBox.classList.add('hidden');
+
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = async function () {
+                try {
+                    const base64Image = reader.result;
+                    const res = await fetch('/api/upscale', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ base64Image, filename: file.name })
+                    });
+                    const json = await res.json();
+
+                    if (!json.status || !json.url) {
+                        throw new Error(json.error || 'Gagal melakukan upscale gambar.');
+                    }
+
+                    document.getElementById('upscaleResultImg').src = json.url;
+                    document.getElementById('upscaleDownloadBtn').href = json.url;
+
+                    loading.classList.add('hidden');
+                    btnProcess.classList.remove('hidden');
+                    resultBox.classList.remove('hidden');
+
+                } catch (err) {
+                    alert('Error: ' + err.message);
+                    loading.classList.add('hidden');
+                    btnProcess.classList.remove('hidden');
+                }
+            };
+        }
+    </script>
+</body>
+</html>

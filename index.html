@@ -6,7 +6,6 @@
     <title>AlightFree - Dashboard Utama ReyCloudSHP</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
-        body { background-color: #0d0f12; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
         @keyframes marquee {
             0% { transform: translateX(100%); }
             100% { transform: translateX(-100%); }
@@ -17,30 +16,37 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-start p-3 sm:p-6 relative">
+<body id="pageBody" class="min-h-screen flex flex-col items-center justify-start p-3 sm:p-6 relative transition-colors duration-300 bg-[#0d0f12] text-[#f8fafc]" style="font-family: system-ui, -apple-system, sans-serif;">
 
     <div class="w-full max-w-md space-y-4">
         
         <!-- Top Navbar Logo / Header -->
-        <div class="flex items-center justify-between bg-[#151922] border border-[#232936] rounded-2xl p-4 shadow-lg relative">
+        <div id="navHeader" class="flex items-center justify-between bg-[#151922] border border-[#232936] rounded-2xl p-4 shadow-lg relative transition-colors duration-300">
             <div class="flex items-center space-x-2.5">
                 <div class="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-bold">
                     A
                 </div>
                 <div>
                     <div class="flex items-center space-x-1.5">
-                        <span class="font-extrabold text-sm tracking-wide text-white">ALIGHT<span class="text-cyan-400">FREE</span></span>
+                        <span id="brandTitle" class="font-extrabold text-sm tracking-wide text-white">ALIGHT<span class="text-cyan-400">FREE</span></span>
                     </div>
                     <span class="text-[10px] tracking-widest text-slate-400 font-semibold uppercase">DASHBOARD</span>
                 </div>
             </div>
             
-            <!-- Tombol Garis 3 (Menu Dropdown) -->
-            <button onclick="toggleMenu()" class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-slate-300 hover:text-white cursor-pointer transition-all">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-            </button>
+            <div class="flex items-center space-x-2">
+                <!-- Tombol Ganti Tema (Terang / Default / Gelap) -->
+                <button onclick="toggleTheme()" id="themeToggleBtn" class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-amber-400 hover:text-white cursor-pointer transition-all" title="Ganti Tema">
+                    <span id="themeIcon">🌙</span>
+                </button>
+
+                <!-- Tombol Garis 3 (Menu Dropdown) -->
+                <button onclick="toggleMenu()" class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-slate-300 hover:text-white cursor-pointer transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
 
             <!-- Dropdown Menu Navigasi -->
             <div id="navDropdown" class="hidden absolute right-4 top-16 w-48 bg-[#151922] border border-[#2b3344] rounded-xl shadow-2xl py-2 z-50 space-y-1">
@@ -49,6 +55,24 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                     <span>Generator Amgen</span>
+                </a>
+                <a href="/tools" class="flex items-center space-x-2.5 px-4 py-2.5 text-xs text-slate-200 hover:bg-[#1e2330] transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span>AI Upscale Tools</span>
+                </a>
+                <a href="/downloader" class="flex items-center space-x-2.5 px-4 py-2.5 text-xs text-slate-200 hover:bg-[#1e2330] transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    <span>Media Downloader</span>
+                </a>
+                <a href="/chatai" class="flex items-center space-x-2.5 px-4 py-2.5 text-xs text-slate-200 hover:bg-[#1e2330] transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                    </svg>
+                    <span>Rayleigh AI Chat</span>
                 </a>
                 <a href="https://mustikapayment.com/l/donasi-untuk-reycloud" target="_blank" class="flex items-center space-x-2.5 px-4 py-2.5 text-xs text-slate-200 hover:bg-[#1e2330] transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -68,13 +92,13 @@
         <!-- Info Subheader -->
         <div class="space-y-1 px-1">
             <div class="text-[11px] text-slate-400">Dashboard <span class="text-amber-400 font-bold tracking-wide">DASHBOARD UTAMA</span></div>
-            <p class="text-[11px] text-slate-400 leading-relaxed">Pusat informasi layanan dan aktivasi kreatif terbaik.</p>
+            <p class="text-[11px] text-slate-400 leading-relaxed">Pusat informasi layanan, tools, dan aktivasi kreatif terbaik.</p>
         </div>
 
         <!-- 1. Running Text Pengumuman Gacor -->
         <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl py-2 px-3 overflow-hidden whitespace-nowrap relative shadow-inner">
             <div class="inline-block animate-marquee text-[11px] text-amber-300 font-medium">
-                ⚠️ <strong class="text-white">INFO GACOR REYCLOUDSHP:</strong> Sistem V2 Auto dengan Proxy Rotation & Mail.tm kini sudah aktif sepenuhnya! Silakan gunakan dengan bijak. 🚀✨
+                ⚠️ <strong class="text-white">INFO GACOR REYCLOUDSHP:</strong> Fitur AI Upscaler, Downloader, & Rayleigh AI Chat kini sudah resmi dirilis! 🚀✨
             </div>
         </div>
 
@@ -86,20 +110,32 @@
             </video>
             <div class="absolute bottom-4 right-4 text-right bg-black/40 backdrop-blur-md border border-white/10 px-3 py-2 rounded-xl shadow-lg">
                 <div id="liveClock" class="text-lg font-black text-white tracking-wider font-mono">00.00.00</div>
-                <div id="liveDate" class="text-[10px] font-bold text-slate-300 uppercase tracking-widest mt-0.5">08 SEPTEMBER 2026 • SELASA</div>
+                <div id="liveDate" class="text-[10px] font-bold text-slate-300 uppercase tracking-widest mt-0.5">09 SEPTEMBER 2026 • RABU</div>
             </div>
         </div>
 
         <!-- Tombol Aksi Cepat -->
         <div class="space-y-2">
-            <a href="/amgen" class="w-full bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold py-3.5 px-4 rounded-xl text-xs flex items-center justify-center space-x-2 shadow-lg shadow-amber-400/10 transition-all text-center">
+            <a href="/amgen" class="w-full bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold py-3 px-4 rounded-xl text-xs flex items-center justify-center space-x-2 shadow-lg shadow-amber-400/10 transition-all text-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
                 <span>Buka Generator Alight Motion</span>
             </a>
+
+            <div class="grid grid-cols-3 gap-1.5">
+                <a href="/tools" class="w-full bg-card-theme hover:opacity-90 border border-theme rounded-xl py-3 px-2 text-cyan-400 font-bold text-[11px] flex items-center justify-center space-x-1 shadow transition-all text-center">
+                    <span>✨ Upscaler</span>
+                </a>
+                <a href="/downloader" class="w-full bg-card-theme hover:opacity-90 border border-theme rounded-xl py-3 px-2 text-pink-400 font-bold text-[11px] flex items-center justify-center space-x-1 shadow transition-all text-center">
+                    <span>📥 Downloader</span>
+                </a>
+                <a href="/chatai" class="w-full bg-card-theme hover:opacity-90 border border-theme rounded-xl py-3 px-2 text-amber-400 font-bold text-[11px] flex items-center justify-center space-x-1 shadow transition-all text-center">
+                    <span>🤖 AI Chat</span>
+                </a>
+            </div>
             
-            <a href="https://mustikapayment.com/l/donasi-untuk-reycloud" target="_blank" class="w-full bg-[#151922] hover:bg-[#1e2330] border border-[#232936] text-pink-400 font-bold py-3.5 px-4 rounded-xl text-xs flex items-center justify-center space-x-2 shadow-lg transition-all text-center">
+            <a href="https://mustikapayment.com/l/donasi-untuk-reycloud" target="_blank" class="w-full bg-card-theme hover:opacity-90 border border-theme text-pink-400 font-bold py-3 px-4 rounded-xl text-xs flex items-center justify-center space-x-2 shadow transition-all text-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
@@ -107,44 +143,44 @@
             </a>
         </div>
 
-        <!-- 2. Quick Stats Counter (Statistik Pengguna & Performa) -->
+        <!-- 2. Quick Stats Counter -->
         <div class="grid grid-cols-3 gap-2">
-            <div class="bg-[#151922] border border-[#232936] rounded-xl p-3 text-center space-y-1">
+            <div class="stat-card bg-card-theme border border-theme rounded-xl p-3 text-center space-y-1 transition-colors duration-300">
                 <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Akun</span>
                 <p class="text-xs font-bold text-amber-400 font-mono">1,842+</p>
             </div>
-            <div class="bg-[#151922] border border-[#232936] rounded-xl p-3 text-center space-y-1">
-                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Proxy Pool</span>
-                <p class="text-xs font-bold text-cyan-400 font-mono">60+ Active</p>
+            <div class="stat-card bg-card-theme border border-theme rounded-xl p-3 text-center space-y-1 transition-colors duration-300">
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Tools Active</span>
+                <p class="text-xs font-bold text-cyan-400 font-mono">4 Services</p>
             </div>
-            <div class="bg-[#151922] border border-[#232936] rounded-xl p-3 text-center space-y-1">
+            <div class="stat-card bg-card-theme border border-theme rounded-xl p-3 text-center space-y-1 transition-colors duration-300">
                 <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Success Rate</span>
                 <p class="text-xs font-bold text-emerald-400 font-mono">99.8%</p>
             </div>
         </div>
 
-        <!-- About ReyCloudSH / ReyCloudSHP Card -->
-        <div class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-4">
+        <!-- About ReyCloudSHP Card -->
+        <div class="bg-card-theme border border-theme rounded-2xl p-5 shadow-xl space-y-4 transition-colors duration-300">
             <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold text-lg">
                     ☁️
                 </div>
                 <div>
-                    <h3 class="text-xs font-bold text-white tracking-wide uppercase">About ReyCloudSHP</h3>
+                    <h3 class="text-xs font-bold tracking-wide uppercase dynamic-text">About ReyCloudSHP</h3>
                     <span class="text-[10px] text-cyan-400 font-medium">Solusi Hosting & Infrastruktur Web Terbaik</span>
                 </div>
             </div>
 
             <p class="text-[11px] text-slate-400 leading-relaxed">
-                ReyCloudSHP adalah platform layanan digital terdepan yang menyediakan infrastruktur hosting, VPS, manajemen server Pterodactyl, serta berbagai automation tools dan generator lisensi premium untuk para kreator serta developer di Indonesia.
+                ReyCloudSHP adalah platform layanan digital terdepan yang menyediakan infrastruktur hosting, VPS, manajemen server Pterodactyl, serta berbagai automation tools dan utilities terbaik untuk para kreator serta developer di Indonesia.
             </p>
 
-            <div class="grid grid-cols-2 gap-2 pt-2 border-t border-[#232936]">
-                <div class="bg-[#0d0f12] border border-[#232936] rounded-xl p-3 space-y-1">
+            <div class="grid grid-cols-2 gap-2 pt-2 border-t border-theme">
+                <div class="inner-box bg-card-theme border border-theme rounded-xl p-3 space-y-1 transition-colors duration-300">
                     <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Layanan</span>
-                    <p class="text-xs font-bold text-white">Hosting & Tools</p>
+                    <p class="text-xs font-bold dynamic-text">Hosting & Tools</p>
                 </div>
-                <div class="bg-[#0d0f12] border border-[#232936] rounded-xl p-3 space-y-1">
+                <div class="inner-box bg-card-theme border border-theme rounded-xl p-3 space-y-1 transition-colors duration-300">
                     <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Status</span>
                     <p class="text-xs font-bold text-emerald-400">100% Operational</p>
                 </div>
@@ -167,6 +203,74 @@
                 }
             }
         }
+
+        // Sistem Tema (Default/Gelap & Terang)
+        let currentTheme = localStorage.getItem('reycloud_theme') || 'dark';
+
+        function applyTheme(theme) {
+            const body = document.getElementById('pageBody');
+            const navHeader = document.getElementById('navHeader');
+            const navDropdown = document.getElementById('navDropdown');
+            const themeIcon = document.getElementById('themeIcon');
+            const brandTitle = document.getElementById('brandTitle');
+
+            // Custom style sheets injection atau class toggle untuk card background
+            const cards = document.querySelectorAll('.bg-card-theme');
+            const borders = document.querySelectorAll('.border-theme');
+            const innerBoxes = document.querySelectorAll('.inner-box');
+
+            if (theme === 'light') {
+                body.style.backgroundColor = '#f1f5f9';
+                body.style.color = '#0f172a';
+                navHeader.style.backgroundColor = '#ffffff';
+                navHeader.style.borderColor = '#cbd5e1';
+                navDropdown.style.backgroundColor = '#ffffff';
+                navDropdown.style.borderColor = '#cbd5e1';
+                themeIcon.textContent = '☀️';
+
+                cards.forEach(c => {
+                    c.style.backgroundColor = '#ffffff';
+                    c.style.borderColor = '#cbd5e1';
+                });
+                borders.forEach(b => {
+                    b.style.borderColor = '#cbd5e1';
+                });
+                innerBoxes.forEach(ib => {
+                    ib.style.backgroundColor = '#f8fafc';
+                    ib.style.borderColor = '#cbd5e1';
+                });
+            } else {
+                // Default / Dark Theme
+                body.style.backgroundColor = '#0d0f12';
+                body.style.color = '#f8fafc';
+                navHeader.style.backgroundColor = '#151922';
+                navHeader.style.borderColor = '#232936';
+                navDropdown.style.backgroundColor = '#151922';
+                navDropdown.style.borderColor = '#2b3344';
+                themeIcon.textContent = '🌙';
+
+                cards.forEach(c => {
+                    c.style.backgroundColor = '#151922';
+                    c.style.borderColor = '#232936';
+                });
+                borders.forEach(b => {
+                    b.style.borderColor = '#232936';
+                });
+                innerBoxes.forEach(ib => {
+                    ib.style.backgroundColor = '#0d0f12';
+                    ib.style.borderColor = '#232936';
+                });
+            }
+            localStorage.setItem('reycloud_theme', theme);
+        }
+
+        function toggleTheme() {
+            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            applyTheme(currentTheme);
+        }
+
+        // Jalankan tema saat load awal
+        applyTheme(currentTheme);
 
         // Widget Jam, Tanggal, dan Hari Realtime Indonesia
         function updateLiveClock() {
