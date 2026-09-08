@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AlightFree - Dashboard Aktivasi Realtime</title>
+    <title>AlightFree - About ReyCloudSHP</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         body { background-color: #0d0f12; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
@@ -34,7 +34,7 @@
                 </svg>
             </button>
 
-            <!-- Dropdown Menu Navigasi (Hanya Amgen & WhatsApp) -->
+            <!-- Dropdown Menu Navigasi -->
             <div id="navDropdown" class="hidden absolute right-4 top-16 w-48 bg-[#151922] border border-[#2b3344] rounded-xl shadow-2xl py-2 z-50 space-y-1">
                 <a href="/amgen" class="flex items-center space-x-2.5 px-4 py-2.5 text-xs text-slate-200 hover:bg-[#1e2330] transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -53,78 +53,57 @@
 
         <!-- Info Subheader -->
         <div class="space-y-1 px-1">
-            <div class="text-[11px] text-slate-400">Dashboard <span class="text-amber-400 font-bold tracking-wide">DASHBOARD AKTIVASI</span></div>
-            <p class="text-[11px] text-slate-400 leading-relaxed">Monitoring status aktivasi akun Alight Motion dan performa sistem secara realtime.</p>
+            <div class="text-[11px] text-slate-400">Dashboard <span class="text-amber-400 font-bold tracking-wide">DASHBOARD UTAMA</span></div>
+            <p class="text-[11px] text-slate-400 leading-relaxed">Pusat informasi layanan dan aktivasi kreatif terbaik.</p>
         </div>
 
-        <!-- Tombol Aksi -->
-        <div class="grid grid-cols-2 gap-2">
-            <button onclick="fetchRealtimeStats()" class="bg-[#151922] hover:bg-[#1e2330] border border-[#232936] text-slate-200 font-bold py-3 px-3 rounded-xl text-xs flex items-center justify-center space-x-2 transition-all cursor-pointer shadow">
-                <svg id="refreshIcon" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-                <span>Segarkan Data</span>
-            </button>
-            <a href="/amgen" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold py-3 px-3 rounded-xl text-xs flex items-center justify-center space-x-2 shadow-lg shadow-amber-400/10 transition-all text-center">
+        <!-- Banner Video dengan Widget Jam & Tanggal Realtime -->
+        <div class="relative w-full rounded-2xl overflow-hidden border border-[#232936] bg-black aspect-video flex items-center justify-center shadow-xl">
+            <video autoplay muted loop playsinline class="w-full h-full object-cover opacity-90">
+                <source src="https://api.reycode.my.id/r/UocoKf.mp4" type="video/mp4">
+                Browser kamu tidak mendukung pemutaran video.
+            </video>
+            <div class="absolute bottom-4 right-4 text-right bg-black/40 backdrop-blur-md border border-white/10 px-3 py-2 rounded-xl shadow-lg">
+                <div id="liveClock" class="text-lg font-black text-white tracking-wider font-mono">00.00.00</div>
+                <div id="liveDate" class="text-[10px] font-bold text-slate-300 uppercase tracking-widest mt-0.5">08 SEPTEMBER 2026 • SELASA</div>
+            </div>
+        </div>
+
+        <!-- Tombol Aksi Cepat -->
+        <div>
+            <a href="/amgen" class="w-full bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold py-3.5 px-4 rounded-xl text-xs flex items-center justify-center space-x-2 shadow-lg shadow-amber-400/10 transition-all text-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
-                <span>Aktivasi Akun</span>
+                <span>Buka Generator Alight Motion</span>
             </a>
         </div>
 
-        <!-- Kartu Statistik -->
-        <div class="bg-[#151922] border border-[#232936] rounded-2xl p-4 shadow-xl flex items-center justify-between">
-            <div class="space-y-1">
-                <span class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">TOTAL REQUEST (IP LIVE)</span>
-                <div id="statRequest" class="text-2xl font-black text-white tracking-tight">Loading...</div>
-                <div class="inline-block bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded-full">LIVE TRACKER ACTIVE</div>
+        <!-- About ReyCloudSH / ReyCloudSHP Card -->
+        <div class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold text-lg">
+                    ☁️
+                </div>
+                <div>
+                    <h3 class="text-xs font-bold text-white tracking-wide uppercase">About ReyCloudSHP</h3>
+                    <span class="text-[10px] text-cyan-400 font-medium">Solusi Hosting & Infrastruktur Web Terbaik</span>
+                </div>
             </div>
-            <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-cyan-400">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
-            </div>
-        </div>
 
-        <div class="bg-[#151922] border border-[#232936] rounded-2xl p-4 shadow-xl flex items-center justify-between">
-            <div class="space-y-1">
-                <span class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">TINGKAT KEBERHASILAN</span>
-                <div id="statSuccessRate" class="text-2xl font-black text-white tracking-tight">--</div>
-                <div class="inline-block bg-slate-800 border border-slate-700 text-slate-300 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">HIGH AVAILABILITY</div>
-            </div>
-            <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-emerald-400">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg>
-            </div>
-        </div>
+            <p class="text-[11px] text-slate-400 leading-relaxed">
+                ReyCloudSHP adalah platform layanan digital terdepan yang menyediakan infrastruktur hosting, VPS, manajemen server Pterodactyl, serta berbagai automation tools dan generator lisensi premium untuk para kreator serta developer di Indonesia.
+            </p>
 
-        <div class="bg-[#151922] border border-[#232936] rounded-2xl p-4 shadow-xl flex items-center justify-between">
-            <div class="space-y-1">
-                <span class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">PENGGUNA AKTIF (IP)</span>
-                <div id="statActiveUsers" class="text-2xl font-black text-white tracking-tight">--</div>
-                <div class="inline-block bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded-full">REALTIME UNIQUE IP</div>
-            </div>
-            <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-indigo-400">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
-            </div>
-        </div>
-
-        <div class="bg-[#151922] border border-[#232936] rounded-2xl p-4 shadow-xl flex items-center justify-between">
-            <div class="space-y-1">
-                <span class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">LATENSI SERVER</span>
-                <div id="latensiText" class="text-2xl font-black text-white tracking-tight">--</div>
-                <div class="inline-block bg-slate-800 border border-slate-700 text-slate-300 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">OPTIMAL PERFORMANCE</div>
-            </div>
-            <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-amber-400">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
-            </div>
-        </div>
-
-        <div class="bg-[#151922] border border-[#232936] rounded-2xl p-4 shadow-xl flex items-center justify-between">
-            <div class="space-y-1">
-                <span class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">AKTIVASI SUKSES</span>
-                <div id="statSuccess" class="text-2xl font-black text-white tracking-tight">--</div>
-            </div>
-            <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-emerald-400">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <div class="grid grid-cols-2 gap-2 pt-2 border-t border-[#232936]">
+                <div class="bg-[#0d0f12] border border-[#232936] rounded-xl p-3 space-y-1">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Layanan</span>
+                    <p class="text-xs font-bold text-white">Hosting & Tools</p>
+                </div>
+                <div class="bg-[#0d0f12] border border-[#232936] rounded-xl p-3 space-y-1">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Status</span>
+                    <p class="text-xs font-bold text-emerald-400">100% Operational</p>
+                </div>
             </div>
         </div>
 
@@ -145,31 +124,24 @@
             }
         }
 
-        async function fetchRealtimeStats() {
-            const icon = document.getElementById('refreshIcon');
-            icon.classList.add('animate-spin');
+        // Widget Jam, Tanggal, dan Hari Realtime Indonesia
+        function updateLiveClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('liveClock').textContent = `${hours}.${minutes}.${seconds}`;
 
-            try {
-                const res = await fetch('/api/stats');
-                const json = await res.json();
-
-                if (json.status) {
-                    document.getElementById('statRequest').textContent = json.data.totalRequests;
-                    document.getElementById('statSuccessRate').textContent = json.data.successRate;
-                    document.getElementById('statActiveUsers').textContent = json.data.activeUsers;
-                    document.getElementById('latensiText').textContent = json.data.serverLatency;
-                    document.getElementById('statSuccess').textContent = json.data.successfulActivations;
-                }
-            } catch (err) {
-                console.error("Gagal mengambil data statistik:", err);
-            } finally {
-                setTimeout(() => {
-                    icon.classList.remove('animate-spin');
-                }, 500);
-            }
+            const optionsDate = { day: 'numeric', month: 'long', year: 'numeric' };
+            const optionsDay = { weekday: 'long' };
+            const dateStr = now.toLocaleDateString('id-ID', optionsDate).toUpperCase();
+            const dayStr = now.toLocaleDateString('id-ID', optionsDay).toUpperCase();
+            
+            document.getElementById('liveDate').textContent = `${dateStr} • ${dayStr}`;
         }
 
-        window.onload = fetchRealtimeStats;
+        setInterval(updateLiveClock, 1000);
+        updateLiveClock();
     </script>
 </body>
 </html>
