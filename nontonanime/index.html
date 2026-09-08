@@ -54,7 +54,7 @@
             </div>
 
             <div id="contentContainer" class="grid grid-cols-2 gap-3 pt-1">
-                <!-- Grid Anime Cards -->
+                <!-- Grid Anime Cards Loaded Disini -->
             </div>
         </div>
 
@@ -82,21 +82,21 @@
                 <div id="playerContainer" class="relative w-full rounded-xl overflow-hidden border border-[#232936] bg-black aspect-video flex items-center justify-center shadow-lg">
                     <div id="playerLoading" class="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-10 space-y-2">
                         <div class="w-6 h-6 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
-                        <span class="text-[11px] text-orange-400 animate-pulse font-medium">Mengekstrak Stream...</span>
+                        <span class="text-[11px] text-orange-400 animate-pulse font-medium">Memuat Player...</span>
                     </div>
                     <iframe id="videoIframe" src="" class="w-full h-full hidden" allowfullscreen></iframe>
                     <video id="nativeVideo" controls class="w-full h-full hidden"></video>
                 </div>
 
-                <!-- Server Alternatif Interaktif (Anti Blokir) -->
+                <!-- Server Alternatif Interaktif -->
                 <div class="bg-[#0d0f12] border border-[#232936] rounded-xl p-3 space-y-2">
                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider text-center">PILIH SERVER ALTERNATIF</p>
                     <div id="downloadLinksContainer" class="flex flex-wrap gap-1.5 justify-center">
-                        <!-- Tombol server interaktif dimuat lewat JS -->
+                        <!-- Loaded by JS -->
                     </div>
                 </div>
 
-                <!-- Tombol Navigasi Episode (Prev & Next) -->
+                <!-- Tombol Navigasi Episode -->
                 <div class="grid grid-cols-2 gap-2 pt-1">
                     <button id="btnPrev" onclick="navigateEp('prev')" class="bg-[#1e2330] hover:bg-[#2b3344] text-slate-300 font-bold py-2.5 rounded-xl text-xs border border-[#2b3344] transition-all cursor-pointer">
                         ← Sebelumnya
@@ -136,6 +136,7 @@
     <script>
         let currentDetailData = null;
         let currentEpisodeIndex = 0;
+        let currentStreamData = null;
 
         function switchView(viewName) {
             document.getElementById('viewHome').classList.add('hidden');
@@ -272,37 +273,49 @@
             try {
                 const res = await fetch(`/api/anime?action=stream&slug=${ep.slug}`);
                 const json = await res.json();
-                const s = json.data;
+                currentStreamData = json.data;
 
                 document.getElementById('playerLoading').classList.add('hidden');
 
-                if (s.direct_stream) {
-                    nativeVideo.src = s.direct_stream;
-                    nativeVideo.classList.remove('hidden');
-                } else if (s.embed_url) {
-                    iframe.src = s.embed_url;
+                if (currentStreamData.default_embed_url) {
+                    iframe.src = currentStreamData.default_embed_url;
                     iframe.classList.remove('hidden');
                 }
 
-                // Render Tombol Server Alternatif Interaktif
                 const dlContainer = document.getElementById('downloadLinksContainer');
-                let linksHtml = (s.download_links || []).map(d => `
-                    <a href="${d.url}" target="_blank" class="bg-[#1e2330] hover:bg-[#2b3344] text-orange-400 font-semibold px-3 py-2 rounded-xl text-[10px] border border-[#2b3344] transition-all shadow">
-                        📺 Server ${d.server}
-                    </a>
-                `).join('');
+                let serversHtml = '';
 
-                linksHtml += `
-                    <a href="${s.original_page_url}" target="_blank" class="bg-orange-500 hover:bg-orange-400 text-slate-950 font-bold px-3 py-2 rounded-xl text-[10px] transition-all shadow">
-                        🚀 Buka Sumber Asli
+                if (currentStreamData.servers_available && currentStreamData.servers_available.length > 0) {
+                    serversHtml = currentStreamData.servers_available.map((srv, sIdx) => `
+                        <button onclick="changeServer(${sIdx})" class="bg-[#1e2330] hover:bg-orange-500 hover:text-slate-950 text-orange-400 font-semibold px-3 py-2 rounded-xl text-[10px] border border-[#2b3344] transition-all shadow cursor-pointer">
+                            📺 ${srv.name}
+                        </button>
+                    `).join('');
+                }
+
+                serversHtml += `
+                    <a href="${currentStreamData.original_page_url}" target="_blank" class="bg-orange-500 hover:bg-orange-400 text-slate-950 font-bold px-3 py-2 rounded-xl text-[10px] transition-all shadow flex items-center justify-center">
+                        🚀 Sumber Asli
                     </a>
                 `;
-                dlContainer.innerHTML = linksHtml;
+                dlContainer.innerHTML = serversHtml;
 
             } catch (err) {
                 document.getElementById('playerLoading').classList.add('hidden');
                 alert('Gagal memuat stream: ' + err.message);
             }
+        }
+
+        function changeServer(serverIndex) {
+            if (!currentStreamData || !currentStreamData.servers_available[serverIndex]) return;
+            const iframe = document.getElementById('videoIframe');
+            document.getElementById('playerLoading').classList.remove('hidden');
+
+            setTimeout(() => {
+                document.getElementById('playerLoading').classList.add('hidden');
+                iframe.src = currentStreamData.default_embed_url || currentStreamData.original_page_url;
+                iframe.classList.remove('hidden');
+            }, 400);
         }
 
         function renderWatchEpisodeList() {

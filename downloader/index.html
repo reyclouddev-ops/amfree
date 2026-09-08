@@ -34,7 +34,7 @@
 
         <div class="space-y-1 px-1">
             <div class="text-[11px] text-slate-400">Multi-Platform <span class="text-pink-400 font-bold tracking-wide">SOCIAL MEDIA DOWNLOADER</span></div>
-            <p id="subDesc" class="text-[11px] text-slate-400 leading-relaxed">Unduh video HD TikTok tanpa watermark beserta preview & statistik lengkap.</p>
+            <p class="text-[11px] text-slate-400 leading-relaxed">Unduh video HD TikTok tanpa watermark beserta preview & statistik lengkap.</p>
         </div>
 
         <!-- Platform Switcher -->
@@ -89,7 +89,7 @@
                     <video id="videoPreview" controls class="w-full h-full object-contain"></video>
                 </div>
 
-                <!-- Statistik Interaksi (Like, Comment, Share, Views) -->
+                <!-- Statistik Interaksi -->
                 <div class="grid grid-cols-4 gap-1 text-center bg-[#151922] border border-[#232936] rounded-xl p-2.5">
                     <div>
                         <span class="text-[9px] text-slate-400 block uppercase">❤️ Likes</span>
@@ -109,7 +109,7 @@
                     </div>
                 </div>
 
-                <!-- Tombol Download HD & Audio -->
+                <!-- Tombol Download -->
                 <div class="space-y-2 pt-1">
                     <a id="downloadHdBtn" href="" target="_blank" class="block w-full text-center bg-pink-600 hover:bg-pink-500 text-white font-bold py-3 rounded-xl text-xs transition-all shadow">
                         📥 Download Video HD (Tanpa Watermark)
@@ -121,7 +121,7 @@
             </div>
         </div>
 
-        <!-- INSTAGRAM DOWNLOAD SECTION (Placeholder) -->
+        <!-- INSTAGRAM DOWNLOAD SECTION -->
         <div id="sectionInstagram" class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-4 hidden">
             <div class="flex items-start space-x-3.5">
                 <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-cyan-400 shrink-0">
@@ -182,7 +182,6 @@
             resultBox.classList.add('hidden');
 
             try {
-                // Contoh integrasi fetch ke endpoint backend API TikTok downloader kamu
                 const res = await fetch(`/api/tiktok?url=${encodeURIComponent(urlInput)}`);
                 const json = await res.json();
 
@@ -190,22 +189,28 @@
                     throw new Error(json.error || 'Gagal mengambil data video TikTok.');
                 }
 
-                // Mapping data respons API ke elemen preview
-                document.getElementById('authorAvatar').src = json.data.author?.avatar || 'https://via.placeholder.com/150';
-                document.getElementById('authorName').textContent = json.data.author?.nickname || json.data.author?.username || 'TikTok User';
-                document.getElementById('videoDesc').textContent = json.data.title || 'Tanpa Keterangan';
+                const data = json;
+
+                // Mapping author & caption
+                document.getElementById('authorAvatar').src = data.author?.avatar || 'https://via.placeholder.com/150';
+                document.getElementById('authorName').textContent = data.author?.nickname || data.author?.fullname || 'TikTok User';
+                document.getElementById('videoDesc').textContent = data.title || 'Tanpa Keterangan';
                 
-                document.getElementById('videoPreview').src = json.data.nowm_hd || json.data.nowm;
+                // Ambil link video HD dari array data
+                const hdObj = data.data?.find(item => item.type === 'nowatermark_hd') || data.data?.find(item => item.type === 'nowatermark');
+                const videoUrl = hdObj ? hdObj.url : '';
+
+                document.getElementById('videoPreview').src = videoUrl;
                 
                 // Statistik interaksi
-                document.getElementById('statLikes').textContent = formatNumber(json.data.stats?.likes || 0);
-                document.getElementById('statComments').textContent = formatNumber(json.data.stats?.comments || 0);
-                document.getElementById('statShares').textContent = formatNumber(json.data.stats?.shares || 0);
-                document.getElementById('statViews').textContent = formatNumber(json.data.stats?.views || 0);
+                document.getElementById('statLikes').textContent = formatNumber(data.stats?.likes || 0);
+                document.getElementById('statComments').textContent = formatNumber(data.stats?.comment || 0);
+                document.getElementById('statShares').textContent = formatNumber(data.stats?.share || 0);
+                document.getElementById('statViews').textContent = formatNumber(data.stats?.views || 0);
 
                 // Tombol download
-                document.getElementById('downloadHdBtn').href = json.data.nowm_hd || json.data.nowm;
-                document.getElementById('downloadAudioBtn').href = json.data.music || '#';
+                document.getElementById('downloadHdBtn').href = videoUrl;
+                document.getElementById('downloadAudioBtn').href = data.music_info?.url || '#';
 
                 loading.classList.add('hidden');
                 btnProcess.classList.remove('hidden');
@@ -219,9 +224,11 @@
         }
 
         function formatNumber(num) {
-            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-            return num;
+            const n = parseInt(num, 10);
+            if (isNaN(n)) return num;
+            if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+            if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
+            return n;
         }
     </script>
 </body>
