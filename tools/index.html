@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReyCloud - AI Image Upscaler</title>
+    <title>ReyCloud - AI Tools, Enhancer & Img2Img</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         body { background-color: #0d0f12; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
@@ -23,22 +23,38 @@
                     <div class="flex items-center space-x-1.5">
                         <span class="font-extrabold text-sm tracking-wide text-white">REYCLOUD<span class="text-cyan-400">TOOLS</span></span>
                     </div>
-                    <span class="text-[10px] tracking-widest text-slate-400 font-semibold uppercase">AI UTILITY</span>
+                    <span class="text-[10px] tracking-widest text-slate-400 font-semibold uppercase">AI UTILITY SUITE</span>
                 </div>
             </div>
             
             <a href="/" class="px-3 py-1.5 rounded-xl bg-[#1e2330] border border-[#2b3344] text-[11px] text-slate-300 hover:text-white transition-all font-medium">
-                Kembali ke AM
+                Kembali ke Home
             </a>
         </div>
 
         <div class="space-y-1 px-1">
-            <div class="text-[11px] text-slate-400">ReyCloud <span class="text-cyan-400 font-bold tracking-wide">AI IMAGE UPSCALER</span></div>
-            <p class="text-[11px] text-slate-400 leading-relaxed">Tingkatkan resolusi dan kejernihan gambar secara otomatis menggunakan teknologi AI.</p>
+            <div class="text-[11px] text-slate-400">ReyCloud <span class="text-cyan-400 font-bold tracking-wide">AI TOOLS, ENHANCER & IMG2IMG</span></div>
+            <p id="subTitleText" class="text-[11px] text-slate-400 leading-relaxed">Tingkatkan gambar, enhance video, atau ubah gambar dengan AI Img2Img.</p>
         </div>
 
-        <!-- UTILITY BOX: AI UPSCALER -->
-        <div class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-5">
+        <!-- MENU SWITCHER (Upscale vs Wink Video vs Img2Img) -->
+        <div class="grid grid-cols-3 gap-1.5 bg-[#151922] p-1.5 rounded-2xl border border-[#232936]">
+            <button id="btnTabUpscale" onclick="switchToolTab('upscale')" 
+                class="flex items-center justify-center py-2.5 rounded-xl text-[11px] font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer">
+                <span>✨ Upscale</span>
+            </button>
+            <button id="btnTabWink" onclick="switchToolTab('wink')" 
+                class="flex items-center justify-center py-2.5 rounded-xl text-[11px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
+                <span>🎬 Wink HD</span>
+            </button>
+            <button id="btnTabImg2Img" onclick="switchToolTab('img2img')" 
+                class="flex items-center justify-center py-2.5 rounded-xl text-[11px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
+                <span>🎨 Img2Img</span>
+            </button>
+        </div>
+
+        <!-- TAB 1: AI IMAGE UPSCALER -->
+        <div id="sectionUpscale" class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-5">
             <div class="flex items-start space-x-3.5">
                 <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-cyan-400 shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -47,7 +63,7 @@
                 </div>
                 <div>
                     <h2 class="text-sm font-bold text-white tracking-tight">AI Image Upscaler HD</h2>
-                    <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Upload gambar Anda untuk proses peningkatan kualitas.</p>
+                    <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Upload gambar Anda untuk proses peningkatan kejernihan.</p>
                 </div>
             </div>
 
@@ -80,13 +96,137 @@
             </div>
         </div>
 
+        <!-- TAB 2: WINK VIDEO ENHANCER -->
+        <div id="sectionWink" class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-5 hidden">
+            <div class="flex items-start space-x-3.5">
+                <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-amber-400 shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-sm font-bold text-white tracking-tight">Wink Video Enhancer Ultra HD</h2>
+                    <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Tingkatkan kualitas video blur menjadi jernih beresolusi tinggi.</p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">PILIH FILE VIDEO</label>
+                    <input type="file" id="videoFileInput" accept="video/*" 
+                        class="w-full bg-[#0d0f12] border border-[#232936] rounded-xl px-4 py-2.5 text-xs text-slate-300 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500/10 file:text-amber-400 hover:file:bg-amber-500/20 cursor-pointer">
+                </div>
+                <button onclick="processWink()" id="btnProcessWink"
+                    class="w-full bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold py-3.5 rounded-xl text-xs transition-all shadow cursor-pointer">
+                    Mulai Enhance Video
+                </button>
+            </div>
+
+            <div id="winkLoading" class="hidden text-center py-6 space-y-3">
+                <div class="inline-block w-7 h-7 border-2 border-amber-400 border-t-transparent rounded-full animate-spin"></div>
+                <p class="text-xs text-amber-400 animate-pulse font-medium">Sedang memproses video via Wink AI (Mohon tunggu beberapa saat)...</p>
+            </div>
+
+            <div id="winkResultBox" class="hidden space-y-3 bg-[#0d0f12] border border-amber-500/30 rounded-2xl p-4 text-center">
+                <div class="flex items-center justify-center space-x-2 text-amber-400 font-bold text-xs">
+                    <span>🎉</span>
+                    <span>Video Enhance Berhasil!</span>
+                </div>
+                <video id="winkResultVideo" controls class="w-full rounded-xl border border-[#232936] max-h-60 object-contain mx-auto"></video>
+                <a id="winkDownloadBtn" href="" target="_blank" class="inline-block w-full bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold py-2.5 rounded-xl text-xs transition-all">
+                    Unduh Video HD
+                </a>
+            </div>
+        </div>
+
+        <!-- TAB 3: AI IMG2IMG -->
+        <div id="sectionImg2Img" class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-5 hidden">
+            <div class="flex items-start space-x-3.5">
+                <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-pink-400 shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-sm font-bold text-white tracking-tight">AI Image to Image (Img2Img)</h2>
+                    <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Ubah gambar berdasarkan referensi foto & prompt teks AI.</p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">PILIH GAMBAR REFERENSI</label>
+                    <input type="file" id="img2imgFileInput" accept="image/*" 
+                        class="w-full bg-[#0d0f12] border border-[#232936] rounded-xl px-4 py-2.5 text-xs text-slate-300 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-pink-500/10 file:text-pink-400 hover:file:bg-pink-500/20 cursor-pointer">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">PROMPT PERUBAHAN</label>
+                    <input type="text" id="img2imgPrompt" placeholder="Contoh: cyberpunk style, anime masterpiece..." 
+                        class="w-full bg-[#0d0f12] border border-[#232936] rounded-xl px-4 py-3 text-xs text-slate-100 placeholder-slate-600 focus:outline-none focus:border-pink-500 transition-colors">
+                </div>
+                <button onclick="processImg2Img()" id="btnProcessImg2Img"
+                    class="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-3.5 rounded-xl text-xs transition-all shadow cursor-pointer">
+                    Mulai Proses Img2Img
+                </button>
+            </div>
+
+            <div id="img2imgLoading" class="hidden text-center py-6 space-y-3">
+                <div class="inline-block w-7 h-7 border-2 border-pink-500 border-t-transparent rounded-full animate-spin"></div>
+                <p class="text-xs text-pink-400 animate-pulse font-medium">Sedang merender gambar AI (Polling proses)...</p>
+            </div>
+
+            <div id="img2imgResultBox" class="hidden space-y-3 bg-[#0d0f12] border border-pink-500/30 rounded-2xl p-4 text-center">
+                <div class="flex items-center justify-center space-x-2 text-pink-400 font-bold text-xs">
+                    <span>🎨</span>
+                    <span>Img2Img Berhasil Dirender!</span>
+                </div>
+                <img id="img2imgResultImg" src="" alt="Img2Img Result" class="w-full rounded-xl border border-[#232936] max-h-60 object-contain mx-auto">
+                <a id="img2imgDownloadBtn" href="" target="_blank" class="inline-block w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-2.5 rounded-xl text-xs transition-all">
+                    Unduh Hasil AI
+                </a>
+            </div>
+        </div>
+
         <div class="pt-2 text-center text-[11px] text-slate-400">
-            <span>ReyCloudSHP Upscaler Engine</span>
+            <span>ReyCloudSHP AI Tools Engine</span>
         </div>
 
     </div>
 
     <script>
+        function switchToolTab(tab) {
+            const btnUpscale = document.getElementById('btnTabUpscale');
+            const btnWink = document.getElementById('btnTabWink');
+            const btnImg2Img = document.getElementById('btnTabImg2Img');
+            
+            const sectionUpscale = document.getElementById('sectionUpscale');
+            const sectionWink = document.getElementById('sectionWink');
+            const sectionImg2Img = document.getElementById('sectionImg2Img');
+            const subTitleText = document.getElementById('subTitleText');
+
+            btnUpscale.className = "flex items-center justify-center py-2.5 rounded-xl text-[11px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
+            btnWink.className = "flex items-center justify-center py-2.5 rounded-xl text-[11px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
+            btnImg2Img.className = "flex items-center justify-center py-2.5 rounded-xl text-[11px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
+
+            sectionUpscale.classList.add('hidden');
+            sectionWink.classList.add('hidden');
+            sectionImg2Img.classList.add('hidden');
+
+            if (tab === 'upscale') {
+                btnUpscale.className = "flex items-center justify-center py-2.5 rounded-xl text-[11px] font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
+                sectionUpscale.classList.remove('hidden');
+                subTitleText.textContent = "Tingkatkan resolusi dan kejernihan gambar secara otomatis menggunakan teknologi AI.";
+            } else if (tab === 'wink') {
+                btnWink.className = "flex items-center justify-center py-2.5 rounded-xl text-[11px] font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
+                sectionWink.classList.remove('hidden');
+                subTitleText.textContent = "Tingkatkan kualitas video blur menjadi jernih beresolusi tinggi dengan Wink AI.";
+            } else if (tab === 'img2img') {
+                btnImg2Img.className = "flex items-center justify-center py-2.5 rounded-xl text-[11px] font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
+                sectionImg2Img.classList.remove('hidden');
+                subTitleText.textContent = "Ubah gambar berdasarkan referensi foto & prompt teks AI.";
+            }
+        }
+
         async function processUpscale() {
             const fileInput = document.getElementById('imageFileInput');
             const btnProcess = document.getElementById('btnProcessUpscale');
@@ -120,6 +260,102 @@
 
                     document.getElementById('upscaleResultImg').src = json.url;
                     document.getElementById('upscaleDownloadBtn').href = json.url;
+
+                    loading.classList.add('hidden');
+                    btnProcess.classList.remove('hidden');
+                    resultBox.classList.remove('hidden');
+
+                } catch (err) {
+                    alert('Error: ' + err.message);
+                    loading.classList.add('hidden');
+                    btnProcess.classList.remove('hidden');
+                }
+            };
+        }
+
+        async function processWink() {
+            const fileInput = document.getElementById('videoFileInput');
+            const btnProcess = document.getElementById('btnProcessWink');
+            const loading = document.getElementById('winkLoading');
+            const resultBox = document.getElementById('winkResultBox');
+
+            if (!fileInput.files || fileInput.files.length === 0) {
+                return alert('Pilih file video terlebih dahulu!');
+            }
+
+            const file = fileInput.files[0];
+            btnProcess.classList.add('hidden');
+            loading.classList.remove('hidden');
+            resultBox.classList.add('hidden');
+
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = async function () {
+                try {
+                    const base64Video = reader.result;
+                    const res = await fetch('/api/wink', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ base64Video, filename: file.name })
+                    });
+                    const json = await res.json();
+
+                    if (!json.status || !json.resultUrl) {
+                        throw new Error(json.error || 'Gagal melakukan enhance video Wink.');
+                    }
+
+                    document.getElementById('winkResultVideo').src = json.resultUrl;
+                    document.getElementById('winkDownloadBtn').href = json.resultUrl;
+
+                    loading.classList.add('hidden');
+                    btnProcess.classList.remove('hidden');
+                    resultBox.classList.remove('hidden');
+
+                } catch (err) {
+                    alert('Error: ' + err.message);
+                    loading.classList.add('hidden');
+                    btnProcess.classList.remove('hidden');
+                }
+            };
+        }
+
+        async function processImg2Img() {
+            const fileInput = document.getElementById('img2imgFileInput');
+            const promptInput = document.getElementById('img2imgPrompt').value.trim();
+            const btnProcess = document.getElementById('btnProcessImg2Img');
+            const loading = document.getElementById('img2imgLoading');
+            const resultBox = document.getElementById('img2imgResultBox');
+
+            if (!fileInput.files || fileInput.files.length === 0) {
+                return alert('Pilih gambar referensi terlebih dahulu!');
+            }
+            if (!promptInput) {
+                return alert('Masukkan prompt perubahan terlebih dahulu!');
+            }
+
+            const file = fileInput.files[0];
+            btnProcess.classList.add('hidden');
+            loading.classList.remove('hidden');
+            resultBox.classList.add('hidden');
+
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = async function () {
+                try {
+                    const base64Image = reader.result;
+                    const res = await fetch('/api/img2img', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ prompt: promptInput, base64Image, filename: file.name })
+                    });
+                    const json = await res.json();
+
+                    if (!json.status || !json.result) {
+                        throw new Error(json.error || 'Gagal merender proses Img2Img.');
+                    }
+
+                    document.getElementById('img2imgResultImg').src = json.result;
+                    document.getElementById('img2imgDownloadBtn').href = json.result;
 
                     loading.classList.add('hidden');
                     btnProcess.classList.remove('hidden');
