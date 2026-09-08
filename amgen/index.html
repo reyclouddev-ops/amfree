@@ -27,20 +27,24 @@
                 </div>
             </div>
             
-            <!-- Tombol Garis 3 (Menu Dropdown) -->
             <button onclick="toggleMenu()" class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-slate-300 hover:text-white cursor-pointer transition-all">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>
 
-            <!-- Dropdown Menu Navigasi -->
             <div id="navDropdown" class="hidden absolute right-4 top-16 w-48 bg-[#151922] border border-[#2b3344] rounded-xl shadow-2xl py-2 z-50 space-y-1">
                 <a href="/" class="flex items-center space-x-2.5 px-4 py-2.5 text-xs text-slate-200 hover:bg-[#1e2330] transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
                     <span>Dashboard (Home)</span>
+                </a>
+                <a href="https://mustikapayment.com/l/donasi-untuk-reycloud" target="_blank" class="flex items-center space-x-2.5 px-4 py-2.5 text-xs text-slate-200 hover:bg-[#1e2330] transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
+                    <span>Donasi ReyCloud</span>
                 </a>
                 <a href="https://wa.me/6281260512743?text=Halo%20Admin,%20saya%20ingin%20bertanya%20tentang%20Alight%20Motion%20Premium." target="_blank" class="flex items-center space-x-2.5 px-4 py-2.5 text-xs text-slate-200 hover:bg-[#1e2330] transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -51,13 +55,11 @@
             </div>
         </div>
 
-        <!-- Subheader Info Aktivasi -->
         <div class="space-y-1 px-1">
             <div class="text-[11px] text-slate-400">Dashboard <span class="text-amber-400 font-bold tracking-wide">ALIGHT MOTION PREMIUM ACTIVATION</span></div>
-            <p id="subTitleText" class="text-[11px] text-slate-400 leading-relaxed">Aktivasi otomatis penuh 1-Click (V2) atau manual wizard (V1).</p>
+            <p id="subTitleText" class="text-[11px] text-slate-400 leading-relaxed">Aktivasi otomatis penuh 1-Click (V2) atau manual wizard (V1) dengan jeda sistem yang aman.</p>
         </div>
 
-        <!-- Tombol Status Utama (Kuning) -->
         <button class="w-full bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold py-3 px-4 rounded-xl text-xs flex items-center justify-center space-x-2 shadow-lg shadow-amber-400/10 transition-all">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
@@ -65,7 +67,6 @@
             <span>Aktivasi Akun</span>
         </button>
 
-        <!-- Toggle Mode V2 vs V1 -->
         <div class="grid grid-cols-2 gap-2 bg-[#151922] p-1.5 rounded-2xl border border-[#232936]">
             <button id="btnTabAuto" onclick="switchMode('auto')" 
                 class="flex items-center justify-center space-x-2 py-2.5 rounded-xl text-xs font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer">
@@ -77,7 +78,6 @@
             </button>
         </div>
 
-        <!-- Main Card Form / Konten Dinamis -->
         <div class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-5">
             
             <!-- TAMPILAN AUTO (V2) -->
@@ -87,18 +87,22 @@
                 </div>
                 <div class="space-y-1">
                     <h3 class="text-sm font-bold text-white">V2: Auto 1-Click Generator</h3>
-                    <p class="text-xs text-slate-400 max-w-xs mx-auto leading-relaxed">Sistem otomatis membuat akun, memindai proxy, dan mengklaim lisensi secara instan.</p>
+                    <p class="text-xs text-slate-400 max-w-xs mx-auto leading-relaxed">Sistem otomatis dengan jeda stabil untuk membuat akun dan mengklaim lisensi.</p>
                 </div>
 
-                <button onclick="startAutoGenerate()" id="btnAutoStart"
-                    class="w-full bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold py-3.5 px-4 rounded-xl text-xs transition-all shadow-lg cursor-pointer flex items-center justify-center space-x-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                    <span>Mulai Auto Generate Akun</span>
-                </button>
+                <div class="space-y-2">
+                    <button onclick="startAutoGenerate()" id="btnAutoStart"
+                        class="w-full bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold py-3.5 px-4 rounded-xl text-xs transition-all shadow-lg cursor-pointer flex items-center justify-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                        <span>Mulai Auto Generate Akun</span>
+                    </button>
+                    <button onclick="cancelAutoGenerate()" id="btnAutoCancel" class="hidden w-full bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-400 font-bold py-2.5 rounded-xl text-xs transition-all cursor-pointer">
+                        Batalkan Proses
+                    </button>
+                </div>
 
-                <!-- PROGRES BAR & STEP OTOMATIS -->
                 <div id="autoLoadingState" class="hidden space-y-4 pt-2">
                     <div class="w-full bg-[#0d0f12] border border-[#232936] rounded-full h-2.5 overflow-hidden p-0.5">
                         <div id="progressBar" class="bg-amber-400 h-full rounded-full transition-all duration-500 w-[10%]"></div>
@@ -116,8 +120,8 @@
                         </svg>
                     </div>
                     <div>
-                        <h2 class="text-sm font-bold text-white tracking-tight">Aktivasi Premium Manual</h2>
-                        <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Masukkan email Anda untuk menerima magic link verifikasi.</p>
+                        <h2 class="text-sm font-bold text-white tracking-tight">Aktivasi Premium Manual (V1)</h2>
+                        <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Masukkan email Anda untuk menerima magic link verifikasi instan.</p>
                     </div>
                 </div>
 
@@ -139,6 +143,10 @@
                 </div>
 
                 <div id="form-step-2" class="space-y-4 hidden">
+                    <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 text-[11px] text-amber-300 leading-relaxed space-y-1">
+                        <p class="font-bold">⚠️ Petunjuk:</p>
+                        <p>Cek email kamu, salin magic link yang masuk, lalu tempel di bawah ini.</p>
+                    </div>
                     <div>
                         <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">MAGIC LINK VERIFIKASI</label>
                         <input type="text" id="linkInput" placeholder="Tempel URL magic link di sini..." 
@@ -151,24 +159,23 @@
                 </div>
             </div>
 
-            <!-- HASIL OUTPUT SUKSES (AUTO / MANUAL) -->
+            <!-- HASIL OUTPUT SUKSES -->
             <div id="resultBox" class="hidden space-y-4 bg-[#0d0f12] border border-emerald-500/30 rounded-2xl p-4">
                 <div class="flex items-center space-x-2 text-emerald-400 font-bold text-xs">
                     <span>🎉</span>
                     <span>Lisensi Pro Berhasil Diaktifkan!</span>
                 </div>
                 
-                <!-- Format Detail Sesuai Permintaan -->
                 <div class="bg-[#151922] border border-[#232936] rounded-xl p-3.5 space-y-2.5 text-xs font-mono">
                     <div class="flex justify-between items-center border-b border-[#232936] pb-2">
                         <span class="text-slate-400 font-sans">username :</span>
                         <span id="resUsername" class="text-cyan-400 select-all"></span>
                     </div>
-                    <div class="flex justify-between items-center border-b border-[#232936] pb-2">
+                    <div id="rowPassword" class="flex justify-between items-center border-b border-[#232936] pb-2">
                         <span class="text-slate-400 font-sans">password :</span>
                         <span id="resPassword" class="text-slate-200 select-all"></span>
                     </div>
-                    <div class="flex justify-between items-center border-b border-[#232936] pb-2">
+                    <div id="rowMailLink" class="flex justify-between items-center border-b border-[#232936] pb-2">
                         <span class="text-slate-400 font-sans">login mail.tm :</span>
                         <a id="resMailLink" href="https://mail.tm" target="_blank" class="text-amber-400 underline truncate max-w-[150px]">https://mail.tm</a>
                     </div>
@@ -182,16 +189,20 @@
                     </div>
                 </div>
 
-                <!-- Petunjuk Cara Pakai -->
-                <div class="bg-cyan-500/10 border border-cyan-500/30 rounded-xl p-3 text-[11px] text-cyan-200 leading-relaxed space-y-1.5">
-                    <p class="font-bold">📖 Cara Pakai Akun:</p>
+                <div id="guideAuto" class="bg-cyan-500/10 border border-cyan-500/30 rounded-xl p-3 text-[11px] text-cyan-200 leading-relaxed space-y-1.5">
+                    <p class="font-bold">📖 Cara Pakai Akun Auto:</p>
                     <p>1. Buka <strong>mail.tm</strong>, login pakai email dan password di atas.</p>
-                    <p>2. Login ke Alight Motion menggunakan email tersebut (alamat email yang berwarna merah/terdaftar).</p>
-                    <p>3. Cek inbox di mail.tm sampai masuk email bertuliskan <em>"Sign in to Alight Creative"</em>.</p>
-                    <p>4. <strong>Tekan aja (jangan ditahan)</strong> link tersebut, dan proses verifikasi selesai (Done)!</p>
+                    <p>2. Login ke Alight Motion menggunakan email tersebut.</p>
+                    <p>3. Cek inbox di mail.tm sampai masuk email <em>"Sign in to Alight Creative"</em>.</p>
+                    <p>4. <strong>Tekan aja (jangan ditahan)</strong> link tersebut, dan selesai!</p>
                 </div>
 
-                <!-- Tombol Salin & JSON -->
+                <div id="guideManual" class="hidden bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-3 text-[11px] text-emerald-200 leading-relaxed space-y-1.5">
+                    <p class="font-bold">✨ Selamat!</p>
+                    <p>Akun email pribadi kamu <strong>(<span id="guideManualEmail"></span>)</strong> sudah resmi diaktifkan menjadi Alight Motion Pro 1 Tahun.</p>
+                    <p>Silakan langsung login ke aplikasi Alight Motion menggunakan email tersebut.</p>
+                </div>
+
                 <div class="grid grid-cols-2 gap-2 pt-1">
                     <button onclick="copyAccountData()" class="bg-[#1e2330] hover:bg-[#272f40] border border-[#2b3344] text-slate-200 font-semibold py-2.5 rounded-xl text-xs transition-all cursor-pointer flex items-center justify-center space-x-1.5">
                         <span>Salin Detail Akun</span>
@@ -206,7 +217,6 @@
                 </div>
             </div>
 
-            <!-- Footer Kreator -->
             <div class="pt-3 border-t border-[#232936] flex items-center justify-between text-[11px] text-slate-400">
                 <div class="flex items-center space-x-2">
                     <div class="flex -space-x-1.5">
@@ -225,6 +235,8 @@
     <script>
         let currentEmail = '';
         let rawJsonString = '';
+        let activeGeneratorMode = 'auto';
+        let currentPollInterval = null;
 
         function toggleMenu() {
             const menu = document.getElementById('navDropdown');
@@ -241,11 +253,15 @@
         }
 
         function switchMode(mode) {
+            activeGeneratorMode = mode;
+            cancelAutoGenerate(true); // Reset proses auto jika pindah tab
+
             const btnTabAuto = document.getElementById('btnTabAuto');
             const btnTabManual = document.getElementById('btnTabManual');
             const autoContent = document.getElementById('autoContent');
             const manualContent = document.getElementById('manualContent');
             const subTitleText = document.getElementById('subTitleText');
+            document.getElementById('resultBox').classList.add('hidden');
 
             if (mode === 'auto') {
                 btnTabAuto.className = "flex items-center justify-center space-x-2 py-2.5 rounded-xl text-xs font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
@@ -262,21 +278,35 @@
             }
         }
 
-        // Logic Auto Generate V2 dengan Progres Bar Sesuai Permintaan
+        function cancelAutoGenerate(silent = false) {
+            if (currentPollInterval) {
+                clearInterval(currentPollInterval);
+                currentPollInterval = null;
+            }
+            document.getElementById('autoLoadingState').classList.add('hidden');
+            document.getElementById('btnAutoStart').classList.remove('hidden');
+            document.getElementById('btnAutoCancel').classList.add('hidden');
+            document.getElementById('progressBar').style.width = '10%';
+            if (!silent) {
+                document.getElementById('autoProgressText').textContent = "Proses dibatalkan.";
+            }
+        }
+
         async function startAutoGenerate() {
             const btnAutoStart = document.getElementById('btnAutoStart');
+            const btnAutoCancel = document.getElementById('btnAutoCancel');
             const loadingState = document.getElementById('autoLoadingState');
             const progressBar = document.getElementById('progressBar');
             const progressText = document.getElementById('autoProgressText');
             const resultBox = document.getElementById('resultBox');
 
             btnAutoStart.classList.add('hidden');
+            btnAutoCancel.classList.remove('hidden');
             loadingState.classList.remove('hidden');
             resultBox.classList.add('hidden');
 
-            // Simulasi/Update Progres Tahapan Realtime
             progressBar.style.width = '20%';
-            progressText.textContent = "Sedang mencari proxy yang aktif...";
+            progressText.textContent = "Mencari proxy privat yang aktif...";
 
             try {
                 const startRes = await fetch('/api/amgen-auto', {
@@ -293,35 +323,44 @@
                 const taskId = startJson.taskId;
 
                 setTimeout(() => {
-                    progressBar.style.width = '40%';
-                    progressText.textContent = "Melihat antrian sistem...";
-                }, 1500);
+                    if (currentPollInterval !== null || document.getElementById('autoLoadingState').classList.contains('hidden')) return;
+                    progressBar.style.width = '45%';
+                    progressText.textContent = "Melihat antrian sistem & membuat mail.tm...";
+                }, 2000);
 
                 setTimeout(() => {
-                    progressBar.style.width = '65%';
-                    progressText.textContent = "Memanggil mail.tm untuk pembuatan email sementara...";
-                }, 3500);
+                    if (currentPollInterval !== null || document.getElementById('autoLoadingState').classList.contains('hidden')) return;
+                    progressBar.style.width = '70%';
+                    progressText.textContent = "Mengirim magic link & menunggu email masuk...";
+                }, 5000);
 
-                const pollInterval = setInterval(async () => {
+                // Polling status task setiap 4 detik (dengan jeda aman agar tidak spam server)
+                currentPollInterval = setInterval(async () => {
                     try {
                         const checkRes = await fetch(`/api/amgen-auto?taskId=${taskId}`);
                         const checkJson = await checkRes.json();
 
                         if (checkJson.status) {
                             if (checkJson.status === 'completed') {
-                                clearInterval(pollInterval);
+                                clearInterval(currentPollInterval);
+                                currentPollInterval = null;
                                 progressBar.style.width = '100%';
                                 progressText.textContent = "Selesai!";
 
                                 setTimeout(() => {
                                     loadingState.classList.add('hidden');
                                     btnAutoStart.classList.remove('hidden');
+                                    btnAutoCancel.classList.add('hidden');
                                     progressBar.style.width = '10%';
 
                                     const data = checkJson.data;
                                     rawJsonString = JSON.stringify(data, null, 2);
 
-                                    // Render Output ke Format Permintaan
+                                    document.getElementById('rowPassword').style.display = 'flex';
+                                    document.getElementById('rowMailLink').style.display = 'flex';
+                                    document.getElementById('guideAuto').style.display = 'block';
+                                    document.getElementById('guideManual').style.display = 'none';
+
                                     document.getElementById('resUsername').textContent = data.email;
                                     document.getElementById('resPassword').textContent = data.emailPassword;
                                     document.getElementById('resCodeOrder').textContent = data.codeorder || 'Success';
@@ -329,33 +368,29 @@
                                     document.getElementById('outputData').textContent = rawJsonString;
 
                                     resultBox.classList.remove('hidden');
-                                }, 600);
+                                }, 500);
 
                             } else if (checkJson.status === 'failed') {
-                                clearInterval(pollInterval);
-                                loadingState.classList.add('hidden');
-                                btnAutoStart.classList.remove('hidden');
-                                progressBar.style.width = '10%';
+                                clearInterval(currentPollInterval);
+                                currentPollInterval = null;
+                                cancelAutoGenerate(true);
                                 alert('Auto Generate Gagal: ' + checkJson.message);
                             } else {
                                 progressBar.style.width = '85%';
-                                progressText.textContent = "Mendapatkan link verifikasi di inbox...";
+                                progressText.textContent = "Menunggu verifikasi email di inbox (Polling)...";
                             }
                         }
                     } catch (pollErr) {
                         console.error("Polling error:", pollErr);
                     }
-                }, 3000);
+                }, 4000);
 
             } catch (err) {
                 alert('Kesalahan: ' + err.message);
-                loadingState.classList.add('hidden');
-                btnAutoStart.classList.remove('hidden');
-                progressBar.style.width = '10%';
+                cancelAutoGenerate(true);
             }
         }
 
-        // Logic Manual V1
         async function sendLink() {
             const email = document.getElementById('emailInput').value.trim();
             if (!email) return alert('Alamat email wajib diisi!');
@@ -406,8 +441,13 @@
                     const acc = data.data;
                     rawJsonString = JSON.stringify(acc, null, 2);
 
+                    document.getElementById('rowPassword').style.display = 'none';
+                    document.getElementById('rowMailLink').style.display = 'none';
+                    document.getElementById('guideAuto').style.display = 'none';
+                    document.getElementById('guideManual').style.display = 'block';
+                    document.getElementById('guideManualEmail').textContent = currentEmail;
+
                     document.getElementById('resUsername').textContent = acc.email || currentEmail;
-                    document.getElementById('resPassword').textContent = '(Manual Account)';
                     document.getElementById('resCodeOrder').textContent = acc.orderId || '-';
                     document.getElementById('resStatus').textContent = acc.membershipStatus || 'PREMIUM_ACTIVE';
                     document.getElementById('outputData').textContent = rawJsonString;
@@ -424,7 +464,12 @@
         }
 
         function copyAccountData() {
-            const textToCopy = `username : ${document.getElementById('resUsername').textContent}\npassword : ${document.getElementById('resPassword').textContent}\nlogin mail.tm : https://mail.tm\ncodeorder : ${document.getElementById('resCodeOrder').textContent}\nstatus : ${document.getElementById('resStatus').textContent}`;
+            let textToCopy = '';
+            if (activeGeneratorMode === 'auto') {
+                textToCopy = `username : ${document.getElementById('resUsername').textContent}\npassword : ${document.getElementById('resPassword').textContent}\nlogin mail.tm : https://mail.tm\ncodeorder : ${document.getElementById('resCodeOrder').textContent}\nstatus : ${document.getElementById('resStatus').textContent}`;
+            } else {
+                textToCopy = `username : ${document.getElementById('resUsername').textContent}\ncodeorder : ${document.getElementById('resCodeOrder').textContent}\nstatus : ${document.getElementById('resStatus').textContent}`;
+            }
             navigator.clipboard.writeText(textToCopy).then(() => {
                 alert('Format detail akun berhasil disalin ke clipboard!');
             });
