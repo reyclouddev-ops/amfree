@@ -88,13 +88,12 @@
                     <video id="nativeVideo" controls class="w-full h-full hidden"></video>
                 </div>
 
-                <!-- Fallback Tombol Alternatif -->
-                <div id="fallbackBox" class="hidden bg-[#0d0f12] border border-orange-500/30 rounded-xl p-3 text-center space-y-2">
-                    <p class="text-[11px] text-orange-300 font-medium">⚠️ Pemutar diblokir situs sumber. Pilih opsi berikut:</p>
-                    <div id="downloadLinksContainer" class="flex flex-wrap gap-1.5 justify-center"></div>
-                    <a id="btnBukaAsli" href="" target="_blank" class="inline-block w-full bg-orange-500 hover:bg-orange-400 text-slate-950 font-bold py-2 rounded-xl text-xs transition-all">
-                        Buka Sumber Asli di Tab Baru 🚀
-                    </a>
+                <!-- Server Alternatif Interaktif (Anti Blokir) -->
+                <div class="bg-[#0d0f12] border border-[#232936] rounded-xl p-3 space-y-2">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider text-center">PILIH SERVER ALTERNATIF</p>
+                    <div id="downloadLinksContainer" class="flex flex-wrap gap-1.5 justify-center">
+                        <!-- Tombol server interaktif dimuat lewat JS -->
+                    </div>
                 </div>
 
                 <!-- Tombol Navigasi Episode (Prev & Next) -->
@@ -108,7 +107,7 @@
                 </div>
             </div>
 
-            <!-- DETAIL & LIST EPISODE DI BAWAH VIDEO (EFEK LAMPU AKTIF) -->
+            <!-- DETAIL & LIST EPISODE DI BAWAH VIDEO -->
             <div class="bg-[#151922] border border-[#232936] rounded-2xl p-4 shadow-xl space-y-3">
                 <div class="flex items-center space-x-3">
                     <img id="watchPoster" src="" class="w-16 h-22 object-cover rounded-xl border border-[#232936] shrink-0 shadow">
@@ -252,13 +251,11 @@
 
             switchView('watch');
             
-            // Set Info di Bawah Video (Judul Anime, Poster, Sinopsis)
             document.getElementById('watchPoster').src = currentDetailData.poster || '';
             document.getElementById('watchAnimeTitle').textContent = currentDetailData.title;
             document.getElementById('watchEpisodeTitle').textContent = `Episode ${ep.episode || (index + 1)}`;
             document.getElementById('watchSynopsis').textContent = currentDetailData.synopsis || 'Tidak ada sinopsis.';
 
-            // Render Ulang List Episode dengan Efek Lampu Menyala (Glow Active) pada Episode yang Diputar
             renderWatchEpisodeList();
 
             document.getElementById('playerTitle').textContent = `${currentDetailData.title} - Episode ${ep.episode || (index + 1)}`;
@@ -266,11 +263,9 @@
             
             const iframe = document.getElementById('videoIframe');
             const nativeVideo = document.getElementById('nativeVideo');
-            const fallbackBox = document.getElementById('fallbackBox');
             
             iframe.classList.add('hidden');
             nativeVideo.classList.add('hidden');
-            fallbackBox.classList.add('hidden');
             iframe.src = '';
             nativeVideo.src = '';
 
@@ -289,15 +284,20 @@
                     iframe.classList.remove('hidden');
                 }
 
-                document.getElementById('btnBukaAsli').href = s.original_page_url;
+                // Render Tombol Server Alternatif Interaktif
                 const dlContainer = document.getElementById('downloadLinksContainer');
-                dlContainer.innerHTML = (s.download_links || []).slice(0, 3).map(d => `
-                    <a href="${d.url}" target="_blank" class="bg-[#1e2330] hover:bg-[#2b3344] text-orange-400 font-semibold px-3 py-1.5 rounded-lg text-[10px] border border-[#2b3344]">
-                        📥 ${d.server}
+                let linksHtml = (s.download_links || []).map(d => `
+                    <a href="${d.url}" target="_blank" class="bg-[#1e2330] hover:bg-[#2b3344] text-orange-400 font-semibold px-3 py-2 rounded-xl text-[10px] border border-[#2b3344] transition-all shadow">
+                        📺 Server ${d.server}
                     </a>
                 `).join('');
 
-                fallbackBox.classList.remove('hidden');
+                linksHtml += `
+                    <a href="${s.original_page_url}" target="_blank" class="bg-orange-500 hover:bg-orange-400 text-slate-950 font-bold px-3 py-2 rounded-xl text-[10px] transition-all shadow">
+                        🚀 Buka Sumber Asli
+                    </a>
+                `;
+                dlContainer.innerHTML = linksHtml;
 
             } catch (err) {
                 document.getElementById('playerLoading').classList.add('hidden');
@@ -305,7 +305,6 @@
             }
         }
 
-        // Render List Episode di Ruang Nonton dengan Efek Lampu Menyala (Glow/Active)
         function renderWatchEpisodeList() {
             const container = document.getElementById('watchEpisodeList');
             if (!currentDetailData) return;

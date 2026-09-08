@@ -1,6 +1,6 @@
 /**
  * API Route: /api/anime
- * NontonAnimeID Scraper Endpoint for ReyCloud
+ * Enhanced NontonAnimeID Scraper Endpoint with Advanced Direct Stream Extractor for ReyCloud
  */
 
 import https from 'https';
@@ -104,23 +104,33 @@ function decodeXor(html) {
   return o;
 }
 
+// Ekstraktor Direct Stream Diperkuat
 export async function extractStream(embedUrl) {
   try {
     let finalEmbedUrl = embedUrl.startsWith('//') ? 'https:' + embedUrl : embedUrl;
     const html = await fetchHtml(finalEmbedUrl, { Referer: BASE_URL });
 
+    // 1. Cari langsung link file direct atau go/dl
     const directDl = html.match(/(https?:\/\/[^\s"']+\/go\/dl\/\?url=[A-Za-z0-9+/=]+)/);
     if (directDl) return directDl[1];
 
+    // 2. Cari file .mp4 atau .m3u8 langsung di dalam source code
+    const directFile = html.match(/["'](https?:\/\/[^"']+\.(?:mp4|m3u8)[^"']*)["']/i);
+    if (directFile) return directFile[1];
+
+    // 3. Dekode Packer JavaScript Evaluasi
     const packers = [...html.matchAll(/eval\(function\(p,a,c,k,e,d\)[\s\S]+?\.split\('\|'\)\)\)/gi)];
     for (const p of packers) {
       const decoded = unpackJs(p[0]);
-      const fileMatch = decoded.match(/https?:\/\/[^\s"',\\]+\/go\/dl\/\?url=[A-Za-z0-9+/=]+/i) || decoded.match(/["']?file["']?\s*:\s*["']([^"']+)["']/i);
+      const fileMatch = decoded.match(/https?:\/\/[^\s"',\\]+\.(?:mp4|m3u8)(\?[^\s"'\\]*)?/i) ||
+                        decoded.match(/https?:\/\/[^\s"',\\]+\/go\/dl\/\?url=[A-Za-z0-9+/=]+/i) ||
+                        decoded.match(/["']?file["']?\s*:\s*["']([^"']+)["']/i);
       if (fileMatch) {
         return (fileMatch[1] || fileMatch[0]).replace(/\\\//g, '/').replace(/\\'/g, "'");
       }
     }
 
+    // 4. Dekode XOR terenkripsi
     const xorDecoded = decodeXor(html);
     if (xorDecoded) {
       const hlsMatch = xorDecoded.match(/HLS\s*=\s*["']([^"']+)["']/i) || xorDecoded.match(/file\s*:\s*["']([^"']+)["']/i);
@@ -132,12 +142,7 @@ export async function extractStream(embedUrl) {
       }
     }
 
-    const tokenMatch = html.match(/cElMVFNS[A-Za-z0-9+/=]+/);
-    if (tokenMatch) {
-      const dm = finalEmbedUrl.match(/https?:\/\/[^\/]+/);
-      return `${dm ? dm[0] : 'https://s1.kotakanimeid.link'}/go/dl/?url=${tokenMatch[0]}`;
-    }
-
+    // 5. Cek Base64 Window Location / Srcdoc
     const srcdocAtob = html.match(/window\.location\.replace\(atob\(['"]([^'"]+)['"]\)\)/i);
     if (srcdocAtob) {
       const redirectUrl = Buffer.from(srcdocAtob[1], 'base64').toString('utf8');
@@ -234,9 +239,14 @@ export async function getEpisodeStream(episodeSlug) {
   const rawTitle = cleanText((html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i) || html.match(/<title>([\s\S]*?)<\/title>/i) || [])[1] || 'Episode');
 
   const embedUrl = (html.match(/<div id="videoku"[^>]*>[\s\S]*?<iframe[^>]*(?:data-src|src)="([^"]+)"/i) || [])[1]?.replace(/&amp;/g, '&') || null;
-  const directHls = embedUrl ? await extractStream(embedUrl) : null;
+  
+  // Ekstraksi otomatis direct link stream video
+  let directHls = embedUrl ? await extractStream(embedUrl) : null;
+  if (!directHls) {
+    const genericFile = html.match(/["'](https?:\/\/[^"']+\.(?:mp4|m3u8)[^"']*)["']/i);
+    if (genericFile) directHls = genericFile[1];
+  }
 
-  // Ambil juga link alternatif download dari halaman episode
   const downloads = [];
   for (const dm of html.matchAll(/<div class="listlink"[^>]*>([\s\S]*?)<\/div>/gi)) {
     for (const am of dm[1].matchAll(/<a\s+[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/gi)) {
