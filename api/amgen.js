@@ -51,6 +51,12 @@ export default async function handler(req, res) {
                 return res.status(400).json({ status: false, error: 'Gagal menerapkan lisensi Pro: ' + proRes.why });
             }
 
+            // Hitung masa aktif otomatis 1 tahun ke depan secara dinamis
+            const expiryDate = new Date();
+            expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            const dynamicValidUntil = expiryDate.toLocaleDateString('id-ID', options).toUpperCase();
+
             // Susun data detail akun untuk dikembalikan ke frontend
             const accountData = {
                 email: authRes.email,
@@ -59,7 +65,7 @@ export default async function handler(req, res) {
                 membershipStatus: "PREMIUM_ACTIVE",
                 planName: "Alight Motion Pro / Member",
                 orderId: proRes.order,
-                validUntil: "8 September 2027", // Dihitung masa aktif 1 tahun dari sekarang
+                validUntil: dynamicValidUntil,
                 idToken: authRes.id,
                 refreshToken: authRes.ref,
                 premium: true,

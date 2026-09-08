@@ -1,12 +1,7 @@
 /**
  * API Route: /api/amgen-auto
- * Handler untuk Automated AlwaysCodex Scraper v2 (Task-based)
+ * Proxy & Maintenance Handler for ReyCloudSHP V2
  */
-
-const AlwaysCodexScraper = require('../lib/AlwaysCodexScraper');
-
-// Instance global scraper supaya task tersimpan di memory instance serverless
-const scraper = new AlwaysCodexScraper();
 
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
@@ -19,31 +14,37 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { action, taskId } = req.method === 'POST' ? (req.body || {}) : (req.query || {});
+        const apiRes = await fetch('https://api.reycode.my.id/amprem/generate', {
+            method: 'GET',
+            headers: { 'User-Agent': 'ReyCloudSHP-Dashboard/2.0' },
+            signal: AbortSignal.timeout(12000)
+        });
 
-        // 1. Aksi untuk Mulai Proses Generate Akun Otomatis
-        if (req.method === 'POST' && action === 'start-task') {
-            const task = scraper.createTask();
-            return res.status(200).json({
-                status: true,
-                message: 'Task otomatisasi berhasil dibuat. Proses sedang berjalan di latar belakang.',
-                taskId: task.taskId
+        if (!apiRes.ok) {
+            throw new Error('Endpoint offline');
+        }
+
+        const data = await apiRes.json();
+
+        if (!data || !data.status || !data.result) {
+            return res.status(503).json({
+                status: false,
+                maintenance: true,
+                error: 'Maaf V2 sedang melakukan maintenance. mohon pindah ke mode manual saja'
             });
         }
 
-        // 2. Aksi untuk Cek Status Task / Hasilnya
-        if (req.method === 'GET' || req.method === 'POST') {
-            if (!taskId) {
-                return res.status(400).json({ status: false, error: 'Parameter taskId wajib disertakan.' });
-            }
-
-            const check = scraper.checkTask(taskId);
-            return res.status(200).json(check);
-        }
-
-        return res.status(400).json({ status: false, error: 'Aksi atau method tidak valid.' });
+        return res.status(200).json({
+            status: true,
+            maintenance: false,
+            result: data.result
+        });
 
     } catch (err) {
-        return res.status(500).json({ status: false, error: 'Terjadi kesalahan sistem: ' + err.message });
+        return res.status(503).json({
+            status: false,
+            maintenance: true,
+            error: 'Maaf V2 sedang melakukan maintenance. mohon pindah ke mode manual saja'
+        });
     }
 }

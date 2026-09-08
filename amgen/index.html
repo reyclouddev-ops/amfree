@@ -57,7 +57,7 @@
 
         <div class="space-y-1 px-1">
             <div class="text-[11px] text-slate-400">Dashboard <span class="text-amber-400 font-bold tracking-wide">ALIGHT MOTION PREMIUM ACTIVATION</span></div>
-            <p id="subTitleText" class="text-[11px] text-slate-400 leading-relaxed">Aktivasi otomatis penuh 1-Click (V2) atau manual wizard (V1) dengan jeda sistem yang aman.</p>
+            <p id="subTitleText" class="text-[11px] text-slate-400 leading-relaxed">Aktivasi otomatis instan 1-Click (V2) atau manual wizard (V1).</p>
         </div>
 
         <button class="w-full bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold py-3 px-4 rounded-xl text-xs flex items-center justify-center space-x-2 shadow-lg shadow-amber-400/10 transition-all">
@@ -87,7 +87,7 @@
                 </div>
                 <div class="space-y-1">
                     <h3 class="text-sm font-bold text-white">V2: Auto 1-Click Generator</h3>
-                    <p class="text-xs text-slate-400 max-w-xs mx-auto leading-relaxed">Sistem otomatis dengan jeda stabil untuk membuat akun dan mengklaim lisensi.</p>
+                    <p class="text-xs text-slate-400 max-w-xs mx-auto leading-relaxed">Sistem otomatis instan langsung dari endpoint ReyCloudSHP.</p>
                 </div>
 
                 <div class="space-y-2">
@@ -98,16 +98,13 @@
                         </svg>
                         <span>Mulai Auto Generate Akun</span>
                     </button>
-                    <button onclick="cancelAutoGenerate()" id="btnAutoCancel" class="hidden w-full bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-400 font-bold py-2.5 rounded-xl text-xs transition-all cursor-pointer">
-                        Batalkan Proses
-                    </button>
                 </div>
 
                 <div id="autoLoadingState" class="hidden space-y-4 pt-2">
                     <div class="w-full bg-[#0d0f12] border border-[#232936] rounded-full h-2.5 overflow-hidden p-0.5">
-                        <div id="progressBar" class="bg-amber-400 h-full rounded-full transition-all duration-500 w-[10%]"></div>
+                        <div id="progressBar" class="bg-amber-400 h-full rounded-full transition-all duration-300 w-[30%]"></div>
                     </div>
-                    <div id="autoProgressText" class="text-xs text-amber-400 animate-pulse font-medium">Sedang mencari proxy yang aktif...</div>
+                    <div id="autoProgressText" class="text-xs text-amber-400 animate-pulse font-medium">Menghubungkan ke API ReyCloudSHP V2...</div>
                 </div>
             </div>
 
@@ -183,6 +180,10 @@
                         <span class="text-slate-400 font-sans">codeorder :</span>
                         <span id="resCodeOrder" class="text-slate-300 select-all text-[10px] truncate max-w-[160px]"></span>
                     </div>
+                    <div class="flex justify-between items-center border-b border-[#232936] pb-2">
+                        <span class="text-slate-400 font-sans">validUntil :</span>
+                        <span id="resValidUntil" class="text-amber-300 select-all text-[10px]"></span>
+                    </div>
                     <div class="flex justify-between items-center">
                         <span class="text-slate-400 font-sans">status :</span>
                         <span id="resStatus" class="text-emerald-400 font-bold">PREMIUM_ACTIVE</span>
@@ -192,14 +193,14 @@
                 <div id="guideAuto" class="bg-cyan-500/10 border border-cyan-500/30 rounded-xl p-3 text-[11px] text-cyan-200 leading-relaxed space-y-1.5">
                     <p class="font-bold">📖 Cara Pakai Akun Auto:</p>
                     <p>1. Buka <strong>mail.tm</strong>, login pakai email dan password di atas.</p>
-                    <p>2. Login ke Alight Motion menggunakan email tersebut.</p>
-                    <p>3. Cek inbox di mail.tm sampai masuk email <em>"Sign in to Alight Creative"</em>.</p>
-                    <p>4. <strong>Tekan aja (jangan ditahan)</strong> link tersebut, dan selesai!</p>
+                    <p>2. Login ke Alight Motion menggunakan email tersebut (alamat email yang berwarna merah/terdaftar).</p>
+                    <p>3. Cek inbox di mail.tm sampai masuk email bertuliskan <em>"Sign in to Alight Creative"</em>.</p>
+                    <p>4. <strong>Tekan aja (jangan ditahan)</strong> link tersebut, dan proses verifikasi selesai (Done)!</p>
                 </div>
 
                 <div id="guideManual" class="hidden bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-3 text-[11px] text-emerald-200 leading-relaxed space-y-1.5">
                     <p class="font-bold">✨ Selamat!</p>
-                    <p>Akun email pribadi kamu <strong>(<span id="guideManualEmail"></span>)</strong> sudah resmi diaktifkan menjadi Alight Motion Pro 1 Tahun.</p>
+                    <p>Akun email pribadi kamu <strong>(<span id="guideManualEmail"></span>)</strong> sudah resmi diaktifkan menjadi Alight Motion Pro.</p>
                     <p>Silakan langsung login ke aplikasi Alight Motion menggunakan email tersebut.</p>
                 </div>
 
@@ -236,7 +237,6 @@
         let currentEmail = '';
         let rawJsonString = '';
         let activeGeneratorMode = 'auto';
-        let currentPollInterval = null;
 
         function toggleMenu() {
             const menu = document.getElementById('navDropdown');
@@ -254,8 +254,6 @@
 
         function switchMode(mode) {
             activeGeneratorMode = mode;
-            cancelAutoGenerate(true); // Reset proses auto jika pindah tab
-
             const btnTabAuto = document.getElementById('btnTabAuto');
             const btnTabManual = document.getElementById('btnTabManual');
             const autoContent = document.getElementById('autoContent');
@@ -268,7 +266,7 @@
                 btnTabManual.className = "flex items-center justify-center space-x-2 py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
                 autoContent.classList.remove('hidden');
                 manualContent.classList.add('hidden');
-                subTitleText.textContent = "Aktivasi otomatis penuh 1-Click (V2).";
+                subTitleText.textContent = "Aktivasi otomatis instan 1-Click (V2).";
             } else {
                 btnTabManual.className = "flex items-center justify-center space-x-2 py-2.5 rounded-xl text-xs font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
                 btnTabAuto.className = "flex items-center justify-center space-x-2 py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
@@ -278,116 +276,70 @@
             }
         }
 
-        function cancelAutoGenerate(silent = false) {
-            if (currentPollInterval) {
-                clearInterval(currentPollInterval);
-                currentPollInterval = null;
-            }
-            document.getElementById('autoLoadingState').classList.add('hidden');
-            document.getElementById('btnAutoStart').classList.remove('hidden');
-            document.getElementById('btnAutoCancel').classList.add('hidden');
-            document.getElementById('progressBar').style.width = '10%';
-            if (!silent) {
-                document.getElementById('autoProgressText').textContent = "Proses dibatalkan.";
-            }
-        }
-
         async function startAutoGenerate() {
             const btnAutoStart = document.getElementById('btnAutoStart');
-            const btnAutoCancel = document.getElementById('btnAutoCancel');
             const loadingState = document.getElementById('autoLoadingState');
             const progressBar = document.getElementById('progressBar');
             const progressText = document.getElementById('autoProgressText');
             const resultBox = document.getElementById('resultBox');
 
             btnAutoStart.classList.add('hidden');
-            btnAutoCancel.classList.remove('hidden');
             loadingState.classList.remove('hidden');
             resultBox.classList.add('hidden');
 
-            progressBar.style.width = '20%';
-            progressText.textContent = "Mencari proxy privat yang aktif...";
+            progressBar.style.width = '30%';
+            progressBar.className = "bg-amber-400 h-full rounded-full transition-all duration-300";
+            progressText.textContent = "Menghubungkan ke API ReyCloudSHP V2...";
 
             try {
-                const startRes = await fetch('/api/amgen-auto', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'start-task' })
-                });
-                const startJson = await startRes.json();
+                setTimeout(() => {
+                    if (!loadingState.classList.contains('hidden')) {
+                        progressBar.style.width = '70%';
+                        progressText.textContent = "Mengambil data akun & lisensi pro...";
+                    }
+                }, 600);
 
-                if (!startJson.status || !startJson.taskId) {
-                    throw new Error(startJson.error || 'Gagal memulai task otomatis.');
+                const res = await fetch('/api/amgen-auto', {
+                    method: 'GET'
+                });
+                const json = await res.json();
+
+                if (json.maintenance || !json.status || !json.result) {
+                    throw new Error(json.error || 'Maaf V2 sedang melakukan maintenance. mohon pindah ke mode manual saja');
                 }
 
-                const taskId = startJson.taskId;
+                progressBar.style.width = '100%';
+                progressText.textContent = "Berhasil digenerate!";
 
                 setTimeout(() => {
-                    if (currentPollInterval !== null || document.getElementById('autoLoadingState').classList.contains('hidden')) return;
-                    progressBar.style.width = '45%';
-                    progressText.textContent = "Melihat antrian sistem & membuat mail.tm...";
-                }, 2000);
+                    loadingState.classList.add('hidden');
+                    btnAutoStart.classList.remove('hidden');
+                    progressBar.style.width = '30%';
 
-                setTimeout(() => {
-                    if (currentPollInterval !== null || document.getElementById('autoLoadingState').classList.contains('hidden')) return;
-                    progressBar.style.width = '70%';
-                    progressText.textContent = "Mengirim magic link & menunggu email masuk...";
-                }, 5000);
+                    const data = json.result;
+                    rawJsonString = JSON.stringify(json, null, 2);
 
-                // Polling status task setiap 4 detik (dengan jeda aman agar tidak spam server)
-                currentPollInterval = setInterval(async () => {
-                    try {
-                        const checkRes = await fetch(`/api/amgen-auto?taskId=${taskId}`);
-                        const checkJson = await checkRes.json();
+                    document.getElementById('rowPassword').style.display = 'flex';
+                    document.getElementById('rowMailLink').style.display = 'flex';
+                    document.getElementById('guideAuto').style.display = 'block';
+                    document.getElementById('guideManual').style.display = 'none';
 
-                        if (checkJson.status) {
-                            if (checkJson.status === 'completed') {
-                                clearInterval(currentPollInterval);
-                                currentPollInterval = null;
-                                progressBar.style.width = '100%';
-                                progressText.textContent = "Selesai!";
+                    document.getElementById('resUsername').textContent = data.email;
+                    document.getElementById('resPassword').textContent = data.emailPassword;
+                    document.getElementById('resCodeOrder').textContent = data.codeorder || 'Success';
+                    document.getElementById('resValidUntil').textContent = data.validUntil || '1 Tahun Dari Sekarang';
+                    document.getElementById('resStatus').textContent = data.premium ? 'PREMIUM_ACTIVE' : 'ACTIVE';
+                    document.getElementById('outputData').textContent = rawJsonString;
 
-                                setTimeout(() => {
-                                    loadingState.classList.add('hidden');
-                                    btnAutoStart.classList.remove('hidden');
-                                    btnAutoCancel.classList.add('hidden');
-                                    progressBar.style.width = '10%';
-
-                                    const data = checkJson.data;
-                                    rawJsonString = JSON.stringify(data, null, 2);
-
-                                    document.getElementById('rowPassword').style.display = 'flex';
-                                    document.getElementById('rowMailLink').style.display = 'flex';
-                                    document.getElementById('guideAuto').style.display = 'block';
-                                    document.getElementById('guideManual').style.display = 'none';
-
-                                    document.getElementById('resUsername').textContent = data.email;
-                                    document.getElementById('resPassword').textContent = data.emailPassword;
-                                    document.getElementById('resCodeOrder').textContent = data.codeorder || 'Success';
-                                    document.getElementById('resStatus').textContent = 'PREMIUM_ACTIVE';
-                                    document.getElementById('outputData').textContent = rawJsonString;
-
-                                    resultBox.classList.remove('hidden');
-                                }, 500);
-
-                            } else if (checkJson.status === 'failed') {
-                                clearInterval(currentPollInterval);
-                                currentPollInterval = null;
-                                cancelAutoGenerate(true);
-                                alert('Auto Generate Gagal: ' + checkJson.message);
-                            } else {
-                                progressBar.style.width = '85%';
-                                progressText.textContent = "Menunggu verifikasi email di inbox (Polling)...";
-                            }
-                        }
-                    } catch (pollErr) {
-                        console.error("Polling error:", pollErr);
-                    }
-                }, 4000);
+                    resultBox.classList.remove('hidden');
+                }, 400);
 
             } catch (err) {
-                alert('Kesalahan: ' + err.message);
-                cancelAutoGenerate(true);
+                loadingState.classList.remove('hidden');
+                progressBar.style.width = '100%';
+                progressBar.className = "bg-rose-500 h-full rounded-full";
+                progressText.innerHTML = `<span class="text-rose-400 font-bold">${err.message}</span>`;
+                btnAutoStart.classList.remove('hidden');
             }
         }
 
@@ -449,6 +401,7 @@
 
                     document.getElementById('resUsername').textContent = acc.email || currentEmail;
                     document.getElementById('resCodeOrder').textContent = acc.orderId || '-';
+                    document.getElementById('resValidUntil').textContent = acc.validUntil || '1 Tahun Dari Sekarang';
                     document.getElementById('resStatus').textContent = acc.membershipStatus || 'PREMIUM_ACTIVE';
                     document.getElementById('outputData').textContent = rawJsonString;
                     document.getElementById('form-step-2').classList.add('hidden');
@@ -466,9 +419,9 @@
         function copyAccountData() {
             let textToCopy = '';
             if (activeGeneratorMode === 'auto') {
-                textToCopy = `username : ${document.getElementById('resUsername').textContent}\npassword : ${document.getElementById('resPassword').textContent}\nlogin mail.tm : https://mail.tm\ncodeorder : ${document.getElementById('resCodeOrder').textContent}\nstatus : ${document.getElementById('resStatus').textContent}`;
+                textToCopy = `username : ${document.getElementById('resUsername').textContent}\npassword : ${document.getElementById('resPassword').textContent}\nlogin mail.tm : https://mail.tm\ncodeorder : ${document.getElementById('resCodeOrder').textContent}\nvalidUntil : ${document.getElementById('resValidUntil').textContent}\nstatus : ${document.getElementById('resStatus').textContent}`;
             } else {
-                textToCopy = `username : ${document.getElementById('resUsername').textContent}\ncodeorder : ${document.getElementById('resCodeOrder').textContent}\nstatus : ${document.getElementById('resStatus').textContent}`;
+                textToCopy = `username : ${document.getElementById('resUsername').textContent}\ncodeorder : ${document.getElementById('resCodeOrder').textContent}\nvalidUntil : ${document.getElementById('resValidUntil').textContent}\nstatus : ${document.getElementById('resStatus').textContent}`;
             }
             navigator.clipboard.writeText(textToCopy).then(() => {
                 alert('Format detail akun berhasil disalin ke clipboard!');
