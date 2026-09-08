@@ -54,7 +54,7 @@
         <!-- Subheader Info Aktivasi -->
         <div class="space-y-1 px-1">
             <div class="text-[11px] text-slate-400">Dashboard <span class="text-amber-400 font-bold tracking-wide">ALIGHT MOTION PREMIUM ACTIVATION</span></div>
-            <p id="subTitleText" class="text-[11px] text-slate-400 leading-relaxed">Aktivasi otomatis 1-Click (V2) atau aktivasi bertahap 3-Langkah Wizard (V1) untuk lisensi Pro 1 Tahun.</p>
+            <p id="subTitleText" class="text-[11px] text-slate-400 leading-relaxed">Aktivasi otomatis penuh 1-Click (V2) atau manual wizard (V1).</p>
         </div>
 
         <!-- Tombol Status Utama (Kuning) -->
@@ -68,54 +68,47 @@
         <!-- Toggle Mode V2 vs V1 -->
         <div class="grid grid-cols-2 gap-2 bg-[#151922] p-1.5 rounded-2xl border border-[#232936]">
             <button id="btnTabAuto" onclick="switchMode('auto')" 
-                class="flex items-center justify-center space-x-2 py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
+                class="flex items-center justify-center space-x-2 py-2.5 rounded-xl text-xs font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer">
                 <span>⚡ V2: Auto 1-Click</span>
             </button>
             <button id="btnTabManual" onclick="switchMode('manual')" 
-                class="flex items-center justify-center space-x-2 py-2.5 rounded-xl text-xs font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer">
+                class="flex items-center justify-center space-x-2 py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
                 <span>🛡️ V1: Manual Wizard</span>
             </button>
-        </div>
-
-        <!-- Step Indicator Box (Hanya muncul di mode Manual) -->
-        <div id="stepIndicatorBox" class="bg-[#151922] border border-[#232936] rounded-2xl p-4 shadow-lg">
-            <div class="relative flex items-center justify-between px-3">
-                <div class="absolute left-8 right-8 top-5 h-0.5 bg-[#232936] -z-0"></div>
-
-                <div class="relative z-10 flex flex-col items-center space-y-1.5">
-                    <div id="ind-badge-1" class="w-8 h-8 rounded-full bg-slate-700 text-white font-bold text-xs flex items-center justify-center border-2 border-[#151922]">1</div>
-                    <span id="ind-text-1" class="text-[10px] font-medium text-white">1. Kirim Magic Link</span>
-                </div>
-                <div class="relative z-10 flex flex-col items-center space-y-1.5">
-                    <div id="ind-badge-2" class="w-8 h-8 rounded-full bg-[#1b212c] text-slate-500 font-bold text-xs flex items-center justify-center border-2 border-[#151922]">2</div>
-                    <span id="ind-text-2" class="text-[10px] font-medium text-slate-500">2. Verifikasi Email</span>
-                </div>
-                <div class="relative z-10 flex flex-col items-center space-y-1.5">
-                    <div id="ind-badge-3" class="w-8 h-8 rounded-full bg-[#1b212c] text-slate-500 font-bold text-xs flex items-center justify-center border-2 border-[#151922]">3</div>
-                    <span id="ind-text-3" class="text-[10px] font-medium text-slate-500">3. Terapkan Lisensi</span>
-                </div>
-            </div>
         </div>
 
         <!-- Main Card Form / Konten Dinamis -->
         <div class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-5">
             
             <!-- TAMPILAN AUTO (V2) -->
-            <div id="autoContent" class="hidden text-center py-8 space-y-4">
+            <div id="autoContent" class="space-y-4 text-center py-2">
                 <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto text-amber-400 text-2xl">
                     ⚡
                 </div>
                 <div class="space-y-1">
-                    <h3 class="text-sm font-bold text-white">V2: Auto 1-Click Mode</h3>
-                    <p class="text-xs text-slate-400 max-w-xs mx-auto leading-relaxed">Fitur aktivasi otomatis penuh ini masih dalam tahap pengembangan oleh tim developer. Silakan gunakan mode Manual Wizard (V1).</p>
+                    <h3 class="text-sm font-bold text-white">V2: Auto 1-Click Generator</h3>
+                    <p class="text-xs text-slate-400 max-w-xs mx-auto leading-relaxed">Sistem otomatis membuat akun, memindai proxy, dan mengklaim lisensi secara instan.</p>
                 </div>
-                <button onclick="switchMode('manual')" class="bg-[#1e2330] hover:bg-[#272f40] border border-[#2b3344] text-slate-200 font-semibold py-2.5 px-5 rounded-xl text-xs transition-all cursor-pointer">
-                    Beralih ke Manual Wizard
+
+                <button onclick="startAutoGenerate()" id="btnAutoStart"
+                    class="w-full bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold py-3.5 px-4 rounded-xl text-xs transition-all shadow-lg cursor-pointer flex items-center justify-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    <span>Mulai Auto Generate Akun</span>
                 </button>
+
+                <!-- PROGRES BAR & STEP OTOMATIS -->
+                <div id="autoLoadingState" class="hidden space-y-4 pt-2">
+                    <div class="w-full bg-[#0d0f12] border border-[#232936] rounded-full h-2.5 overflow-hidden p-0.5">
+                        <div id="progressBar" class="bg-amber-400 h-full rounded-full transition-all duration-500 w-[10%]"></div>
+                    </div>
+                    <div id="autoProgressText" class="text-xs text-amber-400 animate-pulse font-medium">Sedang mencari proxy yang aktif...</div>
+                </div>
             </div>
 
             <!-- TAMPILAN MANUAL (V1) -->
-            <div id="manualContent" class="space-y-5">
+            <div id="manualContent" class="space-y-5 hidden">
                 <div class="flex items-start space-x-3.5">
                     <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-slate-300 shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -123,53 +116,29 @@
                         </svg>
                     </div>
                     <div>
-                        <h2 class="text-sm font-bold text-white tracking-tight">Aktivasi Premium</h2>
-                        <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Hubungkan akun Alight Motion Anda untuk membuka semua fitur dan ekspor tanpa watermark.</p>
+                        <h2 class="text-sm font-bold text-white tracking-tight">Aktivasi Premium Manual</h2>
+                        <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Masukkan email Anda untuk menerima magic link verifikasi.</p>
                     </div>
                 </div>
 
-                <!-- TAHAP 1: Input Email -->
                 <div id="form-step-1" class="space-y-4">
                     <div>
                         <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">ALAMAT EMAIL</label>
-                        <div class="relative flex items-center">
-                            <input type="email" id="emailInput" placeholder="user@example.com" 
-                                class="w-full bg-[#0d0f12] border border-[#232936] rounded-xl px-4 py-3 text-xs text-slate-100 placeholder-slate-600 focus:outline-none focus:border-amber-400 transition-colors">
-                            <span class="absolute right-4 text-slate-500">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                </svg>
-                            </span>
-                        </div>
+                        <input type="email" id="emailInput" placeholder="user@example.com" 
+                            class="w-full bg-[#0d0f12] border border-[#232936] rounded-xl px-4 py-3 text-xs text-slate-100 placeholder-slate-600 focus:outline-none focus:border-amber-400 transition-colors">
                     </div>
                     <button onclick="sendLink()" id="btnSend"
-                        class="w-full bg-[#1e2330] hover:bg-[#272f40] border border-[#2b3344] text-slate-200 font-bold py-3.5 rounded-xl text-xs transition-all shadow cursor-pointer flex items-center justify-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                        </svg>
-                        <span>Kirim Tautan Magic</span>
+                        class="w-full bg-[#1e2330] hover:bg-[#272f40] border border-[#2b3344] text-slate-200 font-bold py-3.5 rounded-xl text-xs transition-all shadow cursor-pointer">
+                        Kirim Tautan Magic
                     </button>
                 </div>
 
-                <!-- TAHAP 2: Loading State -->
                 <div id="form-step-loading" class="hidden text-center py-6 space-y-3">
                     <div class="inline-block w-7 h-7 border-2 border-amber-400 border-t-transparent rounded-full animate-spin"></div>
-                    <p class="text-xs text-amber-400 animate-pulse font-medium">Mengirim tautan verifikasi ke email...</p>
+                    <p class="text-xs text-amber-400 animate-pulse font-medium">Mengirim tautan verifikasi...</p>
                 </div>
 
-                <!-- TAHAP 3: Input Magic Link -->
                 <div id="form-step-2" class="space-y-4 hidden">
-                    <!-- Petunjuk Sesuai Permintaan -->
-                    <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 text-[11px] text-amber-300 leading-relaxed space-y-1">
-                        <p class="font-bold">⚠️ Petunjuk Penting:</p>
-                        <p>Link magic sudah terkirim! Silakan cek inbox atau folder spam email kamu. <strong>Tekan lama teks "Sign in to Alight Creative"</strong> sampai muncul opsi salin link, lalu tempel tautannya di bawah ini.</p>
-                    </div>
-
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">EMAIL TERDAFTAR</label>
-                        <input type="email" id="displayEmail" disabled 
-                            class="w-full bg-[#0d0f12]/60 border border-[#232936] rounded-xl px-4 py-3 text-xs text-slate-500 cursor-not-allowed">
-                    </div>
                     <div>
                         <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">MAGIC LINK VERIFIKASI</label>
                         <input type="text" id="linkInput" placeholder="Tempel URL magic link di sini..." 
@@ -180,59 +149,60 @@
                         Verifikasi & Ambil Akun
                     </button>
                 </div>
+            </div>
 
-                <!-- Hasil Output Card Sukses -->
-                <div id="resultBox" class="hidden space-y-3 bg-[#0d0f12] border border-emerald-500/30 rounded-2xl p-4">
-                    <div class="flex items-center space-x-2 text-emerald-400 font-bold text-xs">
-                        <span>🎉</span>
-                        <span>Lisensi Pro Berhasil Diaktifkan!</span>
+            <!-- HASIL OUTPUT SUKSES (AUTO / MANUAL) -->
+            <div id="resultBox" class="hidden space-y-4 bg-[#0d0f12] border border-emerald-500/30 rounded-2xl p-4">
+                <div class="flex items-center space-x-2 text-emerald-400 font-bold text-xs">
+                    <span>🎉</span>
+                    <span>Lisensi Pro Berhasil Diaktifkan!</span>
+                </div>
+                
+                <!-- Format Detail Sesuai Permintaan -->
+                <div class="bg-[#151922] border border-[#232936] rounded-xl p-3.5 space-y-2.5 text-xs font-mono">
+                    <div class="flex justify-between items-center border-b border-[#232936] pb-2">
+                        <span class="text-slate-400 font-sans">username :</span>
+                        <span id="resUsername" class="text-cyan-400 select-all"></span>
                     </div>
-                    
-                    <!-- Card Detail Akun -->
-                    <div class="bg-[#151922] border border-[#232936] rounded-xl p-3.5 space-y-3 text-xs">
-                        <div class="flex items-center justify-between pb-2 border-b border-[#232936]">
-                            <span class="text-slate-400">Status Paket</span>
-                            <span id="resPlanName" class="font-bold text-amber-400">Alight Motion Pro</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-slate-400">Email Akun</span>
-                            <span id="resEmail" class="font-mono text-slate-200 select-all truncate max-w-[180px]"></span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-slate-400">User ID (UID)</span>
-                            <span id="resUid" class="font-mono text-cyan-400 select-all truncate max-w-[180px]"></span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-slate-400">Membership</span>
-                            <span id="resStatus" class="font-bold text-emerald-400">PREMIUM_ACTIVE</span>
-                        </div>
-                        <div class="flex items-center justify-between pb-2 border-b border-[#232936]">
-                            <span class="text-slate-400">Berlaku Hingga</span>
-                            <span id="resValid" class="font-mono text-slate-200"></span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-slate-400">Order ID</span>
-                            <span id="resOrder" class="font-mono text-slate-400 text-[10px] select-all truncate max-w-[180px]"></span>
-                        </div>
+                    <div class="flex justify-between items-center border-b border-[#232936] pb-2">
+                        <span class="text-slate-400 font-sans">password :</span>
+                        <span id="resPassword" class="text-slate-200 select-all"></span>
                     </div>
+                    <div class="flex justify-between items-center border-b border-[#232936] pb-2">
+                        <span class="text-slate-400 font-sans">login mail.tm :</span>
+                        <a id="resMailLink" href="https://mail.tm" target="_blank" class="text-amber-400 underline truncate max-w-[150px]">https://mail.tm</a>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-[#232936] pb-2">
+                        <span class="text-slate-400 font-sans">codeorder :</span>
+                        <span id="resCodeOrder" class="text-slate-300 select-all text-[10px] truncate max-w-[160px]"></span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400 font-sans">status :</span>
+                        <span id="resStatus" class="text-emerald-400 font-bold">PREMIUM_ACTIVE</span>
+                    </div>
+                </div>
 
-                    <!-- Tombol Salin & Toggle Raw JSON -->
-                    <div class="grid grid-cols-2 gap-2">
-                        <button onclick="copyAccountData()" class="bg-[#1e2330] hover:bg-[#272f40] border border-[#2b3344] text-slate-200 font-semibold py-2.5 rounded-xl text-xs transition-all cursor-pointer flex items-center justify-center space-x-1.5">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-                            </svg>
-                            <span>Salin Data</span>
-                        </button>
-                        <button onclick="toggleRawJson()" class="bg-[#1e2330] hover:bg-[#272f40] border border-[#2b3344] text-slate-400 font-semibold py-2.5 rounded-xl text-xs transition-all cursor-pointer">
-                            Lihat Raw JSON
-                        </button>
-                    </div>
+                <!-- Petunjuk Cara Pakai -->
+                <div class="bg-cyan-500/10 border border-cyan-500/30 rounded-xl p-3 text-[11px] text-cyan-200 leading-relaxed space-y-1.5">
+                    <p class="font-bold">📖 Cara Pakai Akun:</p>
+                    <p>1. Buka <strong>mail.tm</strong>, login pakai email dan password di atas.</p>
+                    <p>2. Login ke Alight Motion menggunakan email tersebut (alamat email yang berwarna merah/terdaftar).</p>
+                    <p>3. Cek inbox di mail.tm sampai masuk email bertuliskan <em>"Sign in to Alight Creative"</em>.</p>
+                    <p>4. <strong>Tekan aja (jangan ditahan)</strong> link tersebut, dan proses verifikasi selesai (Done)!</p>
+                </div>
 
-                    <!-- Kotak Raw JSON (Sembunyikan Default) -->
-                    <div id="rawJsonBox" class="hidden relative bg-[#090b0e] border border-slate-800 rounded-xl p-3">
-                        <pre id="outputData" class="overflow-x-auto text-[10px] text-emerald-300 font-mono whitespace-pre-wrap max-h-48 select-all"></pre>
-                    </div>
+                <!-- Tombol Salin & JSON -->
+                <div class="grid grid-cols-2 gap-2 pt-1">
+                    <button onclick="copyAccountData()" class="bg-[#1e2330] hover:bg-[#272f40] border border-[#2b3344] text-slate-200 font-semibold py-2.5 rounded-xl text-xs transition-all cursor-pointer flex items-center justify-center space-x-1.5">
+                        <span>Salin Detail Akun</span>
+                    </button>
+                    <button onclick="toggleRawJson()" class="bg-[#1e2330] hover:bg-[#272f40] border border-[#2b3344] text-slate-400 font-semibold py-2.5 rounded-xl text-xs transition-all cursor-pointer">
+                        Lihat Raw JSON
+                    </button>
+                </div>
+
+                <div id="rawJsonBox" class="hidden relative bg-[#090b0e] border border-slate-800 rounded-xl p-3">
+                    <pre id="outputData" class="overflow-x-auto text-[10px] text-emerald-300 font-mono whitespace-pre-wrap max-h-48 select-all"></pre>
                 </div>
             </div>
 
@@ -244,7 +214,7 @@
                         <span class="w-4 h-4 rounded-full bg-cyan-400 border border-[#151922] inline-block"></span>
                         <span class="w-4 h-4 rounded-full bg-indigo-500 border border-[#151922] inline-block"></span>
                     </div>
-                    <span>Bergabung dengan <strong class="text-slate-200">4,200+ kreator</strong></span>
+                    <span>ReyCloudSHP Engine v2</span>
                 </div>
             </div>
 
@@ -275,58 +245,120 @@
             const btnTabManual = document.getElementById('btnTabManual');
             const autoContent = document.getElementById('autoContent');
             const manualContent = document.getElementById('manualContent');
-            const stepIndicatorBox = document.getElementById('stepIndicatorBox');
             const subTitleText = document.getElementById('subTitleText');
 
             if (mode === 'auto') {
                 btnTabAuto.className = "flex items-center justify-center space-x-2 py-2.5 rounded-xl text-xs font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
                 btnTabManual.className = "flex items-center justify-center space-x-2 py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
-                
                 autoContent.classList.remove('hidden');
                 manualContent.classList.add('hidden');
-                stepIndicatorBox.classList.add('hidden');
-                subTitleText.textContent = "Aktivasi otomatis 1-Click (V2) sedang dalam tahap pengembangan.";
+                subTitleText.textContent = "Aktivasi otomatis penuh 1-Click (V2).";
             } else {
                 btnTabManual.className = "flex items-center justify-center space-x-2 py-2.5 rounded-xl text-xs font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
                 btnTabAuto.className = "flex items-center justify-center space-x-2 py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
-                
                 autoContent.classList.add('hidden');
                 manualContent.classList.remove('hidden');
-                stepIndicatorBox.classList.remove('hidden');
-                subTitleText.textContent = "Aktivasi otomatis 1-Click (V2) atau aktivasi bertahap 3-Langkah Wizard (V1) untuk lisensi Pro 1 Tahun.";
+                subTitleText.textContent = "Aktivasi bertahap manual wizard (V1).";
             }
         }
 
-        function updateStepIndicator(step) {
-            const b1 = document.getElementById('ind-badge-1');
-            const t1 = document.getElementById('ind-text-1');
-            const b2 = document.getElementById('ind-badge-2');
-            const t2 = document.getElementById('ind-text-2');
-            const b3 = document.getElementById('ind-badge-3');
-            const t3 = document.getElementById('ind-text-3');
+        // Logic Auto Generate V2 dengan Progres Bar Sesuai Permintaan
+        async function startAutoGenerate() {
+            const btnAutoStart = document.getElementById('btnAutoStart');
+            const loadingState = document.getElementById('autoLoadingState');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('autoProgressText');
+            const resultBox = document.getElementById('resultBox');
 
-            if (step === 1) {
-                b1.className = "w-8 h-8 rounded-full bg-slate-700 text-white font-bold text-xs flex items-center justify-center border-2 border-[#151922]";
-                t1.className = "text-[10px] font-medium text-white";
-                b2.className = "w-8 h-8 rounded-full bg-[#1b212c] text-slate-500 font-bold text-xs flex items-center justify-center border-2 border-[#151922]";
-                t2.className = "text-[10px] font-medium text-slate-500";
-            } else if (step === 2) {
-                b1.className = "w-8 h-8 rounded-full bg-emerald-600 text-slate-950 font-bold text-xs flex items-center justify-center border-2 border-[#151922]";
-                t1.className = "text-[10px] font-medium text-emerald-400";
-                b2.className = "w-8 h-8 rounded-full bg-slate-700 text-white font-bold text-xs flex items-center justify-center border-2 border-[#151922]";
-                t2.className = "text-[10px] font-medium text-white";
-            } else if (step === 3) {
-                b2.className = "w-8 h-8 rounded-full bg-emerald-600 text-slate-950 font-bold text-xs flex items-center justify-center border-2 border-[#151922]";
-                t2.className = "text-[10px] font-medium text-emerald-400";
-                b3.className = "w-8 h-8 rounded-full bg-emerald-600 text-slate-950 font-bold text-xs flex items-center justify-center border-2 border-[#151922]";
-                t3.className = "text-[10px] font-medium text-emerald-400";
+            btnAutoStart.classList.add('hidden');
+            loadingState.classList.remove('hidden');
+            resultBox.classList.add('hidden');
+
+            // Simulasi/Update Progres Tahapan Realtime
+            progressBar.style.width = '20%';
+            progressText.textContent = "Sedang mencari proxy yang aktif...";
+
+            try {
+                const startRes = await fetch('/api/amgen-auto', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'start-task' })
+                });
+                const startJson = await startRes.json();
+
+                if (!startJson.status || !startJson.taskId) {
+                    throw new Error(startJson.error || 'Gagal memulai task otomatis.');
+                }
+
+                const taskId = startJson.taskId;
+
+                setTimeout(() => {
+                    progressBar.style.width = '40%';
+                    progressText.textContent = "Melihat antrian sistem...";
+                }, 1500);
+
+                setTimeout(() => {
+                    progressBar.style.width = '65%';
+                    progressText.textContent = "Memanggil mail.tm untuk pembuatan email sementara...";
+                }, 3500);
+
+                const pollInterval = setInterval(async () => {
+                    try {
+                        const checkRes = await fetch(`/api/amgen-auto?taskId=${taskId}`);
+                        const checkJson = await checkRes.json();
+
+                        if (checkJson.status) {
+                            if (checkJson.status === 'completed') {
+                                clearInterval(pollInterval);
+                                progressBar.style.width = '100%';
+                                progressText.textContent = "Selesai!";
+
+                                setTimeout(() => {
+                                    loadingState.classList.add('hidden');
+                                    btnAutoStart.classList.remove('hidden');
+                                    progressBar.style.width = '10%';
+
+                                    const data = checkJson.data;
+                                    rawJsonString = JSON.stringify(data, null, 2);
+
+                                    // Render Output ke Format Permintaan
+                                    document.getElementById('resUsername').textContent = data.email;
+                                    document.getElementById('resPassword').textContent = data.emailPassword;
+                                    document.getElementById('resCodeOrder').textContent = data.codeorder || 'Success';
+                                    document.getElementById('resStatus').textContent = 'PREMIUM_ACTIVE';
+                                    document.getElementById('outputData').textContent = rawJsonString;
+
+                                    resultBox.classList.remove('hidden');
+                                }, 600);
+
+                            } else if (checkJson.status === 'failed') {
+                                clearInterval(pollInterval);
+                                loadingState.classList.add('hidden');
+                                btnAutoStart.classList.remove('hidden');
+                                progressBar.style.width = '10%';
+                                alert('Auto Generate Gagal: ' + checkJson.message);
+                            } else {
+                                progressBar.style.width = '85%';
+                                progressText.textContent = "Mendapatkan link verifikasi di inbox...";
+                            }
+                        }
+                    } catch (pollErr) {
+                        console.error("Polling error:", pollErr);
+                    }
+                }, 3000);
+
+            } catch (err) {
+                alert('Kesalahan: ' + err.message);
+                loadingState.classList.add('hidden');
+                btnAutoStart.classList.remove('hidden');
+                progressBar.style.width = '10%';
             }
         }
 
+        // Logic Manual V1
         async function sendLink() {
             const email = document.getElementById('emailInput').value.trim();
             if (!email) return alert('Alamat email wajib diisi!');
-
             currentEmail = email;
             document.getElementById('form-step-1').classList.add('hidden');
             document.getElementById('form-step-loading').classList.remove('hidden');
@@ -338,10 +370,7 @@
                     body: JSON.stringify({ action: 'send-link', email })
                 });
                 const data = await res.json();
-
                 if (data.status) {
-                    updateStepIndicator(2);
-                    document.getElementById('displayEmail').value = currentEmail;
                     document.getElementById('form-step-loading').classList.add('hidden');
                     document.getElementById('form-step-2').classList.remove('hidden');
                 } else {
@@ -362,7 +391,6 @@
             const resultBox = document.getElementById('resultBox');
 
             if (!magicLink) return alert('Magic link wajib diisi!');
-
             btnVerify.disabled = true;
             btnVerify.textContent = 'Memproses...';
 
@@ -373,21 +401,15 @@
                     body: JSON.stringify({ action: 'verify-link', email: currentEmail, magicLink })
                 });
                 const data = await res.json();
-
                 if (data.status) {
-                    updateStepIndicator(3);
                     resultBox.classList.remove('hidden');
-
                     const acc = data.data;
                     rawJsonString = JSON.stringify(acc, null, 2);
 
-                    document.getElementById('resPlanName').textContent = acc.planName || 'Alight Motion Pro';
-                    document.getElementById('resEmail').textContent = acc.email || currentEmail;
-                    document.getElementById('resUid').textContent = acc.uid || '-';
+                    document.getElementById('resUsername').textContent = acc.email || currentEmail;
+                    document.getElementById('resPassword').textContent = '(Manual Account)';
+                    document.getElementById('resCodeOrder').textContent = acc.orderId || '-';
                     document.getElementById('resStatus').textContent = acc.membershipStatus || 'PREMIUM_ACTIVE';
-                    document.getElementById('resValid').textContent = acc.validUntil || 'Permanen / 1 Tahun';
-                    document.getElementById('resOrder').textContent = acc.orderId || '-';
-
                     document.getElementById('outputData').textContent = rawJsonString;
                     document.getElementById('form-step-2').classList.add('hidden');
                 } else {
@@ -402,8 +424,9 @@
         }
 
         function copyAccountData() {
-            navigator.clipboard.writeText(rawJsonString).then(() => {
-                alert('Data akun berhasil disalin ke clipboard!');
+            const textToCopy = `username : ${document.getElementById('resUsername').textContent}\npassword : ${document.getElementById('resPassword').textContent}\nlogin mail.tm : https://mail.tm\ncodeorder : ${document.getElementById('resCodeOrder').textContent}\nstatus : ${document.getElementById('resStatus').textContent}`;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                alert('Format detail akun berhasil disalin ke clipboard!');
             });
         }
 
