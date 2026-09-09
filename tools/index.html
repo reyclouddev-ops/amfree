@@ -32,29 +32,35 @@
         </div>
 
         <div class="space-y-1 px-1">
-            <div class="text-[11px] text-slate-400">ReyCloud <span class="text-cyan-400 font-bold tracking-wide">AI TOOLS, ENHANCER & REACT</span></div>
-            <p id="subTitleText" class="text-[11px] text-slate-400 leading-relaxed">Tingkatkan gambar, enhance video, ubah gambar, atau kirim WhatsApp reaction.</p>
+            <div class="text-[11px] text-slate-400">ReyCloud <span class="text-cyan-400 font-bold tracking-wide">AI TOOLS, ENHANCER, IMAGEN & REACT</span></div>
+            <p id="subTitleText" class="text-[11px] text-slate-400 leading-relaxed">Tingkatkan gambar, enhance video, hapus background, generate AI image, atau kirim WA reaction.</p>
         </div>
 
-        <div class="grid grid-cols-4 gap-1 bg-[#151922] p-1.5 rounded-2xl border border-[#232936]">
+        <!-- GRID 5 MENU -->
+        <div class="grid grid-cols-5 gap-1 bg-[#151922] p-1.5 rounded-2xl border border-[#232936]">
             <button id="btnTabUpscale" onclick="switchToolTab('upscale')" 
-                class="flex items-center justify-center py-2.5 rounded-xl text-[10px] font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer">
+                class="flex items-center justify-center py-2.5 rounded-xl text-[9px] font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer">
                 <span>✨ Upscale</span>
             </button>
             <button id="btnTabWink" onclick="switchToolTab('wink')" 
-                class="flex items-center justify-center py-2.5 rounded-xl text-[10px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
+                class="flex items-center justify-center py-2.5 rounded-xl text-[9px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
                 <span>🎬 Wink</span>
             </button>
-            <button id="btnTabImg2Img" onclick="switchToolTab('img2img')" 
-                class="flex items-center justify-center py-2.5 rounded-xl text-[10px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
-                <span>🎨 Img2Img</span>
+            <button id="btnTabRemoveBg" onclick="switchToolTab('removebg')" 
+                class="flex items-center justify-center py-2.5 rounded-xl text-[9px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
+                <span>✂️ Remove</span>
+            </button>
+            <button id="btnTabImagen" onclick="switchToolTab('imagen')" 
+                class="flex items-center justify-center py-2.5 rounded-xl text-[9px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
+                <span>🎨 Imagen</span>
             </button>
             <button id="btnTabReact" onclick="switchToolTab('react')" 
-                class="flex items-center justify-center py-2.5 rounded-xl text-[10px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
+                class="flex items-center justify-center py-2.5 rounded-xl text-[9px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
                 <span>⚡ React</span>
             </button>
         </div>
 
+        <!-- TAB 1: UPSCALE -->
         <div id="sectionUpscale" class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-5">
             <div class="flex items-start space-x-3.5">
                 <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-cyan-400 shrink-0">
@@ -97,6 +103,7 @@
             </div>
         </div>
 
+        <!-- TAB 2: WINK -->
         <div id="sectionWink" class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-5 hidden">
             <div class="flex items-start space-x-3.5">
                 <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-amber-400 shrink-0">
@@ -139,53 +146,121 @@
             </div>
         </div>
 
-        <div id="sectionImg2Img" class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-5 hidden">
+        <!-- TAB 3: REMOVEBG -->
+        <div id="sectionRemoveBg" class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-5 hidden">
             <div class="flex items-start space-x-3.5">
                 <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-pink-400 shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
                 </div>
                 <div>
-                    <h2 class="text-sm font-bold text-white tracking-tight">AI Image to Image (Img2Img)</h2>
-                    <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Ubah gambar berdasarkan referensi foto & prompt teks AI.</p>
+                    <h2 class="text-sm font-bold text-white tracking-tight">AI Remove Background</h2>
+                    <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Hapus latar belakang foto secara otomatis dengan akurat.</p>
                 </div>
             </div>
 
             <div class="space-y-4">
                 <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">PILIH GAMBAR REFERENSI</label>
-                    <input type="file" id="img2imgFileInput" accept="image/*" 
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">PILIH FILE GAMBAR</label>
+                    <input type="file" id="removeBgFileInput" accept="image/*" 
                         class="w-full bg-[#0d0f12] border border-[#232936] rounded-xl px-4 py-2.5 text-xs text-slate-300 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-pink-500/10 file:text-pink-400 hover:file:bg-pink-500/20 cursor-pointer">
                 </div>
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">PROMPT PERUBAHAN</label>
-                    <input type="text" id="img2imgPrompt" placeholder="Contoh: cyberpunk style, anime masterpiece..." 
-                        class="w-full bg-[#0d0f12] border border-[#232936] rounded-xl px-4 py-3 text-xs text-slate-100 placeholder-slate-600 focus:outline-none focus:border-pink-500 transition-colors">
-                </div>
-                <button onclick="processImg2Img()" id="btnProcessImg2Img"
+                <button onclick="processRemoveBg()" id="btnProcessRemoveBg"
                     class="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-3.5 rounded-xl text-xs transition-all shadow cursor-pointer">
-                    Mulai Proses Img2Img
+                    Hapus Background Sekarang
                 </button>
             </div>
 
-            <div id="img2imgLoading" class="hidden text-center py-6 space-y-3">
+            <div id="removeBgLoading" class="hidden text-center py-6 space-y-3">
                 <div class="inline-block w-7 h-7 border-2 border-pink-500 border-t-transparent rounded-full animate-spin"></div>
-                <p class="text-xs text-pink-400 animate-pulse font-medium">Sedang merender gambar AI (Polling proses)...</p>
+                <p class="text-xs text-pink-400 animate-pulse font-medium">Sedang menghapus background gambar...</p>
             </div>
 
-            <div id="img2imgResultBox" class="hidden space-y-3 bg-[#0d0f12] border border-pink-500/30 rounded-2xl p-4 text-center">
+            <div id="removeBgResultBox" class="hidden space-y-3 bg-[#0d0f12] border border-pink-500/30 rounded-2xl p-4 text-center">
                 <div class="flex items-center justify-center space-x-2 text-pink-400 font-bold text-xs">
-                    <span>🎨</span>
-                    <span>Img2Img Berhasil Dirender!</span>
+                    <span>✂️</span>
+                    <span>Background Berhasil Dihapus!</span>
                 </div>
-                <img id="img2imgResultImg" src="" alt="Img2Img Result" class="w-full rounded-xl border border-[#232936] max-h-60 object-contain mx-auto">
-                <a id="img2imgDownloadBtn" href="" target="_blank" class="inline-block w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-2.5 rounded-xl text-xs transition-all">
-                    Unduh Hasil AI
+                <img id="removeBgResultImg" src="" alt="RemoveBG Result" class="w-full rounded-xl border border-[#232936] max-h-60 object-contain mx-auto bg-[linear-gradient(45deg,#1f2937_25%,transparent_25%),linear-gradient(-45deg,#1f2937_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#1f2937_75%),linear-gradient(-45deg,transparent_75%,#1f2937_75%)] bg-[size:16px_16px] bg-[position:0_0,0_8px,8px_-8px,-8px_0px]">
+                <a id="removeBgDownloadBtn" href="" download="removebg.png" class="inline-block w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-2.5 rounded-xl text-xs transition-all">
+                    Unduh Gambar Transparan (PNG)
                 </a>
             </div>
         </div>
 
+        <!-- TAB 4: IMAGEN (AI Image Generator) -->
+        <div id="sectionImagen" class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-4 hidden">
+            <div class="flex items-start space-x-3.5">
+                <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-purple-400 shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-sm font-bold text-white tracking-tight">AI Image Generator (Imagen)</h2>
+                    <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Buat gambar kreatif dengan Flux AI, pilih style & rasio sesuai keinginan.</p>
+                </div>
+            </div>
+
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">PROMPT GAMBAR</label>
+                    <textarea id="imagenPrompt" rows="2" placeholder="Contoh: a cute cat wearing cyberpunk sunglasses..." 
+                        class="w-full bg-[#0d0f12] border border-[#232936] rounded-xl px-3 py-2 text-xs text-slate-100 placeholder-slate-600 focus:outline-none focus:border-purple-500 transition-colors resize-none"></textarea>
+                </div>
+
+                <!-- STYLE PILIHAN CUSTOM GRID -->
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">PILIH STYLE</label>
+                    <div class="grid grid-cols-3 gap-1.5">
+                        <button type="button" onclick="selectImagenStyle('Realistic')" id="styleBtn_Realistic" class="py-2 px-2 rounded-xl text-[10px] font-semibold bg-purple-600 text-white border border-purple-500 transition-all cursor-pointer">Realistic</button>
+                        <button type="button" onclick="selectImagenStyle('Anime')" id="styleBtn_Anime" class="py-2 px-2 rounded-xl text-[10px] font-medium bg-[#0d0f12] text-slate-300 border border-[#232936] hover:border-purple-500 transition-all cursor-pointer">Anime</button>
+                        <button type="button" onclick="selectImagenStyle('Digital Art')" id="styleBtn_Digital Art" class="py-2 px-2 rounded-xl text-[10px] font-medium bg-[#0d0f12] text-slate-300 border border-[#232936] hover:border-purple-500 transition-all cursor-pointer">Digital Art</button>
+                        <button type="button" onclick="selectImagenStyle('Cyberpunk')" id="styleBtn_Cyberpunk" class="py-2 px-2 rounded-xl text-[10px] font-medium bg-[#0d0f12] text-slate-300 border border-[#232936] hover:border-purple-500 transition-all cursor-pointer">Cyberpunk</button>
+                        <button type="button" onclick="selectImagenStyle('Cinematic')" id="styleBtn_Cinematic" class="py-2 px-2 rounded-xl text-[10px] font-medium bg-[#0d0f12] text-slate-300 border border-[#232936] hover:border-purple-500 transition-all cursor-pointer">Cinematic</button>
+                        <button type="button" onclick="selectImagenStyle('No Style')" id="styleBtn_No Style" class="py-2 px-2 rounded-xl text-[10px] font-medium bg-[#0d0f12] text-slate-300 border border-[#232936] hover:border-purple-500 transition-all cursor-pointer">No Style</button>
+                    </div>
+                    <input type="hidden" id="selectedImagenStyle" value="Realistic">
+                </div>
+
+                <!-- RATIO PILIHAN CUSTOM GRID -->
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">PILIH RASIO (RATIO)</label>
+                    <div class="grid grid-cols-3 gap-1.5">
+                        <button type="button" onclick="selectImagenRatio('1:1')" id="ratioBtn_1:1" class="py-2 px-1 rounded-xl text-[10px] font-semibold bg-purple-600 text-white border border-purple-500 transition-all cursor-pointer">1:1 Square</button>
+                        <button type="button" onclick="selectImagenRatio('3:4')" id="ratioBtn_3:4" class="py-2 px-1 rounded-xl text-[10px] font-medium bg-[#0d0f12] text-slate-300 border border-[#232936] hover:border-purple-500 transition-all cursor-pointer">3:4 Portrait</button>
+                        <button type="button" onclick="selectImagenRatio('4:3')" id="ratioBtn_4:3" class="py-2 px-1 rounded-xl text-[10px] font-medium bg-[#0d0f12] text-slate-300 border border-[#232936] hover:border-purple-500 transition-all cursor-pointer">4:3 Landscape</button>
+                        <button type="button" onclick="selectImagenRatio('16:9')" id="ratioBtn_16:9" class="py-2 px-1 rounded-xl text-[10px] font-medium bg-[#0d0f12] text-slate-300 border border-[#232936] hover:border-purple-500 transition-all cursor-pointer">16:9 Widescreen</button>
+                        <button type="button" onclick="selectImagenRatio('9:16')" id="ratioBtn_9:16" class="py-2 px-1 rounded-xl text-[10px] font-medium bg-[#0d0f12] text-slate-300 border border-[#232936] hover:border-purple-500 transition-all cursor-pointer">9:16 Story</button>
+                    </div>
+                    <input type="hidden" id="selectedImagenRatio" value="1:1">
+                </div>
+
+                <button onclick="processImagen()" id="btnProcessImagen"
+                    class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 rounded-xl text-xs transition-all shadow cursor-pointer mt-2">
+                    Generate AI Image
+                </button>
+            </div>
+
+            <div id="imagenLoading" class="hidden text-center py-4 space-y-2">
+                <div class="inline-block w-6 h-6 border-2 border-purple-400 border-t-transparent rounded-full animate-spin"></div>
+                <p class="text-[11px] text-purple-400 animate-pulse font-medium">Sedang merender gambar AI & Upload ke ImgBB...</p>
+            </div>
+
+            <div id="imagenResultBox" class="hidden space-y-3 bg-[#0d0f12] border border-purple-500/30 rounded-2xl p-3 text-center">
+                <div class="flex items-center justify-center space-x-1.5 text-purple-400 font-bold text-xs">
+                    <span>🎨</span>
+                    <span>Generate Berhasil!</span>
+                </div>
+                <img id="imagenResultImg" src="" alt="Imagen Result" class="w-full rounded-xl border border-[#232936] max-h-52 object-contain mx-auto">
+                <a id="imagenDownloadBtn" href="" target="_blank" class="inline-block w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 rounded-xl text-xs transition-all">
+                    Buka / Unduh Gambar
+                </a>
+            </div>
+        </div>
+
+        <!-- TAB 5: REACT -->
         <div id="sectionReact" class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-5 hidden">
             <div class="flex items-start space-x-3.5">
                 <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-emerald-400 shrink-0">
@@ -254,7 +329,6 @@
             const input = document.getElementById('waEmojisInput');
             let currentList = input.value ? input.value.split(',').map(e => e.trim()).filter(Boolean) : [];
             
-            // Jika emoji sudah ada, hapus (toggle off), jika belum dan kurang dari 4, tambahkan
             const index = currentList.indexOf(emoji);
             if (index > -1) {
                 currentList.splice(index, 1);
@@ -266,46 +340,75 @@
                 currentList.push(emoji);
             }
 
-            // Jika kosong, beri default minimal 1 atau kosongkan
             input.value = currentList.length > 0 ? currentList.join(',') : '😂';
+        }
+
+        function selectImagenStyle(style) {
+            document.getElementById('selectedImagenStyle').value = style;
+            const styles = ['Realistic', 'Anime', 'Digital Art', 'Cyberpunk', 'Cinematic', 'No Style'];
+            styles.forEach(s => {
+                const btn = document.getElementById(`styleBtn_${s}`);
+                if (s === style) {
+                    btn.className = "py-2 px-2 rounded-xl text-[10px] font-semibold bg-purple-600 text-white border border-purple-500 transition-all cursor-pointer";
+                } else {
+                    btn.className = "py-2 px-2 rounded-xl text-[10px] font-medium bg-[#0d0f12] text-slate-300 border border-[#232936] hover:border-purple-500 transition-all cursor-pointer";
+                }
+            });
+        }
+
+        function selectImagenRatio(ratio) {
+            document.getElementById('selectedImagenRatio').value = ratio;
+            const ratios = ['1:1', '3:4', '4:3', '16:9', '9:16'];
+            ratios.forEach(r => {
+                const btn = document.getElementById(`ratioBtn_${r}`);
+                if (r === ratio) {
+                    btn.className = "py-2 px-1 rounded-xl text-[10px] font-semibold bg-purple-600 text-white border border-purple-500 transition-all cursor-pointer";
+                } else {
+                    btn.className = "py-2 px-1 rounded-xl text-[10px] font-medium bg-[#0d0f12] text-slate-300 border border-[#232936] hover:border-purple-500 transition-all cursor-pointer";
+                }
+            });
         }
 
         function switchToolTab(tab) {
             const btnUpscale = document.getElementById('btnTabUpscale');
             const btnWink = document.getElementById('btnTabWink');
-            const btnImg2Img = document.getElementById('btnTabImg2Img');
+            const btnRemoveBg = document.getElementById('btnTabRemoveBg');
+            const btnImagen = document.getElementById('btnTabImagen');
             const btnReact = document.getElementById('btnTabReact');
             
             const sectionUpscale = document.getElementById('sectionUpscale');
             const sectionWink = document.getElementById('sectionWink');
-            const sectionImg2Img = document.getElementById('sectionImg2Img');
+            const sectionRemoveBg = document.getElementById('sectionRemoveBg');
+            const sectionImagen = document.getElementById('sectionImagen');
             const sectionReact = document.getElementById('sectionReact');
             const subTitleText = document.getElementById('subTitleText');
 
-            btnUpscale.className = "flex items-center justify-center py-2.5 rounded-xl text-[10px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
-            btnWink.className = "flex items-center justify-center py-2.5 rounded-xl text-[10px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
-            btnImg2Img.className = "flex items-center justify-center py-2.5 rounded-xl text-[10px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
-            btnReact.className = "flex items-center justify-center py-2.5 rounded-xl text-[10px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
+            [btnUpscale, btnWink, btnRemoveBg, btnImagen, btnReact].forEach(b => {
+                b.className = "flex items-center justify-center py-2.5 rounded-xl text-[9px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
+            });
 
-            sectionUpscale.classList.add('hidden');
-            sectionWink.classList.add('hidden');
-            sectionImg2Img.classList.add('hidden');
-            sectionReact.classList.add('hidden');
+            [sectionUpscale, sectionWink, sectionRemoveBg, sectionImagen, sectionReact].forEach(s => {
+                s.classList.add('hidden');
+            });
 
             if (tab === 'upscale') {
-                btnUpscale.className = "flex items-center justify-center py-2.5 rounded-xl text-[10px] font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
+                btnUpscale.className = "flex items-center justify-center py-2.5 rounded-xl text-[9px] font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
                 sectionUpscale.classList.remove('hidden');
                 subTitleText.textContent = "Tingkatkan resolusi dan kejernihan gambar secara otomatis menggunakan teknologi AI.";
             } else if (tab === 'wink') {
-                btnWink.className = "flex items-center justify-center py-2.5 rounded-xl text-[10px] font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
+                btnWink.className = "flex items-center justify-center py-2.5 rounded-xl text-[9px] font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
                 sectionWink.classList.remove('hidden');
                 subTitleText.textContent = "Tingkatkan kualitas video blur menjadi jernih beresolusi tinggi dengan Wink AI.";
-            } else if (tab === 'img2img') {
-                btnImg2Img.className = "flex items-center justify-center py-2.5 rounded-xl text-[10px] font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
-                sectionImg2Img.classList.remove('hidden');
-                subTitleText.textContent = "Ubah gambar berdasarkan referensi foto & prompt teks AI.";
+            } else if (tab === 'removebg') {
+                btnRemoveBg.className = "flex items-center justify-center py-2.5 rounded-xl text-[9px] font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
+                sectionRemoveBg.classList.remove('hidden');
+                subTitleText.textContent = "Hapus latar belakang foto secara otomatis dengan akurat.";
+            } else if (tab === 'imagen') {
+                btnImagen.className = "flex items-center justify-center py-2.5 rounded-xl text-[9px] font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
+                sectionImagen.classList.remove('hidden');
+                subTitleText.textContent = "Buat gambar kreatif dengan Flux AI, pilih style & rasio sesuai keinginan.";
             } else if (tab === 'react') {
-                btnReact.className = "flex items-center justify-center py-2.5 rounded-xl text-[10px] font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
+                btnReact.className = "flex items-center justify-center py-2.5 rounded-xl text-[9px] font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
                 sectionReact.classList.remove('hidden');
                 subTitleText.textContent = "Kirim reaksi otomatis ke tautan pesan atau channel WhatsApp target (Maksimal 4 Emoji).";
             }
@@ -403,18 +506,14 @@
             };
         }
 
-        async function processImg2Img() {
-            const fileInput = document.getElementById('img2imgFileInput');
-            const promptInput = document.getElementById('img2imgPrompt').value.trim();
-            const btnProcess = document.getElementById('btnProcessImg2Img');
-            const loading = document.getElementById('img2imgLoading');
-            const resultBox = document.getElementById('img2imgResultBox');
+        async function processRemoveBg() {
+            const fileInput = document.getElementById('removeBgFileInput');
+            const btnProcess = document.getElementById('btnProcessRemoveBg');
+            const loading = document.getElementById('removeBgLoading');
+            const resultBox = document.getElementById('removeBgResultBox');
 
             if (!fileInput.files || fileInput.files.length === 0) {
-                return alert('Pilih gambar referensi terlebih dahulu!');
-            }
-            if (!promptInput) {
-                return alert('Masukkan prompt perubahan terlebih dahulu!');
+                return alert('Pilih file gambar terlebih dahulu!');
             }
 
             const file = fileInput.files[0];
@@ -427,19 +526,19 @@
             reader.onload = async function () {
                 try {
                     const base64Image = reader.result;
-                    const res = await fetch('/api/img2img', {
+                    const res = await fetch('/api/removebg', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ prompt: promptInput, base64Image, filename: file.name })
+                        body: JSON.stringify({ base64Image })
                     });
                     const json = await res.json();
 
                     if (!json.status || !json.result) {
-                        throw new Error(json.error || 'Gagal merender proses Img2Img.');
+                        throw new Error(json.error || 'Gagal menghapus background gambar.');
                     }
 
-                    document.getElementById('img2imgResultImg').src = json.result;
-                    document.getElementById('img2imgDownloadBtn').href = json.result;
+                    document.getElementById('removeBgResultImg').src = json.result;
+                    document.getElementById('removeBgDownloadBtn').href = json.result;
 
                     loading.classList.add('hidden');
                     btnProcess.classList.remove('hidden');
@@ -451,6 +550,48 @@
                     btnProcess.classList.remove('hidden');
                 }
             };
+        }
+
+        async function processImagen() {
+            const prompt = document.getElementById('imagenPrompt').value.trim();
+            const style = document.getElementById('selectedImagenStyle').value;
+            const ratio = document.getElementById('selectedImagenRatio').value;
+            const btnProcess = document.getElementById('btnProcessImagen');
+            const loading = document.getElementById('imagenLoading');
+            const resultBox = document.getElementById('imagenResultBox');
+
+            if (!prompt) {
+                return alert('Masukkan prompt gambar terlebih dahulu!');
+            }
+
+            btnProcess.classList.add('hidden');
+            loading.classList.remove('hidden');
+            resultBox.classList.add('hidden');
+
+            try {
+                const res = await fetch('/api/imagen', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt, style, ratio })
+                });
+                const json = await res.json();
+
+                if (!json.status || !json.result) {
+                    throw new Error(json.error || 'Gagal merender gambar AI.');
+                }
+
+                document.getElementById('imagenResultImg').src = json.result;
+                document.getElementById('imagenDownloadBtn').href = json.result;
+
+                loading.classList.add('hidden');
+                btnProcess.classList.remove('hidden');
+                resultBox.classList.remove('hidden');
+
+            } catch (err) {
+                alert('Error: ' + err.message);
+                loading.classList.add('hidden');
+                btnProcess.classList.remove('hidden');
+            }
         }
 
         async function processReact() {
@@ -465,7 +606,6 @@
             }
 
             btnProcess.classList.add('hidden');
-            loading.classList.add('hidden'); // placeholder
             loading.classList.remove('hidden');
             resultBox.classList.add('hidden');
 
