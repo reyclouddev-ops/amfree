@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReyCloud - ReyAnime Hub</title>
+    <title>ReyCloud - NunoDrama Hub</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         body { background-color: #0d0f12; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
@@ -17,11 +17,11 @@
         <div class="flex items-center justify-between bg-[#151922] border border-[#232936] rounded-2xl p-4 shadow-lg relative">
             <div class="flex items-center space-x-2.5">
                 <div class="w-9 h-9 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 font-bold">
-                    ⛩️
+                    🎬
                 </div>
                 <div>
                     <div class="flex items-center space-x-1.5">
-                        <span class="font-extrabold text-sm tracking-wide text-white">REY<span class="text-orange-400">ANIME</span></span>
+                        <span class="font-extrabold text-sm tracking-wide text-white">NUNO<span class="text-orange-400">DRAMA</span></span>
                     </div>
                     <span id="navSubtitle" class="text-[10px] tracking-widest text-slate-400 font-semibold uppercase">STREAMING HUB</span>
                 </div>
@@ -35,44 +35,44 @@
         <!-- ================= VIEW 1: HOME / KATALOG ================= -->
         <div id="viewHome" class="space-y-3">
             <div class="flex items-center space-x-2">
-                <input type="text" id="searchInput" placeholder="Cari judul anime..." 
+                <input type="text" id="searchInput" placeholder="Cari drama, drakor, donghua..." 
                     class="flex-1 bg-[#151922] border border-[#232936] rounded-xl px-4 py-3 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-orange-500 transition-colors"
-                    onkeypress="if(event.key==='Enter') searchAnime()">
-                <button onclick="searchAnime()" 
+                    onkeypress="if(event.key==='Enter') searchContent()">
+                <button onclick="searchContent()" 
                     class="bg-orange-500 hover:bg-orange-400 text-slate-950 font-bold px-4 py-3 rounded-xl text-xs transition-all shadow cursor-pointer">
                     Cari
                 </button>
             </div>
 
-            <div class="grid grid-cols-2 gap-2 bg-[#151922] p-1.5 rounded-2xl border border-[#232936]">
-                <button onclick="loadTab('latest')" id="tabLatest" class="py-2.5 rounded-xl text-xs font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer">
-                    🔥 Episode Terbaru
-                </button>
-                <button onclick="loadTab('catalog')" id="tabCatalog" class="py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
-                    📚 Katalog Anime
-                </button>
+            <!-- Platform Selector -->
+            <div class="flex space-x-2 overflow-x-auto pb-1 no-scrollbar">
+                <button onclick="changePlatform('dramaverse')" id="plat-dramaverse" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-orange-500 text-slate-950 whitespace-nowrap shadow cursor-pointer">✨ DramaVerse</button>
+                <button onclick="changePlatform('drakor')" id="plat-drakor" class="px-3 py-1.5 rounded-xl text-xs font-medium bg-[#151922] border border-[#232936] text-slate-300 whitespace-nowrap hover:text-white cursor-pointer">🇰🇷 Drakor</button>
+                <button onclick="changePlatform('donghua')" id="plat-donghua" class="px-3 py-1.5 rounded-xl text-xs font-medium bg-[#151922] border border-[#232936] text-slate-300 whitespace-nowrap hover:text-white cursor-pointer">🐉 Donghua</button>
+                <button onclick="changePlatform('shortmax')" id="plat-shortmax" class="px-3 py-1.5 rounded-xl text-xs font-medium bg-[#151922] border border-[#232936] text-slate-300 whitespace-nowrap hover:text-white cursor-pointer">⚡ ShortMax</button>
+                <button onclick="changePlatform('dramabox')" id="plat-dramabox" class="px-3 py-1.5 rounded-xl text-xs font-medium bg-[#151922] border border-[#232936] text-slate-300 whitespace-nowrap hover:text-white cursor-pointer">📦 DramaBox</button>
             </div>
 
             <div id="contentContainer" class="grid grid-cols-2 gap-3 pt-1">
-                <!-- Grid Anime Cards Loaded Disini -->
+                <!-- Grid Cards Loaded Disini -->
             </div>
         </div>
 
-        <!-- ================= VIEW 2: DETAIL ANIME ================= -->
+        <!-- ================= VIEW 2: DETAIL ================= -->
         <div id="viewDetail" class="hidden space-y-4">
             <button onclick="switchView('home')" class="flex items-center space-x-1.5 text-xs font-bold text-orange-400 hover:text-orange-300 transition-colors cursor-pointer">
                 <span>← Kembali ke Katalog</span>
             </button>
 
             <div id="detailContent" class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-4">
-                <div class="text-center py-10 text-orange-400 animate-pulse text-xs">Memuat informasi anime...</div>
+                <div class="text-center py-10 text-orange-400 animate-pulse text-xs">Memuat informasi detail...</div>
             </div>
         </div>
 
         <!-- ================= VIEW 3: STREAMING ROOM ================= -->
         <div id="viewWatch" class="hidden space-y-4">
             <button onclick="switchView('detail')" class="flex items-center space-x-1.5 text-xs font-bold text-orange-400 hover:text-orange-300 transition-colors cursor-pointer">
-                <span>← Kembali ke Detail Anime</span>
+                <span>← Kembali ke Detail</span>
             </button>
 
             <!-- Video Player Box -->
@@ -82,18 +82,9 @@
                 <div id="playerContainer" class="relative w-full rounded-xl overflow-hidden border border-[#232936] bg-black aspect-video flex items-center justify-center shadow-lg">
                     <div id="playerLoading" class="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-10 space-y-2">
                         <div class="w-6 h-6 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
-                        <span class="text-[11px] text-orange-400 animate-pulse font-medium">Memuat Player...</span>
+                        <span class="text-[11px] text-orange-400 animate-pulse font-medium">Memuat Stream HD...</span>
                     </div>
-                    <iframe id="videoIframe" src="" class="w-full h-full hidden" allowfullscreen></iframe>
-                    <video id="nativeVideo" controls class="w-full h-full hidden"></video>
-                </div>
-
-                <!-- Server Alternatif Interaktif -->
-                <div class="bg-[#0d0f12] border border-[#232936] rounded-xl p-3 space-y-2">
-                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider text-center">PILIH SERVER ALTERNATIF</p>
-                    <div id="downloadLinksContainer" class="flex flex-wrap gap-1.5 justify-center">
-                        <!-- Loaded by JS -->
-                    </div>
+                    <video id="nativeVideo" controls autoplay class="w-full h-full object-contain hidden"></video>
                 </div>
 
                 <!-- Tombol Navigasi Episode -->
@@ -107,12 +98,12 @@
                 </div>
             </div>
 
-            <!-- DETAIL & LIST EPISODE DI BAWAH VIDEO -->
+            <!-- DETAIL & LIST EPISODE -->
             <div class="bg-[#151922] border border-[#232936] rounded-2xl p-4 shadow-xl space-y-3">
                 <div class="flex items-center space-x-3">
                     <img id="watchPoster" src="" class="w-16 h-22 object-cover rounded-xl border border-[#232936] shrink-0 shadow">
                     <div class="space-y-1 overflow-hidden">
-                        <h3 id="watchAnimeTitle" class="text-xs font-bold text-white uppercase truncate">Judul Anime</h3>
+                        <h3 id="watchTitle" class="text-xs font-bold text-white uppercase truncate">Judul</h3>
                         <p id="watchEpisodeTitle" class="text-[10px] font-semibold text-orange-400">Episode -</p>
                         <p id="watchSynopsis" class="text-[10px] text-slate-400 line-clamp-2 leading-relaxed">Sinopsis...</p>
                     </div>
@@ -121,9 +112,8 @@
                 <div class="border-t border-[#232936] pt-3 space-y-2">
                     <div class="flex items-center justify-between">
                         <h4 class="text-xs font-bold text-white uppercase tracking-wider">Daftar Episode</h4>
-                        <span class="text-[10px] text-orange-400 font-medium">💡 Episode Aktif Menyala</span>
+                        <span class="text-[10px] text-orange-400 font-medium">💡 Aktif Menyala</span>
                     </div>
-                    <!-- List Episode Interaktif dengan Glow Effect -->
                     <div id="watchEpisodeList" class="grid grid-cols-3 gap-1.5 max-h-48 overflow-y-auto pr-1">
                         <!-- Loaded by JS -->
                     </div>
@@ -134,9 +124,10 @@
     </div>
 
     <script>
+        let currentPlatform = 'dramaverse';
         let currentDetailData = null;
+        let currentEpisodesList = [];
         let currentEpisodeIndex = 0;
-        let currentStreamData = null;
 
         function switchView(viewName) {
             document.getElementById('viewHome').classList.add('hidden');
@@ -148,8 +139,9 @@
             if (viewName === 'home') {
                 document.getElementById('viewHome').classList.remove('hidden');
                 subtitle.textContent = "STREAMING HUB";
-                document.getElementById('videoIframe').src = '';
-                document.getElementById('nativeVideo').src = '';
+                const v = document.getElementById('nativeVideo');
+                v.pause();
+                v.src = '';
             } else if (viewName === 'detail') {
                 document.getElementById('viewDetail').classList.remove('hidden');
                 subtitle.textContent = "INFORMATION";
@@ -159,23 +151,35 @@
             }
         }
 
-        async function loadTab(tab) {
-            document.getElementById('tabLatest').className = tab === 'latest' ? "py-2.5 rounded-xl text-xs font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer" : "py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
-            document.getElementById('tabCatalog').className = tab === 'catalog' ? "py-2.5 rounded-xl text-xs font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer" : "py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
+        function changePlatform(plat) {
+            currentPlatform = plat;
+            ['dramaverse', 'drakor', 'donghua', 'shortmax', 'dramabox'].forEach(p => {
+                const btn = document.getElementById(`plat-${p}`);
+                if (btn) {
+                    if (p === plat) {
+                        btn.className = "px-3 py-1.5 rounded-xl text-xs font-semibold bg-orange-500 text-slate-950 whitespace-nowrap shadow cursor-pointer";
+                    } else {
+                        btn.className = "px-3 py-1.5 rounded-xl text-xs font-medium bg-[#151922] border border-[#232936] text-slate-300 whitespace-nowrap hover:text-white cursor-pointer";
+                    }
+                }
+            });
+            loadFeed(plat);
+        }
 
+        async function loadFeed(plat) {
             const container = document.getElementById('contentContainer');
-            container.innerHTML = `<div class="col-span-2 text-center py-10 text-orange-400 animate-pulse text-xs">Memuat data anime...</div>`;
+            container.innerHTML = `<div class="col-span-2 text-center py-10 text-orange-400 animate-pulse text-xs">Memuat katalog ${plat}...</div>`;
 
             try {
-                const res = await fetch(`/api/anime?action=${tab}`);
+                const res = await fetch(`/api/nunodrama?action=feed&platform=${plat}`);
                 const json = await res.json();
-                renderCards(json.data);
+                renderCards(json.dramas || []);
             } catch (err) {
                 container.innerHTML = `<div class="col-span-2 text-center text-red-400 text-xs">Gagal memuat: ${err.message}</div>`;
             }
         }
 
-        async function searchAnime() {
+        async function searchContent() {
             const query = document.getElementById('searchInput').value.trim();
             if (!query) return alert('Masukkan kata kunci pencarian!');
             
@@ -183,9 +187,9 @@
             container.innerHTML = `<div class="col-span-2 text-center py-10 text-orange-400 animate-pulse text-xs">Mencari '${query}'...</div>`;
 
             try {
-                const res = await fetch(`/api/anime?action=search&query=${encodeURIComponent(query)}`);
+                const res = await fetch(`/api/nunodrama?action=search&query=${encodeURIComponent(query)}&platform=${currentPlatform}`);
                 const json = await res.json();
-                renderCards(json.data);
+                renderCards(json.results || json.dramas || []);
             } catch (err) {
                 container.innerHTML = `<div class="col-span-2 text-center text-red-400 text-xs">Pencarian gagal: ${err.message}</div>`;
             }
@@ -194,37 +198,41 @@
         function renderCards(items) {
             const container = document.getElementById('contentContainer');
             if (!items || items.length === 0) {
-                container.innerHTML = `<div class="col-span-2 text-center text-slate-500 text-xs py-10">Tidak ada anime ditemukan.</div>`;
+                container.innerHTML = `<div class="col-span-2 text-center text-slate-500 text-xs py-10">Tidak ada konten ditemukan.</div>`;
                 return;
             }
 
             container.innerHTML = items.map(item => `
-                <div onclick="openDetail('${item.slug}')" class="bg-[#151922] border border-[#232936] rounded-xl overflow-hidden shadow cursor-pointer hover:border-orange-500/50 transition-all flex flex-col justify-between">
-                    <img src="${item.thumbnail || 'https://via.placeholder.com/150'}" alt="${item.title}" class="w-full h-36 object-cover bg-black">
+                <div onclick="openDetail('${item.platform || currentPlatform}', '${item.id}')" class="bg-[#151922] border border-[#232936] rounded-xl overflow-hidden shadow cursor-pointer hover:border-orange-500/50 transition-all flex flex-col justify-between">
+                    <img src="${item.cover || 'https://via.placeholder.com/150'}" alt="${item.title}" class="w-full h-36 object-cover bg-black">
                     <div class="p-3 space-y-1">
-                        <span class="text-[9px] font-bold text-orange-400 uppercase">${item.episode_count || 'Anime'}</span>
+                        <span class="text-[9px] font-bold text-orange-400 uppercase">${item.totalEpisodes ? item.totalEpisodes + ' Eps' : 'Stream'}</span>
                         <h4 class="text-xs font-bold text-white line-clamp-2">${item.title}</h4>
                     </div>
                 </div>
             `).join('');
         }
 
-        async function openDetail(slug) {
+        async function openDetail(plat, id) {
             switchView('detail');
             const container = document.getElementById('detailContent');
-            container.innerHTML = `<div class="text-center py-10 text-orange-400 animate-pulse text-xs">Memuat informasi anime...</div>`;
+            container.innerHTML = `<div class="text-center py-10 text-orange-400 animate-pulse text-xs">Memuat informasi detail...</div>`;
 
             try {
-                const res = await fetch(`/api/anime?action=detail&slug=${slug}`);
-                const json = await res.json();
-                currentDetailData = json.data;
+                const detailRes = await fetch(`/api/nunodrama?action=detail&platform=${plat}&id=${id}`);
+                const detailJson = await detailRes.json();
+                currentDetailData = detailJson;
+
+                const epRes = await fetch(`/api/nunodrama?action=episodes&platform=${plat}&id=${id}`);
+                const epJson = await epRes.json();
+                currentEpisodesList = epJson.episodes || [];
 
                 container.innerHTML = `
                     <div class="flex space-x-3.5">
-                        <img src="${currentDetailData.poster}" class="w-28 h-40 object-cover rounded-xl border border-[#232936] shrink-0 shadow">
+                        <img src="${currentDetailData.cover}" class="w-28 h-40 object-cover rounded-xl border border-[#232936] shrink-0 shadow">
                         <div class="space-y-1.5">
                             <h2 class="text-xs font-bold text-white uppercase tracking-wide">${currentDetailData.title}</h2>
-                            <p class="text-[10px] font-semibold text-orange-400">Total Episode: ${currentDetailData.total_episodes}</p>
+                            <p class="text-[10px] font-semibold text-orange-400">Total Episode: ${currentEpisodesList.length || currentDetailData.totalEpisodes}</p>
                             <p class="text-[11px] text-slate-400 line-clamp-5 leading-relaxed">${currentDetailData.synopsis || 'Tidak ada sinopsis.'}</p>
                         </div>
                     </div>
@@ -232,9 +240,9 @@
                     <div class="border-t border-[#232936] pt-3 space-y-2.5">
                         <h4 class="text-xs font-bold text-white uppercase tracking-wider">Pilih Episode</h4>
                         <div class="grid grid-cols-3 gap-1.5 max-h-64 overflow-y-auto pr-1">
-                            ${currentDetailData.episodes.map((ep, idx) => `
+                            ${currentEpisodesList.map((ep, idx) => `
                                 <button onclick="openWatchRoom(${idx})" class="bg-[#0d0f12] hover:bg-orange-500 hover:text-slate-950 border border-[#232936] rounded-xl p-2.5 text-center text-[11px] font-medium text-slate-200 transition-colors truncate cursor-pointer shadow">
-                                    Ep ${ep.episode || (idx + 1)}
+                                    ${ep.chapterName || 'Ep ' + (idx + 1)}
                                 </button>
                             `).join('')}
                         </div>
@@ -246,83 +254,53 @@
         }
 
         async function openWatchRoom(index) {
-            if (!currentDetailData || !currentDetailData.episodes[index]) return;
+            if (!currentDetailData || !currentEpisodesList[index]) return;
             currentEpisodeIndex = index;
-            const ep = currentDetailData.episodes[index];
+            const ep = currentEpisodesList[index];
 
             switchView('watch');
             
-            document.getElementById('watchPoster').src = currentDetailData.poster || '';
-            document.getElementById('watchAnimeTitle').textContent = currentDetailData.title;
-            document.getElementById('watchEpisodeTitle').textContent = `Episode ${ep.episode || (index + 1)}`;
-            document.getElementById('watchSynopsis').textContent = currentDetailData.synopsis || 'Tidak ada sinopsis.';
+            document.getElementById('watchPoster').src = currentDetailData.cover || '';
+            document.getElementById('watchTitle').textContent = currentDetailData.title;
+            document.getElementById('watchEpisodeTitle').textContent = ep.chapterName || `Episode ${index + 1}`;
+            document.getElementById('watchSynopsis').textContent = currentDetailData.synopsis || '';
 
             renderWatchEpisodeList();
 
-            document.getElementById('playerTitle').textContent = `${currentDetailData.title} - Episode ${ep.episode || (index + 1)}`;
+            document.getElementById('playerTitle').textContent = `${currentDetailData.title} - ${ep.chapterName || 'Episode ' + (index + 1)}`;
             document.getElementById('playerLoading').classList.remove('hidden');
             
-            const iframe = document.getElementById('videoIframe');
             const nativeVideo = document.getElementById('nativeVideo');
-            
-            iframe.classList.add('hidden');
             nativeVideo.classList.add('hidden');
-            iframe.src = '';
             nativeVideo.src = '';
 
             try {
-                const res = await fetch(`/api/anime?action=stream&slug=${ep.slug}`);
+                // Untuk donghua, id stream menggunakan chapterId/slug episode
+                const targetId = currentDetailData.platform === 'donghua' ? (ep.chapterId || ep.slug) : currentDetailData.id;
+                const res = await fetch(`/api/nunodrama?action=stream&platform=${currentDetailData.platform}&id=${targetId}&episode=${ep.index || (index + 1)}`);
                 const json = await res.json();
-                currentStreamData = json.data;
 
                 document.getElementById('playerLoading').classList.add('hidden');
 
-                if (currentStreamData.default_embed_url) {
-                    iframe.src = currentStreamData.default_embed_url;
-                    iframe.classList.remove('hidden');
+                const streamUrl = json.directPlayUrl || json.streamUrl;
+                if (streamUrl) {
+                    nativeVideo.src = streamUrl;
+                    nativeVideo.classList.remove('hidden');
+                    nativeVideo.play().catch(() => {});
+                } else {
+                    alert('Link stream video tidak tersedia.');
                 }
-
-                const dlContainer = document.getElementById('downloadLinksContainer');
-                let serversHtml = '';
-
-                if (currentStreamData.servers_available && currentStreamData.servers_available.length > 0) {
-                    serversHtml = currentStreamData.servers_available.map((srv, sIdx) => `
-                        <button onclick="changeServer(${sIdx})" class="bg-[#1e2330] hover:bg-orange-500 hover:text-slate-950 text-orange-400 font-semibold px-3 py-2 rounded-xl text-[10px] border border-[#2b3344] transition-all shadow cursor-pointer">
-                            📺 ${srv.name}
-                        </button>
-                    `).join('');
-                }
-
-                serversHtml += `
-                    <a href="${currentStreamData.original_page_url}" target="_blank" class="bg-orange-500 hover:bg-orange-400 text-slate-950 font-bold px-3 py-2 rounded-xl text-[10px] transition-all shadow flex items-center justify-center">
-                        🚀 Sumber Asli
-                    </a>
-                `;
-                dlContainer.innerHTML = serversHtml;
-
             } catch (err) {
                 document.getElementById('playerLoading').classList.add('hidden');
                 alert('Gagal memuat stream: ' + err.message);
             }
         }
 
-        function changeServer(serverIndex) {
-            if (!currentStreamData || !currentStreamData.servers_available[serverIndex]) return;
-            const iframe = document.getElementById('videoIframe');
-            document.getElementById('playerLoading').classList.remove('hidden');
-
-            setTimeout(() => {
-                document.getElementById('playerLoading').classList.add('hidden');
-                iframe.src = currentStreamData.default_embed_url || currentStreamData.original_page_url;
-                iframe.classList.remove('hidden');
-            }, 400);
-        }
-
         function renderWatchEpisodeList() {
             const container = document.getElementById('watchEpisodeList');
-            if (!currentDetailData) return;
+            if (!currentEpisodesList) return;
 
-            container.innerHTML = currentDetailData.episodes.map((ep, idx) => {
+            container.innerHTML = currentEpisodesList.map((ep, idx) => {
                 const isActive = idx === currentEpisodeIndex;
                 const btnClass = isActive 
                     ? "bg-orange-500 text-slate-950 font-bold rounded-lg p-2 text-center text-[11px] shadow-lg shadow-orange-500/30 border border-orange-400 scale-[1.02] transition-all cursor-pointer"
@@ -330,23 +308,24 @@
                 
                 return `
                     <button onclick="openWatchRoom(${idx})" class="${btnClass}">
-                        Ep ${ep.episode || (idx + 1)}
+                        ${ep.chapterName || 'Ep ' + (idx + 1)}
                     </button>
                 `;
             }).join('');
         }
 
         function navigateEp(direction) {
-            if (!currentDetailData) return;
-            const nextIdx = direction === 'next' ? currentEpisodeIndex - 1 : currentEpisodeIndex + 1;
-            if (nextIdx >= 0 && nextIdx < currentDetailData.episodes.length) {
+            if (!currentEpisodesList) return;
+            const nextIdx = direction === 'next' ? currentEpisodeIndex + 1 : currentEpisodeIndex - 1;
+            if (nextIdx >= 0 && nextIdx < currentEpisodesList.length) {
                 openWatchRoom(nextIdx);
             } else {
-                alert(direction === 'next' ? 'Ini adalah episode terbaru.' : 'Ini adalah episode pertama.');
+                alert(direction === 'next' ? 'Ini adalah episode terakhir.' : 'Ini adalah episode pertama.');
             }
         }
 
-        loadTab('latest');
+        // Muat default dramaverse feed saat pertama kali dibuka
+        loadFeed('dramaverse');
     </script>
 </body>
 </html>

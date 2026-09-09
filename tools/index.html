@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReyCloud - AI Tools, Enhancer & Img2Img</title>
+    <title>ReyCloud - AI Tools, Enhancer & React</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         body { background-color: #0d0f12; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
@@ -13,7 +13,6 @@
 
     <div class="w-full max-w-md space-y-4">
         
-        <!-- Top Navbar Logo / Header -->
         <div class="flex items-center justify-between bg-[#151922] border border-[#232936] rounded-2xl p-4 shadow-lg relative">
             <div class="flex items-center space-x-2.5">
                 <div class="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-bold">
@@ -33,27 +32,29 @@
         </div>
 
         <div class="space-y-1 px-1">
-            <div class="text-[11px] text-slate-400">ReyCloud <span class="text-cyan-400 font-bold tracking-wide">AI TOOLS, ENHANCER & IMG2IMG</span></div>
-            <p id="subTitleText" class="text-[11px] text-slate-400 leading-relaxed">Tingkatkan gambar, enhance video, atau ubah gambar dengan AI Img2Img.</p>
+            <div class="text-[11px] text-slate-400">ReyCloud <span class="text-cyan-400 font-bold tracking-wide">AI TOOLS, ENHANCER & REACT</span></div>
+            <p id="subTitleText" class="text-[11px] text-slate-400 leading-relaxed">Tingkatkan gambar, enhance video, ubah gambar, atau kirim WhatsApp reaction.</p>
         </div>
 
-        <!-- MENU SWITCHER (Upscale vs Wink Video vs Img2Img) -->
-        <div class="grid grid-cols-3 gap-1.5 bg-[#151922] p-1.5 rounded-2xl border border-[#232936]">
+        <div class="grid grid-cols-4 gap-1 bg-[#151922] p-1.5 rounded-2xl border border-[#232936]">
             <button id="btnTabUpscale" onclick="switchToolTab('upscale')" 
-                class="flex items-center justify-center py-2.5 rounded-xl text-[11px] font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer">
+                class="flex items-center justify-center py-2.5 rounded-xl text-[10px] font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer">
                 <span>✨ Upscale</span>
             </button>
             <button id="btnTabWink" onclick="switchToolTab('wink')" 
-                class="flex items-center justify-center py-2.5 rounded-xl text-[11px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
-                <span>🎬 Wink HD</span>
+                class="flex items-center justify-center py-2.5 rounded-xl text-[10px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
+                <span>🎬 Wink</span>
             </button>
             <button id="btnTabImg2Img" onclick="switchToolTab('img2img')" 
-                class="flex items-center justify-center py-2.5 rounded-xl text-[11px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
+                class="flex items-center justify-center py-2.5 rounded-xl text-[10px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
                 <span>🎨 Img2Img</span>
+            </button>
+            <button id="btnTabReact" onclick="switchToolTab('react')" 
+                class="flex items-center justify-center py-2.5 rounded-xl text-[10px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
+                <span>⚡ React</span>
             </button>
         </div>
 
-        <!-- TAB 1: AI IMAGE UPSCALER -->
         <div id="sectionUpscale" class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-5">
             <div class="flex items-start space-x-3.5">
                 <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-cyan-400 shrink-0">
@@ -96,7 +97,6 @@
             </div>
         </div>
 
-        <!-- TAB 2: WINK VIDEO ENHANCER -->
         <div id="sectionWink" class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-5 hidden">
             <div class="flex items-start space-x-3.5">
                 <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-amber-400 shrink-0">
@@ -139,7 +139,6 @@
             </div>
         </div>
 
-        <!-- TAB 3: AI IMG2IMG -->
         <div id="sectionImg2Img" class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-5 hidden">
             <div class="flex items-start space-x-3.5">
                 <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-pink-400 shrink-0">
@@ -187,6 +186,63 @@
             </div>
         </div>
 
+        <div id="sectionReact" class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-5 hidden">
+            <div class="flex items-start space-x-3.5">
+                <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-emerald-400 shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-sm font-bold text-white tracking-tight">WhatsApp Reaction Sender</h2>
+                    <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Kirim reaksi otomatis ke link/pesan WhatsApp target (Maksimal 4 Emoji).</p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">URL TARGET WHATSAPP</label>
+                    <input type="text" id="waUrlInput" placeholder="https://whatsapp.com/channel/... atau link pesan" 
+                        class="w-full bg-[#0d0f12] border border-[#232936] rounded-xl px-4 py-3 text-xs text-slate-100 placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition-colors">
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">PILIH EMOJI (Maksimal 4 Biji)</label>
+                    <div class="grid grid-cols-4 gap-2 mb-2">
+                        <button type="button" onclick="toggleEmoji('😂')" class="py-2 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-xl text-base transition-all cursor-pointer">😂</button>
+                        <button type="button" onclick="toggleEmoji('❤️')" class="py-2 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-xl text-base transition-all cursor-pointer">❤️</button>
+                        <button type="button" onclick="toggleEmoji('👍')" class="py-2 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-xl text-base transition-all cursor-pointer">👍</button>
+                        <button type="button" onclick="toggleEmoji('🔥')" class="py-2 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-xl text-base transition-all cursor-pointer">🔥</button>
+                        <button type="button" onclick="toggleEmoji('😭')" class="py-2 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-xl text-base transition-all cursor-pointer">😭</button>
+                        <button type="button" onclick="toggleEmoji('🎉')" class="py-2 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-xl text-base transition-all cursor-pointer">🎉</button>
+                        <button type="button" onclick="toggleEmoji('🙏')" class="py-2 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-xl text-base transition-all cursor-pointer">🙏</button>
+                        <button type="button" onclick="toggleEmoji('✨')" class="py-2 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-xl text-base transition-all cursor-pointer">✨</button>
+                    </div>
+                    <input type="text" id="waEmojisInput" placeholder="Emoji terpilih (Maks 4)" value="😂" readonly
+                        class="w-full bg-[#0d0f12] border border-emerald-500/50 rounded-xl px-4 py-3 text-xs text-emerald-400 font-bold text-center tracking-widest focus:outline-none">
+                    <p class="text-[9px] text-slate-400 mt-1 text-center">Klik tombol emoji di atas untuk mengganti atau menyusun hingga 4 emoji.</p>
+                </div>
+
+                <button onclick="processReact()" id="btnProcessReact"
+                    class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-3.5 rounded-xl text-xs transition-all shadow cursor-pointer">
+                    Kirim WhatsApp Reaction
+                </button>
+            </div>
+
+            <div id="reactLoading" class="hidden text-center py-6 space-y-3">
+                <div class="inline-block w-7 h-7 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin"></div>
+                <p class="text-xs text-emerald-400 animate-pulse font-medium">Mengirim reaction lewat server proxy (Hard Bypass)...</p>
+            </div>
+
+            <div id="reactResultBox" class="hidden space-y-3 bg-[#0d0f12] border border-emerald-500/30 rounded-2xl p-4 text-center">
+                <div class="flex items-center justify-center space-x-2 text-emerald-400 font-bold text-xs">
+                    <span>⚡</span>
+                    <span>Reaction Berhasil Diproses!</span>
+                </div>
+                <pre id="reactResultText" class="text-[10px] text-slate-300 bg-[#151922] p-3 rounded-xl border border-[#232936] text-left overflow-x-auto max-h-40"></pre>
+            </div>
+        </div>
+
         <div class="pt-2 text-center text-[11px] text-slate-400">
             <span>ReyCloudSHP AI Tools Engine</span>
         </div>
@@ -194,36 +250,64 @@
     </div>
 
     <script>
+        function toggleEmoji(emoji) {
+            const input = document.getElementById('waEmojisInput');
+            let currentList = input.value ? input.value.split(',').map(e => e.trim()).filter(Boolean) : [];
+            
+            // Jika emoji sudah ada, hapus (toggle off), jika belum dan kurang dari 4, tambahkan
+            const index = currentList.indexOf(emoji);
+            if (index > -1) {
+                currentList.splice(index, 1);
+            } else {
+                if (currentList.length >= 4) {
+                    alert('Maksimal hanya dapat memilih 4 emoji!');
+                    return;
+                }
+                currentList.push(emoji);
+            }
+
+            // Jika kosong, beri default minimal 1 atau kosongkan
+            input.value = currentList.length > 0 ? currentList.join(',') : '😂';
+        }
+
         function switchToolTab(tab) {
             const btnUpscale = document.getElementById('btnTabUpscale');
             const btnWink = document.getElementById('btnTabWink');
             const btnImg2Img = document.getElementById('btnTabImg2Img');
+            const btnReact = document.getElementById('btnTabReact');
             
             const sectionUpscale = document.getElementById('sectionUpscale');
             const sectionWink = document.getElementById('sectionWink');
             const sectionImg2Img = document.getElementById('sectionImg2Img');
+            const sectionReact = document.getElementById('sectionReact');
             const subTitleText = document.getElementById('subTitleText');
 
-            btnUpscale.className = "flex items-center justify-center py-2.5 rounded-xl text-[11px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
-            btnWink.className = "flex items-center justify-center py-2.5 rounded-xl text-[11px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
-            btnImg2Img.className = "flex items-center justify-center py-2.5 rounded-xl text-[11px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
+            btnUpscale.className = "flex items-center justify-center py-2.5 rounded-xl text-[10px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
+            btnWink.className = "flex items-center justify-center py-2.5 rounded-xl text-[10px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
+            btnImg2Img.className = "flex items-center justify-center py-2.5 rounded-xl text-[10px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
+            btnReact.className = "flex items-center justify-center py-2.5 rounded-xl text-[10px] font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
 
             sectionUpscale.classList.add('hidden');
             sectionWink.classList.add('hidden');
             sectionImg2Img.classList.add('hidden');
+            sectionReact.classList.add('hidden');
 
             if (tab === 'upscale') {
-                btnUpscale.className = "flex items-center justify-center py-2.5 rounded-xl text-[11px] font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
+                btnUpscale.className = "flex items-center justify-center py-2.5 rounded-xl text-[10px] font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
                 sectionUpscale.classList.remove('hidden');
                 subTitleText.textContent = "Tingkatkan resolusi dan kejernihan gambar secara otomatis menggunakan teknologi AI.";
             } else if (tab === 'wink') {
-                btnWink.className = "flex items-center justify-center py-2.5 rounded-xl text-[11px] font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
+                btnWink.className = "flex items-center justify-center py-2.5 rounded-xl text-[10px] font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
                 sectionWink.classList.remove('hidden');
                 subTitleText.textContent = "Tingkatkan kualitas video blur menjadi jernih beresolusi tinggi dengan Wink AI.";
             } else if (tab === 'img2img') {
-                btnImg2Img.className = "flex items-center justify-center py-2.5 rounded-xl text-[11px] font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
+                btnImg2Img.className = "flex items-center justify-center py-2.5 rounded-xl text-[10px] font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
                 sectionImg2Img.classList.remove('hidden');
                 subTitleText.textContent = "Ubah gambar berdasarkan referensi foto & prompt teks AI.";
+            } else if (tab === 'react') {
+                btnReact.className = "flex items-center justify-center py-2.5 rounded-xl text-[10px] font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
+                sectionReact.classList.remove('hidden');
+                subTitleText.textContent = "Kirim reaksi otomatis ke tautan pesan atau channel WhatsApp target (Maksimal 4 Emoji).";
             }
         }
 
@@ -367,6 +451,47 @@
                     btnProcess.classList.remove('hidden');
                 }
             };
+        }
+
+        async function processReact() {
+            const waUrl = document.getElementById('waUrlInput').value.trim();
+            const emojis = document.getElementById('waEmojisInput').value.trim();
+            const btnProcess = document.getElementById('btnProcessReact');
+            const loading = document.getElementById('reactLoading');
+            const resultBox = document.getElementById('reactResultBox');
+
+            if (!waUrl) {
+                return alert('Masukkan URL target WhatsApp terlebih dahulu!');
+            }
+
+            btnProcess.classList.add('hidden');
+            loading.classList.add('hidden'); // placeholder
+            loading.classList.remove('hidden');
+            resultBox.classList.add('hidden');
+
+            try {
+                const res = await fetch('/api/react', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: waUrl, emojis: emojis })
+                });
+                const json = await res.json();
+
+                if (!json.status) {
+                    throw new Error(json.message || json.error || 'Gagal mengirim reaksi WhatsApp.');
+                }
+
+                document.getElementById('reactResultText').textContent = JSON.stringify(json, null, 2);
+
+                loading.classList.add('hidden');
+                btnProcess.classList.remove('hidden');
+                resultBox.classList.remove('hidden');
+
+            } catch (err) {
+                alert('Error: ' + err.message);
+                loading.classList.add('hidden');
+                btnProcess.classList.remove('hidden');
+            }
         }
     </script>
 </body>
