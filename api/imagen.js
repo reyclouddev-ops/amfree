@@ -160,7 +160,7 @@ class ImagenScraper {
 
 const imagen = new ImagenScraper();
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
@@ -181,7 +181,7 @@ export default async function handler(req, res) {
 
         return res.status(200).json({
             status: true,
-            creator: "ReyCloud",
+            creator: "ReyCode",
             result: result.url,
             details: {
                 prompt: result.prompt,
@@ -194,4 +194,4 @@ export default async function handler(req, res) {
     } catch (err) {
         return res.status(500).json({ status: false, error: err.message });
     }
-}
+};

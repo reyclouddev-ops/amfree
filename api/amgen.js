@@ -4,7 +4,7 @@ Name: Alight Motion Generator Full Backend Engine
 
 const { link, auth, pro, re, code } = require('../lib/auth');
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
@@ -98,4 +98,4 @@ export default async function handler(req, res) {
     } catch (err) {
         return res.status(500).json({ status: false, error: 'Kesalahan server internal: ' + err.message });
     }
-}
+};

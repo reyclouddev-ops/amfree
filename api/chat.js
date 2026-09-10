@@ -150,7 +150,7 @@ GAYA BICARA: Bahasa Indonesia, santai, ramah, natural, mudah dipahami, tidak ber
   }
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
@@ -183,4 +183,4 @@ export default async function handler(req, res) {
     } catch (err) {
         return res.status(500).json({ status: false, error: err.message });
     }
-}
+};
