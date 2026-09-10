@@ -2,7 +2,7 @@ import axios from 'axios';
 import crypto from 'crypto';
 
 /* ============================================================
- * 1. MAIL.TM BACKEND ENGINE (PASSWORD: psw-random6 style)
+ * 1. MAIL.TM BACKEND ENGINE (SUPPORT SELECTED DOMAIN)
  * ============================================================ */
 const MAIL_TM_BASE = 'https://api.mail.tm';
 
@@ -23,9 +23,13 @@ class MailTmBackend {
     return ['mail.tm', 'mail.insa.kr', 'gandalf.net'];
   }
 
-  async createAccount() {
+  async createAccount(selectedDomain = null) {
     const domains = await this.getDomains();
-    const domain = domains[Math.floor(Math.random() * domains.length)];
+    let domain = selectedDomain ? selectedDomain.trim().toLowerCase().replace(/^@/, '') : null;
+    
+    if (!domain || !domains.includes(domain)) {
+      domain = domains[Math.floor(Math.random() * domains.length)];
+    }
 
     const username = `rcs_${Math.random().toString(36).substring(2, 10)}`;
     const address = `${username}@${domain}`;
@@ -270,7 +274,7 @@ async function verifyAndActivate(email, rawLink) {
 }
 
 /* ============================================================
- * 3. HANDLER KHUSUS AUTO 1 CLICK
+ * 3. HANDLER UTAMA API
  * ============================================================ */
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -278,18 +282,18 @@ export default async function handler(req, res) {
   }
 
   try {
-    // 1. Buat akun mail.tm otomatis dengan password format psw-random6
-    const account = await mailClient.createAccount();
+    const { domain } = req.body || {};
+
+    // Buat akun mail.tm dengan pilihan domain (jika ada)
+    const account = await mailClient.createAccount(domain);
     const email = account.address;
     const password = account.password;
     const token = account.token;
     const webLoginUrl = 'https://mail.tm';
 
-    // 2. Kirim magic link Firebase
     const sendRes = await sendMagicLink(email);
     if (!sendRes.ok) throw new Error(sendRes.why || 'Gagal mengirim magic link.');
 
-    // 3. Tangkap link verifikasi secara otomatis via mail.tm
     const verificationLink = await mailClient.waitForVerificationLink(token, 60);
     if (!verificationLink) {
       return res.status(400).json({
@@ -299,11 +303,9 @@ export default async function handler(req, res) {
       });
     }
 
-    // 4. Aktivasi otomatis Alight Motion Pro
     const activateRes = await verifyAndActivate(email, verificationLink);
     if (!activateRes.ok) throw new Error(activateRes.why || 'Gagal aktivasi premium.');
 
-    // 5. Berikan respon lengkap ke frontend
     return res.status(200).json({
       status: true,
       data: {
