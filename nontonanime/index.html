@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReyCloud - NunoDrama Hub</title>
+    <title>ReyCloud - OtakuHub Anime</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         body { background-color: #0d0f12; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
@@ -17,13 +17,13 @@
         <div class="flex items-center justify-between bg-[#151922] border border-[#232936] rounded-2xl p-4 shadow-lg relative">
             <div class="flex items-center space-x-2.5">
                 <div class="w-9 h-9 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 font-bold">
-                    🎬
+                    ⛩️
                 </div>
                 <div>
                     <div class="flex items-center space-x-1.5">
-                        <span class="font-extrabold text-sm tracking-wide text-white">NUNO<span class="text-orange-400">DRAMA</span></span>
+                        <span class="font-extrabold text-sm tracking-wide text-white">OTAKU<span class="text-orange-400">HUB</span></span>
                     </div>
-                    <span id="navSubtitle" class="text-[10px] tracking-widest text-slate-400 font-semibold uppercase">STREAMING HUB</span>
+                    <span id="navSubtitle" class="text-[10px] tracking-widest text-slate-400 font-semibold uppercase">ANIME STREAMING</span>
                 </div>
             </div>
             
@@ -35,7 +35,7 @@
         <!-- ================= VIEW 1: HOME / KATALOG ================= -->
         <div id="viewHome" class="space-y-3">
             <div class="flex items-center space-x-2">
-                <input type="text" id="searchInput" placeholder="Cari drama, drakor, donghua..." 
+                <input type="text" id="searchInput" placeholder="Cari judul anime..." 
                     class="flex-1 bg-[#151922] border border-[#232936] rounded-xl px-4 py-3 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-orange-500 transition-colors"
                     onkeypress="if(event.key==='Enter') searchContent()">
                 <button onclick="searchContent()" 
@@ -44,13 +44,12 @@
                 </button>
             </div>
 
-            <!-- Platform Selector -->
+            <!-- Platform / Menu Selector -->
             <div class="flex space-x-2 overflow-x-auto pb-1 no-scrollbar">
-                <button onclick="changePlatform('dramaverse')" id="plat-dramaverse" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-orange-500 text-slate-950 whitespace-nowrap shadow cursor-pointer">✨ DramaVerse</button>
-                <button onclick="changePlatform('drakor')" id="plat-drakor" class="px-3 py-1.5 rounded-xl text-xs font-medium bg-[#151922] border border-[#232936] text-slate-300 whitespace-nowrap hover:text-white cursor-pointer">🇰🇷 Drakor</button>
-                <button onclick="changePlatform('donghua')" id="plat-donghua" class="px-3 py-1.5 rounded-xl text-xs font-medium bg-[#151922] border border-[#232936] text-slate-300 whitespace-nowrap hover:text-white cursor-pointer">🐉 Donghua</button>
-                <button onclick="changePlatform('shortmax')" id="plat-shortmax" class="px-3 py-1.5 rounded-xl text-xs font-medium bg-[#151922] border border-[#232936] text-slate-300 whitespace-nowrap hover:text-white cursor-pointer">⚡ ShortMax</button>
-                <button onclick="changePlatform('dramabox')" id="plat-dramabox" class="px-3 py-1.5 rounded-xl text-xs font-medium bg-[#151922] border border-[#232936] text-slate-300 whitespace-nowrap hover:text-white cursor-pointer">📦 DramaBox</button>
+                <button onclick="changeMenu('home')" id="menu-home" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-orange-500 text-slate-950 whitespace-nowrap shadow cursor-pointer">🔥 Beranda</button>
+                <button onclick="changeMenu('ongoing')" id="menu-ongoing" class="px-3 py-1.5 rounded-xl text-xs font-medium bg-[#151922] border border-[#232936] text-slate-300 whitespace-nowrap hover:text-white cursor-pointer">⚡ Ongoing</button>
+                <button onclick="changeMenu('complete')" id="menu-complete" class="px-3 py-1.5 rounded-xl text-xs font-medium bg-[#151922] border border-[#232936] text-slate-300 whitespace-nowrap hover:text-white cursor-pointer">✅ Completed</button>
+                <button onclick="changeMenu('schedule')" id="menu-schedule" class="px-3 py-1.5 rounded-xl text-xs font-medium bg-[#151922] border border-[#232936] text-slate-300 whitespace-nowrap hover:text-white cursor-pointer">📅 Jadwal</button>
             </div>
 
             <div id="contentContainer" class="grid grid-cols-2 gap-3 pt-1">
@@ -124,7 +123,7 @@
     </div>
 
     <script>
-        let currentPlatform = 'dramaverse';
+        let currentMenu = 'home';
         let currentDetailData = null;
         let currentEpisodesList = [];
         let currentEpisodeIndex = 0;
@@ -138,7 +137,7 @@
 
             if (viewName === 'home') {
                 document.getElementById('viewHome').classList.remove('hidden');
-                subtitle.textContent = "STREAMING HUB";
+                subtitle.textContent = "ANIME STREAMING";
                 const v = document.getElementById('nativeVideo');
                 v.pause();
                 v.src = '';
@@ -151,27 +150,34 @@
             }
         }
 
-        function changePlatform(plat) {
-            currentPlatform = plat;
-            ['dramaverse', 'drakor', 'donghua', 'shortmax', 'dramabox'].forEach(p => {
-                const btn = document.getElementById(`plat-${p}`);
+        function changeMenu(menu) {
+            currentMenu = menu;
+            ['home', 'ongoing', 'complete', 'schedule'].forEach(m => {
+                const btn = document.getElementById(`menu-${m}`);
                 if (btn) {
-                    if (p === plat) {
+                    if (m === menu) {
                         btn.className = "px-3 py-1.5 rounded-xl text-xs font-semibold bg-orange-500 text-slate-950 whitespace-nowrap shadow cursor-pointer";
                     } else {
                         btn.className = "px-3 py-1.5 rounded-xl text-xs font-medium bg-[#151922] border border-[#232936] text-slate-300 whitespace-nowrap hover:text-white cursor-pointer";
                     }
                 }
             });
-            loadFeed(plat);
+            loadFeed(menu);
         }
 
-        async function loadFeed(plat) {
+        async function loadFeed(menu) {
             const container = document.getElementById('contentContainer');
-            container.innerHTML = `<div class="col-span-2 text-center py-10 text-orange-400 animate-pulse text-xs">Memuat katalog ${plat}...</div>`;
+            container.innerHTML = `<div class="col-span-2 text-center py-10 text-orange-400 animate-pulse text-xs">Memuat katalog anime...</div>`;
 
             try {
-                const res = await fetch(`/api/nunodrama?action=feed&platform=${plat}`);
+                if (menu === 'schedule') {
+                    const res = await fetch(`/api/anime?action=schedule`);
+                    const json = await res.json();
+                    renderSchedule(json || []);
+                    return;
+                }
+
+                const res = await fetch(`/api/anime?action=${menu}`);
                 const json = await res.json();
                 renderCards(json.dramas || []);
             } catch (err) {
@@ -187,9 +193,9 @@
             container.innerHTML = `<div class="col-span-2 text-center py-10 text-orange-400 animate-pulse text-xs">Mencari '${query}'...</div>`;
 
             try {
-                const res = await fetch(`/api/nunodrama?action=search&query=${encodeURIComponent(query)}&platform=${currentPlatform}`);
+                const res = await fetch(`/api/anime?action=search&q=${encodeURIComponent(query)}`);
                 const json = await res.json();
-                renderCards(json.results || json.dramas || []);
+                renderCards(json.results || []);
             } catch (err) {
                 container.innerHTML = `<div class="col-span-2 text-center text-red-400 text-xs">Pencarian gagal: ${err.message}</div>`;
             }
@@ -198,41 +204,63 @@
         function renderCards(items) {
             const container = document.getElementById('contentContainer');
             if (!items || items.length === 0) {
-                container.innerHTML = `<div class="col-span-2 text-center text-slate-500 text-xs py-10">Tidak ada konten ditemukan.</div>`;
+                container.innerHTML = `<div class="col-span-2 text-center text-slate-500 text-xs py-10">Tidak ada anime ditemukan.</div>`;
                 return;
             }
 
             container.innerHTML = items.map(item => `
-                <div onclick="openDetail('${item.platform || currentPlatform}', '${item.id}')" class="bg-[#151922] border border-[#232936] rounded-xl overflow-hidden shadow cursor-pointer hover:border-orange-500/50 transition-all flex flex-col justify-between">
-                    <img src="${item.cover || 'https://via.placeholder.com/150'}" alt="${item.title}" class="w-full h-36 object-cover bg-black">
+                <div onclick="openDetail('${item.endpoint || item.id}')" class="bg-[#151922] border border-[#232936] rounded-xl overflow-hidden shadow cursor-pointer hover:border-orange-500/50 transition-all flex flex-col justify-between">
+                    <img src="${item.cover || item.thumb || 'https://via.placeholder.com/150'}" alt="${item.title}" class="w-full h-36 object-cover bg-black">
                     <div class="p-3 space-y-1">
-                        <span class="text-[9px] font-bold text-orange-400 uppercase">${item.totalEpisodes ? item.totalEpisodes + ' Eps' : 'Stream'}</span>
+                        <span class="text-[9px] font-bold text-orange-400 uppercase">${item.episode || item.totalEpisodes ? (item.episode || item.totalEpisodes + ' Eps') : (item.status || 'Ongoing')}</span>
                         <h4 class="text-xs font-bold text-white line-clamp-2">${item.title}</h4>
                     </div>
                 </div>
             `).join('');
         }
 
-        async function openDetail(plat, id) {
+        function renderSchedule(schedules) {
+            const container = document.getElementById('contentContainer');
+            if (!schedules || schedules.length === 0) {
+                container.innerHTML = `<div class="col-span-2 text-center text-slate-500 text-xs py-10">Jadwal tidak tersedia.</div>`;
+                return;
+            }
+
+            let html = '';
+            schedules.forEach(s => {
+                html += `<div class="col-span-2 font-bold text-orange-400 text-xs pt-2 pb-1 border-b border-[#232936]">${s.day}</div>`;
+                s.anime.forEach(item => {
+                    html += `
+                        <div onclick="openDetail('${item.endpoint || item.id}')" class="bg-[#151922] border border-[#232936] rounded-xl p-3 shadow cursor-pointer hover:border-orange-500/50 transition-all flex flex-col justify-between">
+                            <h4 class="text-xs font-bold text-white line-clamp-2">${item.title}</h4>
+                            <span class="text-[9px] text-slate-400 mt-2">Ketuk untuk detail →</span>
+                        </div>
+                    `;
+                });
+            });
+            container.innerHTML = html;
+        }
+
+        async function openDetail(id) {
             switchView('detail');
             const container = document.getElementById('detailContent');
             container.innerHTML = `<div class="text-center py-10 text-orange-400 animate-pulse text-xs">Memuat informasi detail...</div>`;
 
             try {
-                const detailRes = await fetch(`/api/nunodrama?action=detail&platform=${plat}&id=${id}`);
+                const detailRes = await fetch(`/api/anime?action=detail&id=${id}`);
                 const detailJson = await detailRes.json();
                 currentDetailData = detailJson;
 
-                const epRes = await fetch(`/api/nunodrama?action=episodes&platform=${plat}&id=${id}`);
+                const epRes = await fetch(`/api/anime?action=episodes&id=${id}`);
                 const epJson = await epRes.json();
                 currentEpisodesList = epJson.episodes || [];
 
                 container.innerHTML = `
                     <div class="flex space-x-3.5">
-                        <img src="${currentDetailData.cover}" class="w-28 h-40 object-cover rounded-xl border border-[#232936] shrink-0 shadow">
-                        <div class="space-y-1.5">
-                            <h2 class="text-xs font-bold text-white uppercase tracking-wide">${currentDetailData.title}</h2>
-                            <p class="text-[10px] font-semibold text-orange-400">Total Episode: ${currentEpisodesList.length || currentDetailData.totalEpisodes}</p>
+                        <img src="${currentDetailData.cover || currentDetailData.thumb}" class="w-28 h-40 object-cover rounded-xl border border-[#232936] shrink-0 shadow">
+                        <div class="space-y-1.5 overflow-hidden">
+                            <h2 class="text-xs font-bold text-white uppercase tracking-wide truncate">${currentDetailData.title}</h2>
+                            <p class="text-[10px] font-semibold text-orange-400">Total Episode: ${currentEpisodesList.length || currentDetailData.totalEpisodes || 'N/A'}</p>
                             <p class="text-[11px] text-slate-400 line-clamp-5 leading-relaxed">${currentDetailData.synopsis || 'Tidak ada sinopsis.'}</p>
                         </div>
                     </div>
@@ -260,7 +288,7 @@
 
             switchView('watch');
             
-            document.getElementById('watchPoster').src = currentDetailData.cover || '';
+            document.getElementById('watchPoster').src = currentDetailData.cover || currentDetailData.thumb || '';
             document.getElementById('watchTitle').textContent = currentDetailData.title;
             document.getElementById('watchEpisodeTitle').textContent = ep.chapterName || `Episode ${index + 1}`;
             document.getElementById('watchSynopsis').textContent = currentDetailData.synopsis || '';
@@ -275,9 +303,8 @@
             nativeVideo.src = '';
 
             try {
-                // Untuk donghua, id stream menggunakan chapterId/slug episode
-                const targetId = currentDetailData.platform === 'donghua' ? (ep.chapterId || ep.slug) : currentDetailData.id;
-                const res = await fetch(`/api/nunodrama?action=stream&platform=${currentDetailData.platform}&id=${targetId}&episode=${ep.index || (index + 1)}`);
+                const targetId = ep.endpoint || ep.chapterId || ep.slug;
+                const res = await fetch(`/api/anime?action=stream&id=${targetId}&episode=${ep.index || (index + 1)}`);
                 const json = await res.json();
 
                 document.getElementById('playerLoading').classList.add('hidden');
@@ -324,8 +351,8 @@
             }
         }
 
-        // Muat default dramaverse feed saat pertama kali dibuka
-        loadFeed('dramaverse');
+        // Muat default beranda anime saat pertama kali dibuka
+        loadFeed('home');
     </script>
 </body>
 </html>
