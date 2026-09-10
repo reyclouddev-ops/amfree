@@ -1,10 +1,6 @@
 const axios = require('axios');
 const crypto = require('crypto');
-const { link, auth, pro, re, code } = require('../lib/auth');
 
-/* ============================================================
- * MAIL.TM CLIENT ENGINE UNTUK AUTO 1 CLICK
- * ============================================================ */
 const MAIL_TM_BASE = 'https://api.mail.tm';
 
 class MailTmBackend {
@@ -17,24 +13,24 @@ class MailTmBackend {
     try {
       const res = await axios.get(`${MAIL_TM_BASE}/domains`);
       if (res.data && Array.isArray(res.data['hydra:member'])) {
-        this.cachedDomains = res.data['hydra:member'].map(d => d.domain);
+        this.cachedDomains = res.data['hydra:member'];
         return this.cachedDomains;
       }
     } catch {}
-    return ['mail.tm', 'mail.insa.kr', 'gandalf.net'];
+    return [{ domain: 'mail.tm', isActive: true }];
   }
 
   async createAccount(selectedDomain = null) {
-    const domains = await this.getDomains();
-    let domain = selectedDomain ? selectedDomain.trim().toLowerCase().replace(/^@/, '') : null;
+    const domainList = await this.getDomains();
+    const activeDomains = domainList.filter(d => d.isActive).map(d => d.domain);
     
-    if (!domain || !domains.includes(domain)) {
-      domain = domains[Math.floor(Math.random() * domains.length)];
+    let domain = selectedDomain ? selectedDomain.trim().toLowerCase().replace(/^@/, '') : null;
+    if (!domain || !activeDomains.includes(domain)) {
+      domain = activeDomains[Math.floor(Math.random() * activeDomains.length)] || 'mail.tm';
     }
 
     const username = `rcs_${Math.random().toString(36).substring(2, 10)}`;
     const address = `${username}@${domain}`;
-    
     const randomSuffix = crypto.randomBytes(3).toString('hex');
     const password = `psw-${randomSuffix}`;
 
@@ -48,11 +44,11 @@ class MailTmBackend {
       });
 
       const token = tokenRes.data?.token;
-      if (!token) throw new Error('Gagal mendapatkan token autentikasi Mail.tm.');
+      if (!token) throw new Error('Gagal mendapatkan token Mail.tm.');
 
       return { address, password, token };
     } catch (err) {
-      throw new Error(err.response?.data?.message || err.message);
+      throw new Error('Mail.tm Error: ' + (err.response?.data?.message || err.message));
     }
   }
 
@@ -89,15 +85,11 @@ class MailTmBackend {
 
   async waitForVerificationLink(token, timeoutSec = 60) {
     const startTime = Date.now();
-    const interval = 5000;
-
     while (Date.now() - startTime < timeoutSec * 1000) {
       try {
         const messages = await this.fetchMessages(token);
         if (messages.length > 0) {
-          const latestMsg = messages[0];
-          const details = await this.getMessageDetails(token, latestMsg.id);
-          
+          const details = await this.getMessageDetails(token, messages[0].id);
           if (details) {
             const content = details.html?.[0] || details.text || '';
             const linkText = this.extractVerificationLink(content);
@@ -105,7 +97,7 @@ class MailTmBackend {
           }
         }
       } catch (_) {}
-      await new Promise(resolve => setTimeout(resolve, interval));
+      await new Promise(resolve => setTimeout(resolve, 4000));
     }
     return null;
   }
@@ -113,90 +105,83 @@ class MailTmBackend {
 
 const mailClient = new MailTmBackend();
 
-/* ============================================================
- * HANDLER UTAMA API (AUTO 1 CLICK)
- * ============================================================ */
 module.exports = async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end();
-    }
+    if (req.method === 'OPTIONS') return res.status(200).end();
 
-    if (req.method !== 'POST') {
-        return res.status(405).json({ status: false, error: 'Method not allowed' });
-    }
-
-    const { domain } = req.body || {};
+    const { action, domain } = req.method === 'GET' ? req.query : (req.body || {});
 
     try {
-        // 1. Buat akun mail.tm instan
+        if (req.method === 'GET' || action === 'get-domains') {
+            const domains = await mailClient.getDomains();
+            return res.status(200).json({ status: true, domains });
+        }
+
+        if (req.method !== 'POST') {
+            return res.status(405).json({ status: false, error: 'Method not allowed' });
+        }
+
+        // 1. Buat akun mail.tm
         const account = await mailClient.createAccount(domain);
         const tempEmail = account.address;
         const tempPassword = account.password;
         const tempToken = account.token;
         const webLoginUrl = 'https://mail.tm';
 
-        // 2. Kirim magic link menggunakan fungsi `link` dari `lib/auth`
-        const linkRes = await link(tempEmail);
-        if (!linkRes.ok) {
-            return res.status(400).json({ status: false, error: 'Gagal mengirim magic link: ' + linkRes.why });
+        const protocol = req.headers['x-forwarded-proto'] || 'http';
+        const host = req.headers.host;
+        const baseUrl = `${protocol}://${host}`;
+
+        // 2. Numpang kirim magic link ke /api/amgen
+        const sendRes = await axios.post(`${baseUrl}/api/amgen`, {
+            action: 'send-link',
+            email: tempEmail
+        });
+
+        if (!sendRes.data || !sendRes.data.status) {
+            throw new Error('Gagal mengirim magic link via amgen.');
         }
 
-        // 3. Tunggu & tangkap link verifikasi otomatis via mail.tm
+        // 3. Tunggu link masuk di mail.tm
         const verificationLink = await mailClient.waitForVerificationLink(tempToken, 60);
         if (!verificationLink) {
             return res.status(400).json({ 
                 status: false, 
-                error: 'Magic link tidak tertangkap secara otomatis dalam waktu 60 detik.',
+                error: 'Magic link tidak tertangkap dalam 60 detik.',
                 data: { email: tempEmail, password: tempPassword, webLoginUrl }
             });
         }
 
-        // 4. Tukar kode dengan token Firebase menggunakan fungsi `auth` dari `lib/auth`
-        const authRes = await auth(tempEmail, verificationLink);
-        if (!authRes.ok) {
-            return res.status(400).json({ status: false, error: 'Verifikasi Gagal: ' + authRes.why });
-        }
-
-        // 5. Tembak validator pembelian menggunakan fungsi `pro` dari `lib/auth`
-        const proRes = await pro(authRes.id);
-        if (!proRes.ok) {
-            return res.status(400).json({ status: false, error: 'Gagal menerapkan lisensi Pro: ' + proRes.why });
-        }
-
-        // 6. Hitung masa aktif 1 tahun ke depan
-        const expiryDate = new Date();
-        expiryDate.setFullYear(expiryDate.getFullYear() + 1);
-        const options = { day: 'numeric', month: 'long', year: 'numeric' };
-        const dynamicValidUntil = expiryDate.toLocaleDateString('id-ID', options).toUpperCase();
-
-        const accountData = {
+        // 4. Numpang verifikasi & aktifkan pro ke /api/amgen
+        const verifyRes = await axios.post(`${baseUrl}/api/amgen`, {
+            action: 'verify-link',
             email: tempEmail,
-            password: tempPassword,
-            webLoginUrl: webLoginUrl,
-            uid: authRes.uid,
-            displayName: authRes.user?.displayName || tempEmail.split('@')[0],
-            membershipStatus: "PREMIUM_ACTIVE",
-            planName: "Alight Motion Pro",
-            orderId: proRes.order,
-            validUntil: dynamicValidUntil,
-            idToken: authRes.id,
-            refreshToken: authRes.ref,
-            premium: true,
-            rawResponse: proRes.r
-        };
+            magicLink: verificationLink
+        });
+
+        if (!verifyRes.data || !verifyRes.data.status) {
+            throw new Error('Gagal verifikasi lisensi pro via amgen.');
+        }
 
         return res.status(200).json({
             status: true,
-            message: 'Auto 1 Click & Lisensi Pro Berhasil Diaktifkan!',
-            data: accountData
+            message: 'Auto 1 Click Berhasil!',
+            data: {
+                email: tempEmail,
+                password: tempPassword,
+                webLoginUrl: webLoginUrl,
+                ...verifyRes.data.data
+            }
         });
 
     } catch (err) {
-        return res.status(500).json({ status: false, error: 'Kesalahan server internal: ' + err.message });
+        return res.status(500).json({ 
+            status: false, 
+            error: err.response?.data?.error || err.message 
+        });
     }
 };

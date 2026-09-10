@@ -34,7 +34,7 @@
 
         <div class="space-y-1 px-1">
             <div class="text-[11px] text-slate-400">Multi-Platform <span class="text-pink-400 font-bold tracking-wide">SOCIAL MEDIA DOWNLOADER</span></div>
-            <p class="text-[11px] text-slate-400 leading-relaxed">Unduh video HD TikTok tanpa watermark beserta preview & statistik lengkap.</p>
+            <p id="subTitleDesc" class="text-[11px] text-slate-400 leading-relaxed">Unduh video HD TikTok tanpa watermark beserta preview & statistik lengkap.</p>
         </div>
 
         <!-- Platform Switcher -->
@@ -133,9 +133,10 @@
                 </div>
             </div>
             <div class="space-y-3">
-                <input type="text" placeholder="https://www.instagram.com/reel/..." 
+                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">URL INSTAGRAM</label>
+                <input type="text" id="igUrlInput" placeholder="https://www.instagram.com/reel/..." 
                     class="w-full bg-[#0d0f12] border border-[#232936] rounded-xl px-4 py-3 text-xs text-slate-100 placeholder-slate-600 focus:outline-none focus:border-cyan-500">
-                <button class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-3.5 rounded-xl text-xs transition-all shadow">
+                <button onclick="processInstagram()" id="btnProcessIg" class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-3.5 rounded-xl text-xs transition-all shadow cursor-pointer">
                     Download Media Instagram
                 </button>
             </div>
@@ -153,17 +154,20 @@
             const btnTt = document.getElementById('btnTabTt');
             const secIg = document.getElementById('sectionInstagram');
             const secTt = document.getElementById('sectionTiktok');
+            const subTitle = document.getElementById('subTitleDesc');
 
-            if (platform === 'tiktok') {
-                btnTt.className = "py-2.5 rounded-xl text-xs font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
-                btnIg.className = "py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
-                secTt.classList.remove('hidden');
-                secIg.classList.add('hidden');
-            } else {
+            if (platform === 'instagram') {
                 btnIg.className = "py-2.5 rounded-xl text-xs font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
                 btnTt.className = "py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
                 secIg.classList.remove('hidden');
                 secTt.classList.add('hidden');
+                subTitle.textContent = "Unduh Reels dan foto Instagram dengan mudah dan cepat.";
+            } else {
+                btnTt.className = "py-2.5 rounded-xl text-xs font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
+                btnIg.className = "py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
+                secTt.classList.remove('hidden');
+                secIg.classList.add('hidden');
+                subTitle.textContent = "Unduh video HD TikTok tanpa watermark beserta preview & statistik lengkap.";
             }
         }
 
@@ -191,24 +195,20 @@
 
                 const data = json;
 
-                // Mapping author & caption
                 document.getElementById('authorAvatar').src = data.author?.avatar || 'https://via.placeholder.com/150';
                 document.getElementById('authorName').textContent = data.author?.nickname || data.author?.fullname || 'TikTok User';
                 document.getElementById('videoDesc').textContent = data.title || 'Tanpa Keterangan';
                 
-                // Ambil link video HD dari array data
                 const hdObj = data.data?.find(item => item.type === 'nowatermark_hd') || data.data?.find(item => item.type === 'nowatermark');
                 const videoUrl = hdObj ? hdObj.url : '';
 
                 document.getElementById('videoPreview').src = videoUrl;
                 
-                // Statistik interaksi
                 document.getElementById('statLikes').textContent = formatNumber(data.stats?.likes || 0);
                 document.getElementById('statComments').textContent = formatNumber(data.stats?.comment || 0);
                 document.getElementById('statShares').textContent = formatNumber(data.stats?.share || 0);
                 document.getElementById('statViews').textContent = formatNumber(data.stats?.views || 0);
 
-                // Tombol download
                 document.getElementById('downloadHdBtn').href = videoUrl;
                 document.getElementById('downloadAudioBtn').href = data.music_info?.url || '#';
 
@@ -221,6 +221,14 @@
                 loading.classList.add('hidden');
                 btnProcess.classList.remove('hidden');
             }
+        }
+
+        function processInstagram() {
+            const igUrl = document.getElementById('igUrlInput').value.trim();
+            if (!igUrl) {
+                return alert('Masukkan URL Instagram terlebih dahulu!');
+            }
+            alert('Fitur Instagram Downloader siap dihubungkan ke endpoint API kamu.');
         }
 
         function formatNumber(num) {

@@ -1,116 +1,147 @@
-/**
- * API Route: /api/react
- * WhatsApp Reaction Handler with ShikyOfficial Sitekey Extractor & Solver Integration
- */
+const https = require('https');
 
-const axios = require('axios');
-const crypto = require('crypto');
+const BASE = 'https://react.zfile.web.id';
+const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
 
-const TARGET_API_URL = 'https://keyyss-react.web.id/api/react';
-const TARGET_BASE_URL = 'https://keyyss-react.web.id/';
-const SHIKY_API_BASE = 'https://shikyofficial.my.id/api/tools';
-const SHIKY_KEY = 'shiky-ofc';
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-async function getTurnstileToken() {
-    try {
-        // Step 1: Ambil sitekey dari halaman utama target
-        const sitekeyRes = await axios.get(`${SHIKY_API_BASE}/sitekey`, {
-            params: { url: TARGET_BASE_URL },
-            headers: { 'x-api-key': SHIKY_KEY },
-            timeout: 8000
-        });
-
-        const sitekey = sitekeyRes.data?.sitekey || sitekeyRes.data?.data?.sitekey;
-        if (!sitekey) return null;
-
-        // Step 2: Minta token solve ke endpoint solver menggunakan sitekey yang didapat
-        const solverRes = await axios.post(`${SHIKY_API_BASE}/solver`, {
-            sitekey: sitekey,
-            url: TARGET_BASE_URL
-        }, {
-            headers: {
-                'x-api-key': SHIKY_KEY,
-                'Content-Type': 'application/json'
-            },
-            timeout: 35000 // Proses solver biasanya butuh waktu 10-30 detik
-        });
-
-        return solverRes.data?.token || solverRes.data?.solution || solverRes.data?.result;
-    } catch (err) {
-        console.error("Shiky Solver Flow Error:", err.message);
-        return null;
-    }
+function genSessionId() {
+  const c = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let id = 'zx_';
+  for (let i = 0; i < 16; i++) id += c[Math.floor(Math.random() * c.length)];
+  return id;
 }
 
-export default async function handler(req, res) {
+function parseCookies(headers, cookiesObj) {
+  const sc = headers['set-cookie'];
+  if (!sc) return;
+  const arr = Array.isArray(sc) ? sc : [sc];
+  for (const c of arr) {
+    const m = c.match(/^([^=]+)=([^;]+)/);
+    if (m) cookiesObj[m[1]] = m[2];
+  }
+}
+
+function cookieHeader(cookiesObj) {
+  return Object.entries(cookiesObj).map(([k,v]) => `${k}=${v}`).join('; ');
+}
+
+function req(method, path, body, cookiesObj, extra = {}) {
+  return new Promise((resolve, reject) => {
+    const url = new URL(path);
+    const hdrs = {
+      'User-Agent': UA,
+      'Accept': 'application/json',
+      'Accept-Language': 'id-ID,id;q=0.9,en-US;q=0.8',
+      'Origin': BASE,
+      'Referer': BASE + '/',
+      ...extra,
+    };
+    const ch = cookieHeader(cookiesObj);
+    if (ch) hdrs['Cookie'] = ch;
+
+    const opts = {
+      method,
+      hostname: url.hostname,
+      port: 443,
+      path: url.pathname,
+      headers: hdrs,
+    };
+
+    const r = https.request(opts, (res) => {
+      parseCookies(res.headers, cookiesObj);
+      let data = '';
+      res.on('data', c => data += c);
+      res.on('end', () => {
+        try { resolve(JSON.parse(data)); }
+        catch { resolve(data); }
+      });
+    });
+    r.on('error', reject);
+    r.setTimeout(30000, () => { r.destroy(); reject(new Error('Timeout')); });
+    if (body) r.write(typeof body === 'string' ? body : JSON.stringify(body));
+    r.end();
+  });
+}
+
+async function getTicket(sid, cookiesObj) {
+  const data = await req('GET', BASE + '/api/challenge', null, cookiesObj, {
+    'X-Session-Id': sid,
+  });
+  if (!data.ok) throw new Error('Challenge gagal');
+  return data;
+}
+
+async function sendReact(url, reactions, ticket, sid, cookiesObj) {
+  return req('POST', BASE + '/api/react', {
+    url, reactions, ticket,
+  }, cookiesObj, {
+    'Content-Type': 'application/json',
+    'X-ZX-Request': 'zx-reactch',
+    'X-Session-Id': sid,
+  });
+}
+
+module.exports = async function handler(reqBody, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-    if (req.method === 'OPTIONS') return res.status(200).end();
-    if (req.method !== 'POST' && req.method !== 'GET') {
-        return res.status(405).json({ status: false, error: 'Method not allowed' });
+    if (reqBody.method === 'OPTIONS') {
+        return res.status(200).end();
     }
 
-    try {
-        const waUrl = req.query.url || req.body?.url;
-        const rawEmojis = req.query.emojis || req.body?.emojis || '😂';
-
-        if (!waUrl) {
-            return res.status(400).json({ status: false, error: 'Parameter url target WhatsApp wajib disertakan!' });
-        }
-
-        let emojis = rawEmojis.split(',').map(e => e.trim()).filter(Boolean).join(',');
-        if (!emojis) emojis = '😂';
-
-        const deviceFingerprint = `DEV_${crypto.randomBytes(6).toString('hex').toUpperCase()}`;
-
-        // 1. Dapatkan token Turnstile valid via ShikyOfficial Solver
-        let turnstileToken = await getTurnstileToken();
-        
-        // Fallback jika solver gagal atau timeout
-        if (!turnstileToken) {
-            turnstileToken = `0.${crypto.randomBytes(4).toString('hex')}.${crypto.randomBytes(8).toString('hex')}`;
-        }
-
-        // 2. Kirim request POST ke target Keyyss API
-        const response = await axios.post(TARGET_API_URL, {
-            url: waUrl,
-            deviceFingerprint: deviceFingerprint,
-            emojis: emojis,
-            turnstileToken: turnstileToken
-        }, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json',
-                'Origin': 'https://keyyss-react.web.id',
-                'Referer': 'https://keyyss-react.web.id/',
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-Device-Fingerprint': deviceFingerprint
-            },
-            timeout: 15000
-        });
-
-        return res.status(200).json({
-            status: true,
-            creator: "ReyCloud",
-            target: waUrl,
-            emojis: emojis,
-            fingerprint: deviceFingerprint,
-            result: response.data
-        });
-
-    } catch (err) {
-        let errMessage = err.message;
-        if (err.response && err.response.data) {
-            errMessage = typeof err.response.data === 'object' ? JSON.stringify(err.response.data) : err.response.data;
-        }
-        return res.status(500).json({
-            status: false,
-            creator: "ReyCloud",
-            message: errMessage
-        });
+    if (reqBody.method !== 'POST') {
+        return res.status(405).json({ status: false, error: 'Method not allowed, use POST' });
     }
-}
+
+    const { url, emojis, count } = reqBody.body || {};
+
+    if (!url || !emojis) {
+        return res.status(400).json({ status: false, error: 'Parameter url dan emojis wajib diisi!' });
+    }
+
+    const emojiArray = Array.isArray(emojis) ? emojis : emojis.split(',').map(e => e.trim());
+    const totalCount = parseInt(count) || 1;
+
+    let ok = 0, fail = 0;
+    const results = [];
+
+    for (let i = 1; i <= totalCount; i++) {
+        const sid = genSessionId();
+        const cookiesObj = {};
+        try {
+            const challenge = await getTicket(sid, cookiesObj);
+            const ticket = challenge.ticket;
+            const delay = Math.max(2500, challenge.minAgeMs || 2500);
+            await sleep(delay);
+
+            const resReact = await sendReact(url, emojiArray, ticket, sid, cookiesObj);
+
+            results.push({
+                index: i,
+                success: resReact.success || false,
+                message: resReact.message || 'Unknown',
+            });
+
+            if (resReact.success) ok++;
+            else fail++;
+        } catch (e) {
+            results.push({ index: i, success: false, message: e.message });
+            fail++;
+        }
+        if (i < totalCount) await sleep(1000);
+    }
+
+    return res.status(200).json({
+        status: ok > 0,
+        creator: 'ReyCode',
+        target: url,
+        emojis: emojiArray,
+        total: totalCount,
+        success: ok,
+        failed: fail,
+        results: results,
+    });
+};
