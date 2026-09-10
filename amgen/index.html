@@ -289,7 +289,7 @@
             resultBoxAuto.classList.add('hidden');
 
             try {
-                const res = await fetch('/api/amgen', {
+                const res = await fetch('/api/amgen_auto', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ action: 'auto-activate', username })

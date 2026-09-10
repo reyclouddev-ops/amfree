@@ -1,5 +1,5 @@
 const axios = require("axios");
-const cheerio = "cheerio" in global ? global.cheerio : require("cheerio");
+const cheerio = require("cheerio");
 
 const BASE_URL = "https://otakudesu.blog";
 const CREATOR = "ReyCode";
@@ -24,6 +24,10 @@ const formatResponse = (success, dataOrMessage) => {
   }
   return result;
 };
+
+// ==========================================
+// OTAKUDESU SCRAPER ENGINE CORE
+// ==========================================
 
 async function getHome() {
   try {
@@ -162,10 +166,6 @@ async function getAnimeDetail(endpoint) {
     const finalUrl = res.request?.res?.responseUrl || fullUrl;
     const $ = cheerio.load(res.data);
 
-    if (!finalUrl.includes("/anime/")) {
-      return formatResponse(false, `URL bukan halaman anime (${finalUrl})`);
-    }
-
     const info = {};
     $(".infozingle p").each((_, el) => {
       const text = $(el).text().trim();
@@ -218,7 +218,7 @@ async function getAnimeDetail(endpoint) {
   }
 }
 
-async function get EpisodeDetail(endpoint, episodeNumber = null) {
+async function getEpisodeDetail(endpoint, episodeNumber = null) {
   try {
     let cleanEndpoint = endpoint.trim().replace(/^\/|\/$/g, "");
     let targetUrl = cleanEndpoint.startsWith("http") ? cleanEndpoint : `${BASE_URL}/episode/${cleanEndpoint}/`;
@@ -227,75 +227,10 @@ async function get EpisodeDetail(endpoint, episodeNumber = null) {
     let finalUrl = res.request?.res?.responseUrl || targetUrl;
     let $ = cheerio.load(res.data);
 
-    if (finalUrl.includes("/anime/")) {
-      const episodes = [];
-      $(".episodelist").each((_, epDiv) => {
-        $(epDiv).find("ul li a").each((_, a) => {
-          const epHref = $(a).attr("href");
-          if (epHref && epHref.includes("/episode/")) {
-            episodes.push({
-              title: $(a).text().trim(),
-              endpoint: epHref.replace(`${BASE_URL}/episode/`, "").replace(/\/$/, ""),
-              url: epHref,
-            });
-          }
-        });
-      });
-
-      if (episodes.length === 0) return formatResponse(false, "Episode tidak ditemukan.");
-
-      let selectedEp = episodes[0];
-      if (episodeNumber) {
-        const found = episodes.find((ep) => new RegExp(`\\b(eps|episode)\\s*${episodeNumber}\\b`, "i").test(ep.title));
-        if (found) selectedEp = found;
-      }
-
-      const resolvedRes = await client.get(selectedEp.url);
-      finalUrl = resolvedRes.request?.res?.responseUrl || selectedEp.url;
-      $ = cheerio.load(resolvedRes.data);
-    }
-
-    const pageTitle = $(".posttl").text().trim() || $("h1").text().trim();
-    if (!pageTitle) return formatResponse(false, "Episode tidak valid.");
-
-    let nonceAction = "aa1208d27f29ca340c92c66d1926f13f";
-    let streamAction = "2a3505c93b0035d3f455df82bf976b84";
-
-    $("script").each((_, s) => {
-      const text = $(s).html() || "";
-      if (text.includes("__x__nonce")) {
-        const matchStream = text.match(/nonce:[^,]+,\s*action:\s*["']([a-f0-9]{32})["']/);
-        const matchNonce = text.match(/data:\s*\{\s*action:\s*["']([a-f0-9]{32})["']\s*\}/);
-        if (matchNonce) nonceAction = matchNonce[1];
-        if (matchStream) streamAction = matchStream[1];
-      }
-    });
-
-    const ajaxHeaders = { ...HEADERS, Referer: finalUrl, "X-Requested-With": "XMLHttpRequest", "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" };
-    let nonce = null;
-    try {
-      const nRes = await client.post(`${BASE_URL}/wp-admin/admin-ajax.php`, new URLSearchParams({ action: nonceAction }).toString(), { headers: ajaxHeaders });
-      nonce = nRes.data?.data;
-    } catch {}
-
     let directPlayUrl = $(".responsive-embed-stream iframe").attr("src") || null;
-    
-    if (!directPlayUrl) {
-      const firstMirror = $(".mirrorstream ul li a").first();
-      const contentRaw = firstMirror.attr("data-content");
-      if (contentRaw && nonce) {
-        try {
-          const decoded = JSON.parse(Buffer.from(contentRaw, "base64").toString("utf-8"));
-          const sRes = await client.post(`${BASE_URL}/wp-admin/admin-ajax.php`, new URLSearchParams({ ...decoded, nonce, action: streamAction }).toString(), { headers: ajaxHeaders });
-          const rawHtml = Buffer.from(sRes.data?.data || "", "base64").toString("utf-8");
-          const match = rawHtml.match(/src=["']([^"']+)["']/);
-          if (match) directPlayUrl = match[1];
-        } catch {}
-      }
-    }
 
     return formatResponse(true, {
-      title: pageTitle,
+      title: $(".posttl").text().trim() || $("h1").text().trim() || "Streaming Episode",
       directPlayUrl: directPlayUrl || "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
       streamUrl: directPlayUrl,
     });
@@ -336,29 +271,19 @@ module.exports = async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Content-Type", "application/json; charset=utf-8");
 
   if (req.method === "OPTIONS") return res.status(200).end();
 
-  const query = req.method === "GET" ? req.query : (req.body || {});
-  const action = query.action || "home";
-  const searchQuery = query.query || query.q || "";
-  const contentId = query.id || query.endpoint || "";
-  const episodeIdx = query.episode || 1;
-  const pageNum = parseInt(query.page) || 1;
-
   try {
-    // Jika diakses tanpa parameter action sama sekali (seperti saat buka /api/anime/)
-    if (!query.action && !query.id && !query.q) {
-      const homeRes = await getHome();
-      return res.status(200).json({
-        status: true,
-        creator: CREATOR,
-        message: "Otakudesu Full Anime Hub API Active",
-        dramas: homeRes.data?.ongoing || []
-      });
-    }
+    const query = req.method === "GET" ? req.query : (req.body || {});
+    const action = query.action || "home";
+    const searchQuery = query.query || query.q || "";
+    const contentId = query.id || query.endpoint || "";
+    const episodeIdx = query.episode || 1;
+    const pageNum = parseInt(query.page) || 1;
 
-    if (action === 'home' || action === 'feed') {
+    if (action === 'home' || action === 'feed' || (!query.action && !query.id && !query.q)) {
       const homeRes = await getHome();
       return res.status(200).json({ status: true, creator: CREATOR, dramas: homeRes.data?.ongoing || [] });
     }
@@ -380,7 +305,7 @@ module.exports = async function handler(req, res) {
 
     if (action === 'detail') {
       const detailRes = await getAnimeDetail(contentId);
-      return res.status(detailRes.status ? 200 : 404).json(detailRes.status ? detailRes.data : { status: false, error: detailRes.message });
+      return res.status(200).json(detailRes.status ? detailRes.data : { status: false, error: detailRes.message });
     }
 
     if (action === 'episodes') {
@@ -395,12 +320,16 @@ module.exports = async function handler(req, res) {
 
     if (action === 'schedule') {
       const schRes = await getSchedule();
-      return res.status(200).json(schRes);
+      return res.status(200).json({ status: true, creator: CREATOR, data: schRes.data || [] });
     }
 
     return res.status(400).json({ status: false, creator: CREATOR, error: `Aksi '${action}' tidak dikenal.` });
 
   } catch (err) {
-    return res.status(500).json({ status: false, creator: CREATOR, error: err.message });
+    return res.status(500).json({ 
+      status: false, 
+      creator: CREATOR, 
+      error: err.message || "Internal Server Error" 
+    });
   }
 };

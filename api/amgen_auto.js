@@ -207,6 +207,16 @@ module.exports = async function handler(req, res) {
             });
         }
 
+        // TAMBAHAN: Jika action kosong / tidak didefinisikan, 
+        // langsung fallback otomatis ke proses utama Auto 1 Click!
+        if (action && action !== 'auto' && action !== 'generate') {
+            return res.status(400).json({
+                status: false,
+                creator: CREATOR,
+                error: `Aksi '${action}' tidak dikenal.`
+            });
+        }
+
         const requestedUser = body.username || body.user;
         let username, animalName = null;
         
