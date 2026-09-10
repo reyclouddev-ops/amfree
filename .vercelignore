@@ -1,2 +1,9 @@
 tools/
+amgen/
+downloader/
+nontonanime/
+chatai/
+usercek/
+admins/
+*.html
 *.md
