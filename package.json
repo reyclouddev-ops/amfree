@@ -1,6 +1,7 @@
 {
   "name": "reycloud-am-generator",
   "version": "2.0.0",
+  "type": "commonjs",
   "description": "Alight Motion Premium Generator, Tools, Rayleigh AI & NontonAnime on Vercel",
   "main": "api/amgen.js",
   "dependencies": {
@@ -9,6 +10,7 @@
     "cheerio": "^1.0.0",
     "crypto-js": "^4.2.0",
     "form-data": "^4.0.0",
+    "mongoose": "^8.0.0",
     "tough-cookie": "^4.1.3",
     "undici": "^6.0.0"
   }
