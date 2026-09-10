@@ -11,6 +11,14 @@
 </head>
 <body class="min-h-screen flex flex-col items-center justify-start p-3 sm:p-6 relative">
 
+    <!-- CUSTOM TOAST NOTIFICATION CONTAINER -->
+    <div id="toastContainer" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 opacity-0 pointer-events-none transform -translate-y-4">
+        <div id="toastBox" class="bg-[#1e2330] border border-amber-500/40 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center space-x-2.5 text-xs font-medium">
+            <span id="toastIcon">⚠️</span>
+            <span id="toastMessage">Pesan notifikasi di sini</span>
+        </div>
+    </div>
+
     <div class="w-full max-w-md space-y-4">
         
         <div class="flex items-center justify-between bg-[#151922] border border-[#232936] rounded-2xl p-4 shadow-lg relative">
@@ -260,7 +268,7 @@
             </div>
         </div>
 
-        <!-- TAB 5: REACT -->
+        <!-- TAB 5: REACT (MAX 4 EMOJI LOCKED & CLEAN CARD) -->
         <div id="sectionReact" class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-5 hidden">
             <div class="flex items-start space-x-3.5">
                 <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-emerald-400 shrink-0">
@@ -281,21 +289,34 @@
                         class="w-full bg-[#0d0f12] border border-[#232936] rounded-xl px-4 py-3 text-xs text-slate-100 placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition-colors">
                 </div>
 
+                <!-- PILIHAN CEPAT (PRESET EMOJI) -->
                 <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">PILIH EMOJI (Maksimal 4 Biji)</label>
-                    <div class="grid grid-cols-4 gap-2 mb-2">
-                        <button type="button" onclick="toggleEmoji('😂')" class="py-2 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-xl text-base transition-all cursor-pointer">😂</button>
-                        <button type="button" onclick="toggleEmoji('❤️')" class="py-2 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-xl text-base transition-all cursor-pointer">❤️</button>
-                        <button type="button" onclick="toggleEmoji('👍')" class="py-2 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-xl text-base transition-all cursor-pointer">👍</button>
-                        <button type="button" onclick="toggleEmoji('🔥')" class="py-2 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-xl text-base transition-all cursor-pointer">🔥</button>
-                        <button type="button" onclick="toggleEmoji('😭')" class="py-2 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-xl text-base transition-all cursor-pointer">😭</button>
-                        <button type="button" onclick="toggleEmoji('🎉')" class="py-2 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-xl text-base transition-all cursor-pointer">🎉</button>
-                        <button type="button" onclick="toggleEmoji('🙏')" class="py-2 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-xl text-base transition-all cursor-pointer">🙏</button>
-                        <button type="button" onclick="toggleEmoji('✨')" class="py-2 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-xl text-base transition-all cursor-pointer">✨</button>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">PILIHAN CEPAT (PRESET)</label>
+                    <div class="grid grid-cols-4 gap-1.5">
+                        <button type="button" onclick="setPresetEmoji('😂')" class="py-2 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-xl text-xs text-slate-200 transition-all cursor-pointer font-medium">😂 Haha</button>
+                        <button type="button" onclick="setPresetEmoji('❤️')" class="py-2 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-xl text-xs text-slate-200 transition-all cursor-pointer font-medium">❤️ Love</button>
+                        <button type="button" onclick="setPresetEmoji('👍')" class="py-2 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-xl text-xs text-slate-200 transition-all cursor-pointer font-medium">👍 Jempol</button>
+                        <button type="button" onclick="setPresetEmoji('🔥')" class="py-2 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-xl text-xs text-slate-200 transition-all cursor-pointer font-medium">🔥 Api</button>
+                        <button type="button" onclick="setPresetEmoji('😂,❤️,👍,🔥')" class="py-2 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-xl text-xs text-emerald-400 transition-all cursor-pointer font-bold col-span-2">⚡ Combo All (4)</button>
+                        <button type="button" onclick="setPresetEmoji('🎉,✨')" class="py-2 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-xl text-xs text-slate-200 transition-all cursor-pointer font-medium col-span-2">🎉 Party Combo</button>
                     </div>
-                    <input type="text" id="waEmojisInput" placeholder="Emoji terpilih (Maks 4)" value="😂" readonly
+                </div>
+
+                <!-- CUSTOM EMOJI INPUT -->
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">CUSTOM EMOJI (Maksimal 4 Biji)</label>
+                    <div class="grid grid-cols-8 gap-1 mb-2">
+                        <button type="button" onclick="appendCustomEmoji('😂')" class="py-1.5 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-lg text-sm transition-all cursor-pointer">😂</button>
+                        <button type="button" onclick="appendCustomEmoji('❤️')" class="py-1.5 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-lg text-sm transition-all cursor-pointer">❤️</button>
+                        <button type="button" onclick="appendCustomEmoji('👍')" class="py-1.5 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-lg text-sm transition-all cursor-pointer">👍</button>
+                        <button type="button" onclick="appendCustomEmoji('🔥')" class="py-1.5 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-lg text-sm transition-all cursor-pointer">🔥</button>
+                        <button type="button" onclick="appendCustomEmoji('😭')" class="py-1.5 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-lg text-sm transition-all cursor-pointer">😭</button>
+                        <button type="button" onclick="appendCustomEmoji('🎉')" class="py-1.5 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-lg text-sm transition-all cursor-pointer">🎉</button>
+                        <button type="button" onclick="appendCustomEmoji('🙏')" class="py-1.5 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-lg text-sm transition-all cursor-pointer">🙏</button>
+                        <button type="button" onclick="appendCustomEmoji('✨')" class="py-1.5 bg-[#0d0f12] border border-[#232936] hover:border-emerald-500 rounded-lg text-sm transition-all cursor-pointer">✨</button>
+                    </div>
+                    <input type="text" id="waEmojisInput" placeholder="Contoh: 😂,❤️" value="😂" readonly
                         class="w-full bg-[#0d0f12] border border-emerald-500/50 rounded-xl px-4 py-3 text-xs text-emerald-400 font-bold text-center tracking-widest focus:outline-none">
-                    <p class="text-[9px] text-slate-400 mt-1 text-center">Klik tombol emoji di atas untuk mengganti atau menyusun hingga 4 emoji.</p>
                 </div>
 
                 <button onclick="processReact()" id="btnProcessReact"
@@ -306,15 +327,29 @@
 
             <div id="reactLoading" class="hidden text-center py-6 space-y-3">
                 <div class="inline-block w-7 h-7 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin"></div>
-                <p class="text-xs text-emerald-400 animate-pulse font-medium">Mengirim reaction lewat server proxy (Hard Bypass)...</p>
+                <p class="text-xs text-emerald-400 animate-pulse font-medium">Mengirim reaction ke target WhatsApp...</p>
             </div>
 
-            <div id="reactResultBox" class="hidden space-y-3 bg-[#0d0f12] border border-emerald-500/30 rounded-2xl p-4 text-center">
-                <div class="flex items-center justify-center space-x-2 text-emerald-400 font-bold text-xs">
+            <!-- CLEAN RESULT CARD -->
+            <div id="reactResultBox" class="hidden space-y-3 bg-[#0d0f12] border border-emerald-500/30 rounded-2xl p-4">
+                <div class="flex items-center space-x-2 text-emerald-400 font-bold text-xs">
                     <span>⚡</span>
-                    <span>Reaction Berhasil Diproses!</span>
+                    <span>WhatsApp Reaction Berhasil Terkirim!</span>
                 </div>
-                <pre id="reactResultText" class="text-[10px] text-slate-300 bg-[#151922] p-3 rounded-xl border border-[#232936] text-left overflow-x-auto max-h-40"></pre>
+                <div class="bg-[#151922] border border-[#232936] rounded-xl p-3 space-y-2 text-xs font-mono">
+                    <div class="flex justify-between border-b border-[#232936] pb-1.5">
+                        <span class="text-slate-400 font-sans">Status:</span>
+                        <span class="text-emerald-400 font-bold">SUCCESS</span>
+                    </div>
+                    <div class="flex justify-between border-b border-[#232936] pb-1.5">
+                        <span class="text-slate-400 font-sans">Emoji Terkirim:</span>
+                        <span id="resReactEmojis" class="text-amber-300 font-bold"></span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-400 font-sans">Creator API:</span>
+                        <span id="resReactCreator" class="text-cyan-400">ReyCode</span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -325,22 +360,60 @@
     </div>
 
     <script>
-        function toggleEmoji(emoji) {
-            const input = document.getElementById('waEmojisInput');
-            let currentList = input.value ? input.value.split(',').map(e => e.trim()).filter(Boolean) : [];
-            
-            const index = currentList.indexOf(emoji);
-            if (index > -1) {
-                currentList.splice(index, 1);
+        function showToast(message, type = 'warning') {
+            const toast = document.getElementById('toastContainer');
+            const box = document.getElementById('toastBox');
+            const icon = document.getElementById('toastIcon');
+            const msg = document.getElementById('toastMessage');
+
+            msg.textContent = message;
+
+            if (type === 'error') {
+                box.className = "bg-[#1e2330] border border-red-500/40 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center space-x-2.5 text-xs font-medium";
+                icon.textContent = "❌";
+            } else if (type === 'success') {
+                box.className = "bg-[#1e2330] border border-emerald-500/40 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center space-x-2.5 text-xs font-medium";
+                icon.textContent = "✅";
             } else {
-                if (currentList.length >= 4) {
-                    alert('Maksimal hanya dapat memilih 4 emoji!');
-                    return;
-                }
-                currentList.push(emoji);
+                box.className = "bg-[#1e2330] border border-amber-500/40 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center space-x-2.5 text-xs font-medium";
+                icon.textContent = "⚠️";
             }
 
-            input.value = currentList.length > 0 ? currentList.join(',') : '😂';
+            toast.classList.remove('opacity-0', '-translate-y-4', 'pointer-events-none');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', '-translate-y-4', 'pointer-events-none');
+            }, 3000);
+        }
+
+        function appendCustomEmoji(emoji) {
+            const input = document.getElementById('waEmojisInput');
+            let currentVal = input.value.trim();
+            let list = currentVal ? currentVal.split(',').map(e => e.trim()).filter(Boolean) : [];
+            
+            const index = list.indexOf(emoji);
+            if (index > -1) {
+                list.splice(index, 1);
+            } else {
+                if (list.length >= 4) {
+                    showToast('Maksimal hanya dapat memilih 4 emoji!', 'warning');
+                    return;
+                }
+                list.push(emoji);
+            }
+
+            input.value = list.length > 0 ? list.join(',') : '😂';
+        }
+
+        function setPresetEmoji(emojis) {
+            const list = emojis.split(',').map(e => e.trim()).filter(Boolean);
+            if (list.length > 4) {
+                showToast('Pilihan preset melebihi batas maksimal 4 emoji!', 'warning');
+                return;
+            }
+            document.getElementById('waEmojisInput').value = emojis;
         }
 
         function selectImagenStyle(style) {
@@ -410,7 +483,7 @@
             } else if (tab === 'react') {
                 btnReact.className = "flex items-center justify-center py-2.5 rounded-xl text-[9px] font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
                 sectionReact.classList.remove('hidden');
-                subTitleText.textContent = "Kirim reaksi otomatis ke tautan pesan atau channel WhatsApp target (Maksimal 4 Emoji).";
+                subTitleText.textContent = "Kirim reaksi otomatis ke link/pesan WhatsApp target (Maksimal 4 Emoji).";
             }
         }
 
@@ -421,7 +494,7 @@
             const resultBox = document.getElementById('upscaleResultBox');
 
             if (!fileInput.files || fileInput.files.length === 0) {
-                return alert('Pilih file gambar terlebih dahulu!');
+                return showToast('Pilih file gambar terlebih dahulu!', 'warning');
             }
 
             const file = fileInput.files[0];
@@ -453,7 +526,7 @@
                     resultBox.classList.remove('hidden');
 
                 } catch (err) {
-                    alert('Error: ' + err.message);
+                    showToast('Error: ' + err.message, 'error');
                     loading.classList.add('hidden');
                     btnProcess.classList.remove('hidden');
                 }
@@ -467,7 +540,7 @@
             const resultBox = document.getElementById('winkResultBox');
 
             if (!fileInput.files || fileInput.files.length === 0) {
-                return alert('Pilih file video terlebih dahulu!');
+                return showToast('Pilih file video terlebih dahulu!', 'warning');
             }
 
             const file = fileInput.files[0];
@@ -499,7 +572,7 @@
                     resultBox.classList.remove('hidden');
 
                 } catch (err) {
-                    alert('Error: ' + err.message);
+                    showToast('Error: ' + err.message, 'error');
                     loading.classList.add('hidden');
                     btnProcess.classList.remove('hidden');
                 }
@@ -513,7 +586,7 @@
             const resultBox = document.getElementById('removeBgResultBox');
 
             if (!fileInput.files || fileInput.files.length === 0) {
-                return alert('Pilih file gambar terlebih dahulu!');
+                return showToast('Pilih file gambar terlebih dahulu!', 'warning');
             }
 
             const file = fileInput.files[0];
@@ -545,7 +618,7 @@
                     resultBox.classList.remove('hidden');
 
                 } catch (err) {
-                    alert('Error: ' + err.message);
+                    showToast('Error: ' + err.message, 'error');
                     loading.classList.add('hidden');
                     btnProcess.classList.remove('hidden');
                 }
@@ -561,7 +634,7 @@
             const resultBox = document.getElementById('imagenResultBox');
 
             if (!prompt) {
-                return alert('Masukkan prompt gambar terlebih dahulu!');
+                return showToast('Masukkan prompt gambar terlebih dahulu!', 'warning');
             }
 
             btnProcess.classList.add('hidden');
@@ -588,7 +661,7 @@
                 resultBox.classList.remove('hidden');
 
             } catch (err) {
-                alert('Error: ' + err.message);
+                showToast('Error: ' + err.message, 'error');
                 loading.classList.add('hidden');
                 btnProcess.classList.remove('hidden');
             }
@@ -602,7 +675,7 @@
             const resultBox = document.getElementById('reactResultBox');
 
             if (!waUrl) {
-                return alert('Masukkan URL target WhatsApp terlebih dahulu!');
+                return showToast('Masukkan URL target WhatsApp terlebih dahulu!', 'warning');
             }
 
             btnProcess.classList.add('hidden');
@@ -613,7 +686,7 @@
                 const res = await fetch('/api/react', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ url: waUrl, emojis: emojis })
+                    body: JSON.stringify({ url: waUrl, emojis: emojis, count: 1 })
                 });
                 const json = await res.json();
 
@@ -621,14 +694,15 @@
                     throw new Error(json.message || json.error || 'Gagal mengirim reaksi WhatsApp.');
                 }
 
-                document.getElementById('reactResultText').textContent = JSON.stringify(json, null, 2);
+                document.getElementById('resReactEmojis').textContent = emojis;
+                document.getElementById('resReactCreator').textContent = json.creator || 'ReyCode';
 
                 loading.classList.add('hidden');
                 btnProcess.classList.remove('hidden');
                 resultBox.classList.remove('hidden');
 
             } catch (err) {
-                alert('Error: ' + err.message);
+                showToast('Error: ' + err.message, 'error');
                 loading.classList.add('hidden');
                 btnProcess.classList.remove('hidden');
             }

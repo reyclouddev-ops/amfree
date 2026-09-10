@@ -34,7 +34,7 @@
 
         <div class="space-y-1 px-1">
             <div class="text-[11px] text-slate-400">Multi-Method <span class="text-cyan-400 font-bold tracking-wide">ALIGHT MOTION ACTIVATION</span></div>
-            <p class="text-[11px] text-slate-400 leading-relaxed">Pilih metode aktivasi: Manual Wizard dengan email pribadi atau Auto 1 Click Instan Mail.tm.</p>
+            <p class="text-[11px] text-slate-400 leading-relaxed">Pilih metode aktivasi: Manual Wizard dengan email pribadi atau gunakan mode aman.</p>
         </div>
 
         <!-- Method Switcher (Tab untuk Mobile) -->
@@ -43,7 +43,7 @@
                 ✍️ Manual Wizard
             </button>
             <button id="btnTabAuto" onclick="switchMethod('auto')" class="py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
-                ⚡ Auto 1 Click (Mail.tm)
+                ⚡ Auto 1 Click (Off)
             </button>
         </div>
 
@@ -113,78 +113,28 @@
                 </div>
             </div>
 
-            <!-- SECTION KANAN: AUTO 1 CLICK (CUSTOM DROPDOWN MODERN) -->
-            <div id="sectionAuto" class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-4 hidden md:block">
-                <div class="flex items-start space-x-3.5">
-                    <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-cyan-400 shrink-0">
-                        ⚡
+            <!-- SECTION KANAN: AUTO 1 CLICK (MAINTENANCE NOTICE) -->
+            <div id="sectionAuto" class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-4 flex flex-col justify-between hidden md:flex">
+                <div class="space-y-4">
+                    <div class="flex items-start space-x-3.5">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
+                            ⚠️
+                        </div>
+                        <div>
+                            <h2 class="text-sm font-bold text-white tracking-tight">Auto 1 Click (Maintenance)</h2>
+                            <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Fitur otomatis sementara ditutup karena pembatasan server eksternal.</p>
+                        </div>
                     </div>
-                    <div>
-                        <h2 class="text-sm font-bold text-white tracking-tight">Auto 1 Click (Mail.tm)</h2>
-                        <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Buat email instan otomatis, pilih domain asli mail.tm, dan aktifkan pro.</p>
+
+                    <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4 text-xs text-amber-300 space-y-2 leading-relaxed">
+                        <p class="font-bold">🚧 PENGUMUMAN MAINTENANCE:</p>
+                        <p>AmGen Auto Sedang Maintenance. Server Mail.tm membatasi request otomatis dari cloud hosting.</p>
+                        <p class="pt-1 font-semibold text-white">🙏🏻 Mohon kembali gunakan mode Manual Wizard di sebelah kiri untuk aktivasi akun yang stabil & aman.</p>
                     </div>
                 </div>
 
-                <div class="space-y-3 relative">
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">PILIH DOMAIN EMAIL</label>
-                    
-                    <!-- CUSTOM DROPDOWN CONTAINER -->
-                    <div class="relative">
-                        <div id="dropdownToggle" onclick="toggleCustomDropdown()" class="w-full bg-[#0d0f12] border border-[#232936] hover:border-cyan-500/50 rounded-xl px-4 py-3 text-xs text-slate-100 flex items-center justify-center cursor-pointer transition-all">
-                            <span id="selectedDomainLabel">✨ -- Auto Random Domain (Original Mail.tm) --</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </div>
-
-                        <!-- DROPDOWN OPTIONS LIST (DARK THEME) -->
-                        <div id="dropdownMenu" class="hidden absolute left-0 right-0 top-14 bg-[#151922] border border-[#2b3344] rounded-xl shadow-2xl max-h-48 overflow-y-auto z-50 p-1 space-y-0.5">
-                            <div onclick="selectDomain('', '✨ -- Auto Random Domain (Original Mail.tm) --')" class="px-3 py-2.5 rounded-lg text-xs text-slate-200 hover:bg-[#1e2330] hover:text-cyan-400 cursor-pointer transition-colors">
-                                ✨ -- Auto Random Domain (Terbaik) --
-                            </div>
-                            <div id="domainListContainer"></div>
-                        </div>
-                    </div>
-                    <input type="hidden" id="domainValue" value="">
-
-                    <button onclick="autoOneClick()" id="btnAuto"
-                        class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-3.5 rounded-xl text-xs transition-all shadow cursor-pointer flex items-center justify-center space-x-2">
-                        <span>🚀 Mulai Auto 1 Click</span>
-                    </button>
-                </div>
-
-                <div id="loadingStateAuto" class="hidden text-center py-6 space-y-3">
-                    <div class="inline-block w-7 h-7 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
-                    <p id="loadingTextAuto" class="text-xs text-cyan-400 animate-pulse font-medium">Menghubungkan ke server mail.tm...</p>
-                </div>
-
-                <!-- HASIL AUTO -->
-                <div id="resultBoxAuto" class="hidden space-y-3 bg-[#0d0f12] border border-cyan-500/30 rounded-2xl p-4">
-                    <div class="flex items-center space-x-2 text-cyan-400 font-bold text-xs">
-                        <span>🚀</span>
-                        <span>Auto Pro Berhasil Diaktifkan!</span>
-                    </div>
-                    <div class="bg-[#151922] border border-[#232936] rounded-xl p-3 space-y-2 text-xs font-mono">
-                        <div class="flex justify-between border-b border-[#232936] pb-1.5">
-                            <span class="text-slate-400 font-sans">Email:</span>
-                            <span id="resAutoEmail" class="text-cyan-400 select-all"></span>
-                        </div>
-                        <div class="flex justify-between border-b border-[#232936] pb-1.5">
-                            <span class="text-slate-400 font-sans">Password:</span>
-                            <span id="resAutoPass" class="text-amber-300 select-all"></span>
-                        </div>
-                        <div class="flex justify-between border-b border-[#232936] pb-1.5">
-                            <span class="text-slate-400 font-sans">Web Login:</span>
-                            <a id="resAutoWeb" href="https://mail.tm" target="_blank" class="text-blue-400 underline">mail.tm</a>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-slate-400 font-sans">Order ID:</span>
-                            <span id="resAutoOrder" class="text-slate-300 select-all text-[10px]"></span>
-                        </div>
-                    </div>
-                    <button onclick="copyAutoData()" class="w-full bg-[#1e2330] hover:bg-[#272f40] border border-[#2b3344] text-slate-200 py-2.5 rounded-xl text-xs font-sans font-semibold cursor-pointer">
-                        Salin Kredensial Akun
-                    </button>
+                <div class="pt-3 border-t border-[#232936] text-[11px] text-slate-400 flex items-center justify-center">
+                    <span class="text-amber-400 font-medium">Status: Under Maintenance 🛠️</span>
                 </div>
             </div>
 
@@ -209,7 +159,7 @@
                 btnManual.className = "py-2.5 rounded-xl text-xs font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
                 btnAuto.className = "py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
                 secManual.classList.remove('hidden');
-                secAuto.classList.add('hidden', 'md:block');
+                secAuto.classList.add('hidden', 'md:flex');
             } else {
                 btnAuto.className = "py-2.5 rounded-xl text-xs font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
                 btnManual.className = "py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
@@ -217,47 +167,6 @@
                 secManual.classList.add('hidden', 'md:block');
             }
         }
-
-        function toggleCustomDropdown() {
-            const menu = document.getElementById('dropdownMenu');
-            menu.classList.toggle('hidden');
-        }
-
-        function selectDomain(value, label) {
-            document.getElementById('domainValue').value = value;
-            document.getElementById('selectedDomainLabel').textContent = label;
-            document.getElementById('dropdownMenu').classList.add('hidden');
-        }
-
-        window.addEventListener('click', (e) => {
-            if (!e.target.closest('#dropdownToggle') && !e.target.closest('#dropdownMenu')) {
-                document.getElementById('dropdownMenu').classList.add('hidden');
-            }
-        });
-
-        // Ambil list domain asli langsung dari backend sendiri
-        window.addEventListener('DOMContentLoaded', async () => {
-            const container = document.getElementById('domainListContainer');
-            try {
-                const res = await fetch('/api/amgen_auto?action=get-domains');
-                const data = await res.json();
-                const domains = data.domains || [];
-                
-                if (domains.length > 0) {
-                    container.innerHTML = '';
-                    domains.forEach(d => {
-                        const domainName = typeof d === 'string' ? d : d.domain;
-                        const item = document.createElement('div');
-                        item.className = "px-3 py-2.5 rounded-lg text-xs text-slate-200 hover:bg-[#1e2330] hover:text-cyan-400 cursor-pointer transition-colors flex items-center justify-between font-mono";
-                        item.innerHTML = `<span>🌐 @${domainName}</span>`;
-                        item.onclick = () => selectDomain(domainName, `@${domainName}`);
-                        container.appendChild(item);
-                    });
-                }
-            } catch (err) {
-                console.log('Gagal memuat list domain asli.');
-            }
-        });
 
         // ================= SCRIPT MANUAL WIZARD =================
         async function sendLink() {
@@ -319,70 +228,6 @@
                 btnVerify.disabled = false;
                 btnVerify.textContent = 'Verifikasi & Ambil Akun';
             }
-        }
-
-        // ================= SCRIPT AUTO 1 CLICK =================
-        async function autoOneClick() {
-            const domain = document.getElementById('domainValue').value;
-            const btnAuto = document.getElementById('btnAuto');
-            const loadingState = document.getElementById('loadingStateAuto');
-            const loadingText = document.getElementById('loadingTextAuto');
-            const resultBox = document.getElementById('resultBoxAuto');
-
-            btnAuto.classList.add('hidden');
-            loadingState.classList.remove('hidden');
-
-            const steps = [
-                "Membuat akun tempmail baru...",
-                "Mengirim magic link verifikasi...",
-                "Menunggu email masuk via mail.tm...",
-                "Mengaktifkan lisensi Alight Motion Pro..."
-            ];
-            let stepIdx = 0;
-            const timer = setInterval(() => {
-                if (stepIdx < steps.length) {
-                    loadingText.textContent = steps[stepIdx];
-                    stepIdx++;
-                }
-            }, 3000);
-
-            try {
-                const res = await fetch('/api/amgen_auto', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ domain: domain || null })
-                });
-                const data = await res.json();
-
-                clearInterval(timer);
-
-                if (data.status) {
-                    loadingState.classList.add('hidden');
-                    resultBox.classList.remove('hidden');
-                    const acc = data.data;
-
-                    document.getElementById('resAutoEmail').textContent = acc.email;
-                    document.getElementById('resAutoPass').textContent = acc.password;
-                    document.getElementById('resAutoWeb').href = acc.webLoginUrl;
-                    document.getElementById('resAutoOrder').textContent = acc.orderId || '-';
-                } else {
-                    alert('Gagal: ' + (data.error || data.message || 'Terjadi kesalahan sistem'));
-                    loadingState.classList.add('hidden');
-                    btnAuto.classList.remove('hidden');
-                }
-            } catch (err) {
-                clearInterval(timer);
-                alert('Kesalahan koneksi: ' + err.message);
-                loadingState.classList.add('hidden');
-                btnAuto.classList.remove('hidden');
-            }
-        }
-
-        function copyAutoData() {
-            const textToCopy = `Email: ${document.getElementById('resAutoEmail').textContent}\nPassword: ${document.getElementById('resAutoPass').textContent}\nWeb Login: ${document.getElementById('resAutoWeb').href}`;
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                alert('Kredensial akun otomatis berhasil disalin!');
-            });
         }
     </script>
 </body>
