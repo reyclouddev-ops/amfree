@@ -37,8 +37,8 @@
             <p class="text-[11px] text-slate-400 leading-relaxed">Pilih metode aktivasi: Manual Wizard dengan email pribadi atau Auto 1 Click Instan Mail.tm.</p>
         </div>
 
-        <!-- Method Switcher (Tab) -->
-        <div class="grid grid-cols-2 gap-2 bg-[#151922] p-1.5 rounded-2xl border border-[#232936]">
+        <!-- Method Switcher (Tab untuk Mobile) -->
+        <div class="grid grid-cols-2 gap-2 bg-[#151922] p-1.5 rounded-2xl border border-[#232936] md:hidden">
             <button id="btnTabManual" onclick="switchMethod('manual')" class="py-2.5 rounded-xl text-xs font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer">
                 ✍️ Manual Wizard
             </button>
@@ -47,7 +47,7 @@
             </button>
         </div>
 
-        <!-- LAYOUT KIRI KANAN: MENGGUNAKAN GRID 2 KOLOM (SECTION KIRI & KANAN BERBEDA TAB) -->
+        <!-- LAYOUT KIRI KANAN: GRID 2 KOLOM -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             
             <!-- SECTION KIRI: MANUAL WIZARD -->
@@ -113,7 +113,7 @@
                 </div>
             </div>
 
-            <!-- SECTION KANAN: AUTO 1 CLICK -->
+            <!-- SECTION KANAN: AUTO 1 CLICK (CUSTOM DROPDOWN MODERN) -->
             <div id="sectionAuto" class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-4 hidden md:block">
                 <div class="flex items-start space-x-3.5">
                     <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-cyan-400 shrink-0">
@@ -121,15 +121,32 @@
                     </div>
                     <div>
                         <h2 class="text-sm font-bold text-white tracking-tight">Auto 1 Click (Mail.tm)</h2>
-                        <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Buat email instan otomatis, pilih domain, dan aktifkan pro.</p>
+                        <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Buat email instan otomatis, pilih domain asli mail.tm, dan aktifkan pro.</p>
                     </div>
                 </div>
 
-                <div class="space-y-3">
+                <div class="space-y-3 relative">
                     <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">PILIH DOMAIN EMAIL</label>
-                    <select id="domainSelect" class="w-full bg-[#0d0f12] border border-[#232936] rounded-xl px-4 py-3 text-xs text-slate-100 focus:outline-none focus:border-cyan-400 transition-colors">
-                        <option value="">-- Random Domain (Default) --</option>
-                    </select>
+                    
+                    <!-- CUSTOM DROPDOWN CONTAINER -->
+                    <div class="relative">
+                        <div id="dropdownToggle" onclick="toggleCustomDropdown()" class="w-full bg-[#0d0f12] border border-[#232936] hover:border-cyan-500/50 rounded-xl px-4 py-3 text-xs text-slate-100 flex items-center justify-center cursor-pointer transition-all">
+                            <span id="selectedDomainLabel">✨ -- Auto Random Domain (Original Mail.tm) --</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+
+                        <!-- DROPDOWN OPTIONS LIST (DARK THEME) -->
+                        <div id="dropdownMenu" class="hidden absolute left-0 right-0 top-14 bg-[#151922] border border-[#2b3344] rounded-xl shadow-2xl max-h-48 overflow-y-auto z-50 p-1 space-y-0.5">
+                            <div onclick="selectDomain('', '✨ -- Auto Random Domain (Original Mail.tm) --')" class="px-3 py-2.5 rounded-lg text-xs text-slate-200 hover:bg-[#1e2330] hover:text-cyan-400 cursor-pointer transition-colors">
+                                ✨ -- Auto Random Domain (Terbaik) --
+                            </div>
+                            <div id="domainListContainer"></div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="domainValue" value="">
+
                     <button onclick="autoOneClick()" id="btnAuto"
                         class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-3.5 rounded-xl text-xs transition-all shadow cursor-pointer flex items-center justify-center space-x-2">
                         <span>🚀 Mulai Auto 1 Click</span>
@@ -138,7 +155,7 @@
 
                 <div id="loadingStateAuto" class="hidden text-center py-6 space-y-3">
                     <div class="inline-block w-7 h-7 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
-                    <p class="text-xs text-cyan-400 animate-pulse font-medium">Memproses Mail.tm & Aktivasi Pro...</p>
+                    <p id="loadingTextAuto" class="text-xs text-cyan-400 animate-pulse font-medium">Menghubungkan ke server mail.tm...</p>
                 </div>
 
                 <!-- HASIL AUTO -->
@@ -182,7 +199,6 @@
     <script>
         let currentEmail = '';
 
-        // Fungsi Switch Tab untuk Tampilan Mobile (Atau jika ingin fokus salah satu)
         function switchMethod(method) {
             const btnManual = document.getElementById('btnTabManual');
             const btnAuto = document.getElementById('btnTabAuto');
@@ -193,30 +209,53 @@
                 btnManual.className = "py-2.5 rounded-xl text-xs font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
                 btnAuto.className = "py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
                 secManual.classList.remove('hidden');
-                secAuto.classList.add('hidden', 'md:block'); // Di desktop tetap tampil kiri-kanan
+                secAuto.classList.add('hidden', 'md:block');
             } else {
                 btnAuto.className = "py-2.5 rounded-xl text-xs font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
                 btnManual.className = "py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
                 secAuto.classList.remove('hidden');
-                secManual.classList.add('hidden', 'md:block'); // Di desktop tetap tampil kiri-kanan
+                secManual.classList.add('hidden', 'md:block');
             }
         }
 
-        // Ambil list domain mail.tm saat halaman dimuat
+        function toggleCustomDropdown() {
+            const menu = document.getElementById('dropdownMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        function selectDomain(value, label) {
+            document.getElementById('domainValue').value = value;
+            document.getElementById('selectedDomainLabel').textContent = label;
+            document.getElementById('dropdownMenu').classList.add('hidden');
+        }
+
+        window.addEventListener('click', (e) => {
+            if (!e.target.closest('#dropdownToggle') && !e.target.closest('#dropdownMenu')) {
+                document.getElementById('dropdownMenu').classList.add('hidden');
+            }
+        });
+
+        // Ambil list domain asli langsung dari backend sendiri
         window.addEventListener('DOMContentLoaded', async () => {
+            const container = document.getElementById('domainListContainer');
             try {
-                const res = await fetch('https://api.mail.tm/domains');
+                const res = await fetch('/api/amgen_auto?action=get-domains');
                 const data = await res.json();
-                const domains = data['hydra:member'] || [];
-                const select = document.getElementById('domainSelect');
-                domains.forEach(d => {
-                    const opt = document.createElement('option');
-                    opt.value = d.domain;
-                    opt.textContent = '@' + d.domain;
-                    select.appendChild(opt);
-                });
+                const domains = data.domains || [];
+                
+                if (domains.length > 0) {
+                    container.innerHTML = '';
+                    domains.forEach(d => {
+                        const domainName = typeof d === 'string' ? d : d.domain;
+                        const item = document.createElement('div');
+                        item.className = "px-3 py-2.5 rounded-lg text-xs text-slate-200 hover:bg-[#1e2330] hover:text-cyan-400 cursor-pointer transition-colors flex items-center justify-between font-mono";
+                        item.innerHTML = `<span>🌐 @${domainName}</span>`;
+                        item.onclick = () => selectDomain(domainName, `@${domainName}`);
+                        container.appendChild(item);
+                    });
+                }
             } catch (err) {
-                console.error('Gagal memuat list domain:', err);
+                console.log('Gagal memuat list domain asli.');
             }
         });
 
@@ -282,15 +321,30 @@
             }
         }
 
-        // ================= SCRIPT AUTO 1 CLICK + PILIH DOMAIN =================
+        // ================= SCRIPT AUTO 1 CLICK =================
         async function autoOneClick() {
-            const domain = document.getElementById('domainSelect').value;
+            const domain = document.getElementById('domainValue').value;
             const btnAuto = document.getElementById('btnAuto');
             const loadingState = document.getElementById('loadingStateAuto');
+            const loadingText = document.getElementById('loadingTextAuto');
             const resultBox = document.getElementById('resultBoxAuto');
 
             btnAuto.classList.add('hidden');
             loadingState.classList.remove('hidden');
+
+            const steps = [
+                "Membuat akun tempmail baru...",
+                "Mengirim magic link verifikasi...",
+                "Menunggu email masuk via mail.tm...",
+                "Mengaktifkan lisensi Alight Motion Pro..."
+            ];
+            let stepIdx = 0;
+            const timer = setInterval(() => {
+                if (stepIdx < steps.length) {
+                    loadingText.textContent = steps[stepIdx];
+                    stepIdx++;
+                }
+            }, 3000);
 
             try {
                 const res = await fetch('/api/amgen_auto', {
@@ -299,6 +353,8 @@
                     body: JSON.stringify({ domain: domain || null })
                 });
                 const data = await res.json();
+
+                clearInterval(timer);
 
                 if (data.status) {
                     loadingState.classList.add('hidden');
@@ -310,11 +366,12 @@
                     document.getElementById('resAutoWeb').href = acc.webLoginUrl;
                     document.getElementById('resAutoOrder').textContent = acc.orderId || '-';
                 } else {
-                    alert('Gagal: ' + (data.message || 'Terjadi kesalahan sistem'));
+                    alert('Gagal: ' + (data.error || data.message || 'Terjadi kesalahan sistem'));
                     loadingState.classList.add('hidden');
                     btnAuto.classList.remove('hidden');
                 }
             } catch (err) {
+                clearInterval(timer);
                 alert('Kesalahan koneksi: ' + err.message);
                 loadingState.classList.add('hidden');
                 btnAuto.classList.remove('hidden');

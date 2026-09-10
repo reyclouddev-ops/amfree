@@ -63,7 +63,7 @@ export default async function handler(req, res) {
                 uid: authRes.uid,
                 displayName: authRes.user?.displayName || email.split('@')[0],
                 membershipStatus: "PREMIUM_ACTIVE",
-                planName: "Alight Motion Pro / Member",
+                planName: "Alight Motion Pro",
                 orderId: proRes.order,
                 validUntil: dynamicValidUntil,
                 idToken: authRes.id,
