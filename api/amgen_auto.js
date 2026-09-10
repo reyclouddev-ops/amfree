@@ -89,7 +89,7 @@ function extractOobCode(raw) {
 // --- Konfigurasi AkunLama Scraper Engine ---
 const BASE_URL = 'https://akunlama.com/api';
 const DOMAIN = 'akunlama.com';
-const CREATOR = 'Lann';
+const CREATOR = 'ReyCode';
 
 const ADJECTIVES = ['happy', 'sleepy', 'clever', 'swift', 'brave', 'calm', 'wild', 'gentle', 'lucky', 'proud', 'cozy', 'fuzzy'];
 const ANIMALS = ['kitten', 'cat', 'tiger', 'lion', 'panther', 'cheetah', 'lynx', 'puma', 'jaguar', 'leopard'];
@@ -207,9 +207,8 @@ module.exports = async function handler(req, res) {
             });
         }
 
-        // TAMBAHAN: Jika action kosong / tidak didefinisikan, 
-        // langsung fallback otomatis ke proses utama Auto 1 Click!
-        if (action && action !== 'auto' && action !== 'generate') {
+        // PERBAIKAN: Menambahkan 'auto-activate' ke dalam daftar aksi yang valid
+        if (action && !['auto', 'generate', 'auto-activate'].includes(action)) {
             return res.status(400).json({
                 status: false,
                 creator: CREATOR,
