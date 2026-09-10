@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AlightFree - Dashboard Aktivasi</title>
+    <title>AlightFree - Dashboard Aktivasi Pro</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         body { background-color: #0d0f12; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
@@ -11,9 +11,9 @@
 </head>
 <body class="min-h-screen flex flex-col items-center justify-start p-3 sm:p-6 relative">
 
-    <div class="w-full max-w-md space-y-4">
+    <div class="w-full max-w-4xl space-y-4">
         
-        <!-- Top Navbar Logo / Header -->
+        <!-- Top Navbar -->
         <div class="flex items-center justify-between bg-[#151922] border border-[#232936] rounded-2xl p-4 shadow-lg relative">
             <div class="flex items-center space-x-2.5">
                 <div class="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-bold">
@@ -23,72 +23,49 @@
                     <div class="flex items-center space-x-1.5">
                         <span class="font-extrabold text-sm tracking-wide text-white">ALIGHT<span class="text-cyan-400">FREE</span></span>
                     </div>
-                    <span class="text-[10px] tracking-widest text-slate-400 font-semibold uppercase">DASHBOARD</span>
+                    <span class="text-[10px] tracking-widest text-slate-400 font-semibold uppercase">ACTIVATION ENGINE</span>
                 </div>
             </div>
             
-            <button onclick="toggleMenu()" class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-slate-300 hover:text-white cursor-pointer transition-all">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-            </button>
-
-            <div id="navDropdown" class="hidden absolute right-4 top-16 w-48 bg-[#151922] border border-[#2b3344] rounded-xl shadow-2xl py-2 z-50 space-y-1">
-                <a href="/" class="flex items-center space-x-2.5 px-4 py-2.5 text-xs text-slate-200 hover:bg-[#1e2330] transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                    </svg>
-                    <span>Dashboard (Home)</span>
-                </a>
-                <a href="https://mustikapayment.com/l/donasi-untuk-reycloud" target="_blank" class="flex items-center space-x-2.5 px-4 py-2.5 text-xs text-slate-200 hover:bg-[#1e2330] transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                    </svg>
-                    <span>Donasi ReyCloud</span>
-                </a>
-                <a href="https://wa.me/6281260512743?text=Halo%20Admin,%20saya%20ingin%20bertanya%20tentang%20Alight%20Motion%20Premium." target="_blank" class="flex items-center space-x-2.5 px-4 py-2.5 text-xs text-slate-200 hover:bg-[#1e2330] transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                    </svg>
-                    <span>Kontak WhatsApp</span>
-                </a>
-            </div>
+            <a href="/" class="px-3 py-1.5 rounded-xl bg-[#1e2330] border border-[#2b3344] text-[11px] text-slate-300 hover:text-white transition-all font-medium">
+                Kembali Dashboard
+            </a>
         </div>
 
         <div class="space-y-1 px-1">
-            <div class="text-[11px] text-slate-400">Dashboard <span class="text-amber-400 font-bold tracking-wide">ALIGHT MOTION PREMIUM ACTIVATION</span></div>
-            <p id="subTitleText" class="text-[11px] text-slate-400 leading-relaxed">Aktivasi akun premium aman menggunakan email pribadi (Manual Wizard).</p>
+            <div class="text-[11px] text-slate-400">Multi-Method <span class="text-cyan-400 font-bold tracking-wide">ALIGHT MOTION ACTIVATION</span></div>
+            <p class="text-[11px] text-slate-400 leading-relaxed">Pilih metode aktivasi: Manual Wizard dengan email pribadi atau Auto 1 Click Instan Mail.tm.</p>
         </div>
 
-        <button class="w-full bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold py-3 px-4 rounded-xl text-xs flex items-center justify-center space-x-2 shadow-lg shadow-amber-400/10 transition-all">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-            </svg>
-            <span>Aktivasi Akun</span>
-        </button>
+        <!-- Method Switcher (Tab) -->
+        <div class="grid grid-cols-2 gap-2 bg-[#151922] p-1.5 rounded-2xl border border-[#232936]">
+            <button id="btnTabManual" onclick="switchMethod('manual')" class="py-2.5 rounded-xl text-xs font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer">
+                ✍️ Manual Wizard
+            </button>
+            <button id="btnTabAuto" onclick="switchMethod('auto')" class="py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
+                ⚡ Auto 1 Click (Mail.tm)
+            </button>
+        </div>
 
-        <div class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-5">
+        <!-- LAYOUT KIRI KANAN: MENGGUNAKAN GRID 2 KOLOM (SECTION KIRI & KANAN BERBEDA TAB) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             
-            <!-- TAMPILAN MANUAL (V1) -->
-            <div id="manualContent" class="space-y-5">
+            <!-- SECTION KIRI: MANUAL WIZARD -->
+            <div id="sectionManual" class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-4 md:block">
                 <div class="flex items-start space-x-3.5">
-                    <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-slate-300 shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
+                    <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-amber-400 shrink-0">
+                        ✍️
                     </div>
                     <div>
-                        <h2 class="text-sm font-bold text-white tracking-tight">Aktivasi Premium Manual Wizard</h2>
-                        <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Masukkan email Anda untuk menerima magic link verifikasi instan.</p>
+                        <h2 class="text-sm font-bold text-white tracking-tight">Manual Wizard Aktivasi</h2>
+                        <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Masukkan email pribadi untuk menerima magic link verifikasi.</p>
                     </div>
                 </div>
 
-                <div id="form-step-1" class="space-y-4">
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">ALAMAT EMAIL</label>
-                        <input type="email" id="emailInput" placeholder="user@example.com" 
-                            class="w-full bg-[#0d0f12] border border-[#232936] rounded-xl px-4 py-3 text-xs text-slate-100 placeholder-slate-600 focus:outline-none focus:border-amber-400 transition-colors">
-                    </div>
+                <div id="form-step-1" class="space-y-3">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">ALAMAT EMAIL PRIBADI</label>
+                    <input type="email" id="emailInput" placeholder="user@example.com" 
+                        class="w-full bg-[#0d0f12] border border-[#232936] rounded-xl px-4 py-3 text-xs text-slate-100 placeholder-slate-600 focus:outline-none focus:border-amber-400 transition-colors">
                     <button onclick="sendLink()" id="btnSend"
                         class="w-full bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold py-3.5 rounded-xl text-xs transition-all shadow cursor-pointer">
                         Kirim Tautan Magic
@@ -100,102 +77,150 @@
                     <p class="text-xs text-amber-400 animate-pulse font-medium">Mengirim tautan verifikasi...</p>
                 </div>
 
-                <div id="form-step-2" class="space-y-4 hidden">
-                    <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 text-[11px] text-amber-300 leading-relaxed space-y-1">
-                        <p class="font-bold">⚠️ Petunjuk:</p>
-                        <p>Cek email kamu, salin magic link yang masuk, lalu tempel di bawah ini.</p>
+                <div id="form-step-2" class="space-y-3 hidden">
+                    <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-2.5 text-[10px] text-amber-300 leading-relaxed">
+                        ⚠️ Cek email kamu, salin magic link yang masuk, lalu tempel di bawah ini.
                     </div>
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">MAGIC LINK VERIFIKASI</label>
-                        <input type="text" id="linkInput" placeholder="Tempel URL magic link di sini..." 
-                            class="w-full bg-[#0d0f12] border border-[#232936] rounded-xl px-4 py-3 text-xs text-slate-100 placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition-colors">
-                    </div>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">MAGIC LINK VERIFIKASI</label>
+                    <input type="text" id="linkInput" placeholder="Tempel URL magic link di sini..." 
+                        class="w-full bg-[#0d0f12] border border-[#232936] rounded-xl px-4 py-3 text-xs text-slate-100 placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition-colors">
                     <button onclick="verifyLink()" id="btnVerify"
                         class="w-full bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold py-3.5 rounded-xl text-xs transition-all shadow cursor-pointer">
                         Verifikasi & Ambil Akun
                     </button>
                 </div>
+
+                <!-- HASIL MANUAL -->
+                <div id="resultBoxManual" class="hidden space-y-3 bg-[#0d0f12] border border-emerald-500/30 rounded-2xl p-4">
+                    <div class="flex items-center space-x-2 text-emerald-400 font-bold text-xs">
+                        <span>🎉</span>
+                        <span>Manual Berhasil Diaktifkan!</span>
+                    </div>
+                    <div class="bg-[#151922] border border-[#232936] rounded-xl p-3 space-y-2 text-xs font-mono">
+                        <div class="flex justify-between border-b border-[#232936] pb-1.5">
+                            <span class="text-slate-400 font-sans">Email:</span>
+                            <span id="resManualEmail" class="text-cyan-400 select-all"></span>
+                        </div>
+                        <div class="flex justify-between border-b border-[#232936] pb-1.5">
+                            <span class="text-slate-400 font-sans">Order ID:</span>
+                            <span id="resManualOrder" class="text-slate-300 select-all text-[10px]"></span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400 font-sans">Status:</span>
+                            <span class="text-emerald-400 font-bold">PREMIUM_ACTIVE</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- HASIL OUTPUT SUKSES -->
-            <div id="resultBox" class="hidden space-y-4 bg-[#0d0f12] border border-emerald-500/30 rounded-2xl p-4">
-                <div class="flex items-center space-x-2 text-emerald-400 font-bold text-xs">
-                    <span>🎉</span>
-                    <span>Lisensi Pro Berhasil Diaktifkan!</span>
-                </div>
-                
-                <div class="bg-[#151922] border border-[#232936] rounded-xl p-3.5 space-y-2.5 text-xs font-mono">
-                    <div class="flex justify-between items-center border-b border-[#232936] pb-2">
-                        <span class="text-slate-400 font-sans">username :</span>
-                        <span id="resUsername" class="text-cyan-400 select-all"></span>
+            <!-- SECTION KANAN: AUTO 1 CLICK -->
+            <div id="sectionAuto" class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-4 hidden md:block">
+                <div class="flex items-start space-x-3.5">
+                    <div class="w-10 h-10 rounded-xl bg-[#1e2330] border border-[#2b3344] flex items-center justify-center text-cyan-400 shrink-0">
+                        ⚡
                     </div>
-                    <div class="flex justify-between items-center border-b border-[#232936] pb-2">
-                        <span class="text-slate-400 font-sans">codeorder :</span>
-                        <span id="resCodeOrder" class="text-slate-300 select-all text-[10px] truncate max-w-[160px]"></span>
-                    </div>
-                    <div class="flex justify-between items-center border-b border-[#232936] pb-2">
-                        <span class="text-slate-400 font-sans">validUntil :</span>
-                        <span id="resValidUntil" class="text-amber-300 select-all text-[10px]"></span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-slate-400 font-sans">status :</span>
-                        <span id="resStatus" class="text-emerald-400 font-bold">PREMIUM_ACTIVE</span>
+                    <div>
+                        <h2 class="text-sm font-bold text-white tracking-tight">Auto 1 Click (Mail.tm)</h2>
+                        <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Buat email instan otomatis, pilih domain, dan aktifkan pro.</p>
                     </div>
                 </div>
 
-                <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-3 text-[11px] text-emerald-200 leading-relaxed space-y-1.5">
-                    <p class="font-bold">✨ Selamat!</p>
-                    <p>Akun email pribadi kamu <strong>(<span id="guideManualEmail"></span>)</strong> sudah resmi diaktifkan menjadi Alight Motion Pro.</p>
-                    <p>Silakan langsung login ke aplikasi Alight Motion menggunakan email tersebut.</p>
-                </div>
-
-                <div class="grid grid-cols-2 gap-2 pt-1">
-                    <button onclick="copyAccountData()" class="bg-[#1e2330] hover:bg-[#272f40] border border-[#2b3344] text-slate-200 font-semibold py-2.5 rounded-xl text-xs transition-all cursor-pointer flex items-center justify-center space-x-1.5">
-                        <span>Salin Detail Akun</span>
+                <div class="space-y-3">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">PILIH DOMAIN EMAIL</label>
+                    <select id="domainSelect" class="w-full bg-[#0d0f12] border border-[#232936] rounded-xl px-4 py-3 text-xs text-slate-100 focus:outline-none focus:border-cyan-400 transition-colors">
+                        <option value="">-- Random Domain (Default) --</option>
+                    </select>
+                    <button onclick="autoOneClick()" id="btnAuto"
+                        class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-3.5 rounded-xl text-xs transition-all shadow cursor-pointer flex items-center justify-center space-x-2">
+                        <span>🚀 Mulai Auto 1 Click</span>
                     </button>
-                    <button onclick="toggleRawJson()" class="bg-[#1e2330] hover:bg-[#272f40] border border-[#2b3344] text-slate-400 font-semibold py-2.5 rounded-xl text-xs transition-all cursor-pointer">
-                        Lihat Raw JSON
+                </div>
+
+                <div id="loadingStateAuto" class="hidden text-center py-6 space-y-3">
+                    <div class="inline-block w-7 h-7 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+                    <p class="text-xs text-cyan-400 animate-pulse font-medium">Memproses Mail.tm & Aktivasi Pro...</p>
+                </div>
+
+                <!-- HASIL AUTO -->
+                <div id="resultBoxAuto" class="hidden space-y-3 bg-[#0d0f12] border border-cyan-500/30 rounded-2xl p-4">
+                    <div class="flex items-center space-x-2 text-cyan-400 font-bold text-xs">
+                        <span>🚀</span>
+                        <span>Auto Pro Berhasil Diaktifkan!</span>
+                    </div>
+                    <div class="bg-[#151922] border border-[#232936] rounded-xl p-3 space-y-2 text-xs font-mono">
+                        <div class="flex justify-between border-b border-[#232936] pb-1.5">
+                            <span class="text-slate-400 font-sans">Email:</span>
+                            <span id="resAutoEmail" class="text-cyan-400 select-all"></span>
+                        </div>
+                        <div class="flex justify-between border-b border-[#232936] pb-1.5">
+                            <span class="text-slate-400 font-sans">Password:</span>
+                            <span id="resAutoPass" class="text-amber-300 select-all"></span>
+                        </div>
+                        <div class="flex justify-between border-b border-[#232936] pb-1.5">
+                            <span class="text-slate-400 font-sans">Web Login:</span>
+                            <a id="resAutoWeb" href="https://mail.tm" target="_blank" class="text-blue-400 underline">mail.tm</a>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400 font-sans">Order ID:</span>
+                            <span id="resAutoOrder" class="text-slate-300 select-all text-[10px]"></span>
+                        </div>
+                    </div>
+                    <button onclick="copyAutoData()" class="w-full bg-[#1e2330] hover:bg-[#272f40] border border-[#2b3344] text-slate-200 py-2.5 rounded-xl text-xs font-sans font-semibold cursor-pointer">
+                        Salin Kredensial Akun
                     </button>
                 </div>
-
-                <div id="rawJsonBox" class="hidden relative bg-[#090b0e] border border-slate-800 rounded-xl p-3">
-                    <pre id="outputData" class="overflow-x-auto text-[10px] text-emerald-300 font-mono whitespace-pre-wrap max-h-48 select-all"></pre>
-                </div>
             </div>
 
-            <div class="pt-3 border-t border-[#232936] flex items-center justify-between text-[11px] text-slate-400">
-                <div class="flex items-center space-x-2">
-                    <div class="flex -space-x-1.5">
-                        <span class="w-4 h-4 rounded-full bg-amber-400 border border-[#151922] inline-block"></span>
-                        <span class="w-4 h-4 rounded-full bg-cyan-400 border border-[#151922] inline-block"></span>
-                        <span class="w-4 h-4 rounded-full bg-indigo-500 border border-[#151922] inline-block"></span>
-                    </div>
-                    <span>ReyCloudSHP Engine v1</span>
-                </div>
-            </div>
+        </div>
 
+        <div class="pt-2 text-center text-[11px] text-slate-400">
+            <span>ReyCloudSHP Activation Engine</span>
         </div>
 
     </div>
 
     <script>
         let currentEmail = '';
-        let rawJsonString = '';
 
-        function toggleMenu() {
-            const menu = document.getElementById('navDropdown');
-            menu.classList.toggle('hidden');
-        }
+        // Fungsi Switch Tab untuk Tampilan Mobile (Atau jika ingin fokus salah satu)
+        function switchMethod(method) {
+            const btnManual = document.getElementById('btnTabManual');
+            const btnAuto = document.getElementById('btnTabAuto');
+            const secManual = document.getElementById('sectionManual');
+            const secAuto = document.getElementById('sectionAuto');
 
-        window.onclick = function(event) {
-            if (!event.target.closest('button')) {
-                const menu = document.getElementById('navDropdown');
-                if (!menu.classList.contains('hidden')) {
-                    menu.classList.add('hidden');
-                }
+            if (method === 'manual') {
+                btnManual.className = "py-2.5 rounded-xl text-xs font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
+                btnAuto.className = "py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
+                secManual.classList.remove('hidden');
+                secAuto.classList.add('hidden', 'md:block'); // Di desktop tetap tampil kiri-kanan
+            } else {
+                btnAuto.className = "py-2.5 rounded-xl text-xs font-semibold bg-[#212838] text-white border border-[#2d374b] shadow transition-all cursor-pointer";
+                btnManual.className = "py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer";
+                secAuto.classList.remove('hidden');
+                secManual.classList.add('hidden', 'md:block'); // Di desktop tetap tampil kiri-kanan
             }
         }
 
+        // Ambil list domain mail.tm saat halaman dimuat
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const res = await fetch('https://api.mail.tm/domains');
+                const data = await res.json();
+                const domains = data['hydra:member'] || [];
+                const select = document.getElementById('domainSelect');
+                domains.forEach(d => {
+                    const opt = document.createElement('option');
+                    opt.value = d.domain;
+                    opt.textContent = '@' + d.domain;
+                    select.appendChild(opt);
+                });
+            } catch (err) {
+                console.error('Gagal memuat list domain:', err);
+            }
+        });
+
+        // ================= SCRIPT MANUAL WIZARD =================
         async function sendLink() {
             const email = document.getElementById('emailInput').value.trim();
             if (!email) return alert('Alamat email wajib diisi!');
@@ -228,7 +253,7 @@
         async function verifyLink() {
             const magicLink = document.getElementById('linkInput').value.trim();
             const btnVerify = document.getElementById('btnVerify');
-            const resultBox = document.getElementById('resultBox');
+            const resultBox = document.getElementById('resultBoxManual');
 
             if (!magicLink) return alert('Magic link wajib diisi!');
             btnVerify.disabled = true;
@@ -243,15 +268,8 @@
                 const data = await res.json();
                 if (data.status) {
                     resultBox.classList.remove('hidden');
-                    const acc = data.data;
-                    rawJsonString = JSON.stringify(acc, null, 2);
-
-                    document.getElementById('guideManualEmail').textContent = currentEmail;
-                    document.getElementById('resUsername').textContent = acc.email || currentEmail;
-                    document.getElementById('resCodeOrder').textContent = acc.orderId || '-';
-                    document.getElementById('resValidUntil').textContent = acc.validUntil || '1 Tahun Dari Sekarang';
-                    document.getElementById('resStatus').textContent = acc.membershipStatus || 'PREMIUM_ACTIVE';
-                    document.getElementById('outputData').textContent = rawJsonString;
+                    document.getElementById('resManualEmail').textContent = currentEmail;
+                    document.getElementById('resManualOrder').textContent = data.data.orderId || '-';
                     document.getElementById('form-step-2').classList.add('hidden');
                 } else {
                     alert('Verifikasi Gagal: ' + (data.error || data.message));
@@ -264,16 +282,50 @@
             }
         }
 
-        function copyAccountData() {
-            const textToCopy = `username : ${document.getElementById('resUsername').textContent}\ncodeorder : ${document.getElementById('resCodeOrder').textContent}\nvalidUntil : ${document.getElementById('resValidUntil').textContent}\nstatus : ${document.getElementById('resStatus').textContent}`;
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                alert('Format detail akun berhasil disalin ke clipboard!');
-            });
+        // ================= SCRIPT AUTO 1 CLICK + PILIH DOMAIN =================
+        async function autoOneClick() {
+            const domain = document.getElementById('domainSelect').value;
+            const btnAuto = document.getElementById('btnAuto');
+            const loadingState = document.getElementById('loadingStateAuto');
+            const resultBox = document.getElementById('resultBoxAuto');
+
+            btnAuto.classList.add('hidden');
+            loadingState.classList.remove('hidden');
+
+            try {
+                const res = await fetch('/api/amgen_auto', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ domain: domain || null })
+                });
+                const data = await res.json();
+
+                if (data.status) {
+                    loadingState.classList.add('hidden');
+                    resultBox.classList.remove('hidden');
+                    const acc = data.data;
+
+                    document.getElementById('resAutoEmail').textContent = acc.email;
+                    document.getElementById('resAutoPass').textContent = acc.password;
+                    document.getElementById('resAutoWeb').href = acc.webLoginUrl;
+                    document.getElementById('resAutoOrder').textContent = acc.orderId || '-';
+                } else {
+                    alert('Gagal: ' + (data.message || 'Terjadi kesalahan sistem'));
+                    loadingState.classList.add('hidden');
+                    btnAuto.classList.remove('hidden');
+                }
+            } catch (err) {
+                alert('Kesalahan koneksi: ' + err.message);
+                loadingState.classList.add('hidden');
+                btnAuto.classList.remove('hidden');
+            }
         }
 
-        function toggleRawJson() {
-            const box = document.getElementById('rawJsonBox');
-            box.classList.toggle('hidden');
+        function copyAutoData() {
+            const textToCopy = `Email: ${document.getElementById('resAutoEmail').textContent}\nPassword: ${document.getElementById('resAutoPass').textContent}\nWeb Login: ${document.getElementById('resAutoWeb').href}`;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                alert('Kredensial akun otomatis berhasil disalin!');
+            });
         }
     </script>
 </body>
