@@ -34,7 +34,7 @@
 
         <div class="space-y-1 px-1">
             <div class="text-[11px] text-slate-400">Multi-Method <span class="text-cyan-400 font-bold tracking-wide">ALIGHT MOTION ACTIVATION</span></div>
-            <p class="text-[11px] text-slate-400 leading-relaxed">Pilih metode aktivasi: Manual Wizard dengan email pribadi atau gunakan mode aman.</p>
+            <p class="text-[11px] text-slate-400 leading-relaxed">Pilih metode aktivasi: Manual Wizard dengan email pribadi atau gunakan mode Auto 1 Click.</p>
         </div>
 
         <!-- Method Switcher (Tab untuk Mobile) -->
@@ -43,7 +43,7 @@
                 ✍️ Manual Wizard
             </button>
             <button id="btnTabAuto" onclick="switchMethod('auto')" class="py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
-                ⚡ Auto 1 Click (Off)
+                ⚡ Auto 1 Click (Active)
             </button>
         </div>
 
@@ -113,28 +113,74 @@
                 </div>
             </div>
 
-            <!-- SECTION KANAN: AUTO 1 CLICK (MAINTENANCE NOTICE) -->
+            <!-- SECTION KANAN: AUTO 1 CLICK (AKTIF) -->
             <div id="sectionAuto" class="bg-[#151922] border border-[#232936] rounded-2xl p-5 shadow-xl space-y-4 flex flex-col justify-between hidden md:flex">
                 <div class="space-y-4">
                     <div class="flex items-start space-x-3.5">
-                        <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
-                            ⚠️
+                        <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shrink-0">
+                            ⚡
                         </div>
                         <div>
-                            <h2 class="text-sm font-bold text-white tracking-tight">Auto 1 Click (Maintenance)</h2>
-                            <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Fitur otomatis sementara ditutup karena pembatasan server eksternal.</p>
+                            <h2 class="text-sm font-bold text-white tracking-tight">Auto 1 Click Activation</h2>
+                            <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">Sistem otomatis membuat email sementara dan mengambil verifikasi secara instan.</p>
                         </div>
                     </div>
 
-                    <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4 text-xs text-amber-300 space-y-2 leading-relaxed">
-                        <p class="font-bold">🚧 PENGUMUMAN MAINTENANCE:</p>
-                        <p>AmGen Auto Sedang Maintenance. Server Mail.tm membatasi request otomatis dari cloud hosting.</p>
-                        <p class="pt-1 font-semibold text-white">🙏🏻 Mohon kembali gunakan mode Manual Wizard di sebelah kiri untuk aktivasi akun yang stabil & aman.</p>
+                    <div class="space-y-3">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">CUSTOM USERNAME (OPSIONAL)</label>
+                        <input type="text" id="autoUsernameInput" placeholder="kosongkan untuk auto-generate" 
+                            class="w-full bg-[#0d0f12] border border-[#232936] rounded-xl px-4 py-3 text-xs text-slate-100 placeholder-slate-600 focus:outline-none focus:border-cyan-400 transition-colors font-mono">
+                        
+                        <button onclick="runAutoActivation()" id="btnAutoRun"
+                            class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-3.5 rounded-xl text-xs transition-all shadow cursor-pointer">
+                            🚀 Jalankan Auto Aktivasi
+                        </button>
+                    </div>
+
+                    <div id="autoLoading" class="hidden text-center py-4 space-y-2">
+                        <div class="inline-block w-6 h-6 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+                        <p class="text-[11px] text-cyan-400 animate-pulse font-medium">Membuat email & menunggu magic link...</p>
+                    </div>
+                </div>
+
+                <!-- HASIL AUTO DALAM BENTUK CARD LENGKAP -->
+                <div id="resultBoxAuto" class="hidden space-y-3 bg-[#0d0f12] border border-cyan-500/30 rounded-2xl p-4 mt-3 shadow-inner">
+                    <div class="flex items-center space-x-2 text-cyan-400 font-bold text-xs border-b border-[#232936] pb-2">
+                        <span>🎉</span>
+                        <span>Auto 1 Click Berhasil!</span>
+                    </div>
+
+                    <!-- CARD DETAIL INFO -->
+                    <div class="bg-[#151922] border border-[#232936] rounded-xl p-3 space-y-2 text-xs font-mono">
+                        <div class="flex flex-col border-b border-[#232936] pb-1.5">
+                            <span class="text-slate-400 font-sans text-[10px]">Email:</span>
+                            <span id="resAutoEmail" class="text-cyan-300 select-all font-bold"></span>
+                        </div>
+                        <div class="flex flex-col border-b border-[#232936] pb-1.5">
+                            <span class="text-slate-400 font-sans text-[10px]">Web Login / Inbox:</span>
+                            <a id="resAutoWebLogin" href="#" target="_blank" class="text-cyan-400 hover:underline truncate text-[11px]"></a>
+                        </div>
+                        <div class="flex justify-between border-b border-[#232936] pb-1.5">
+                            <span class="text-slate-400 font-sans">Animal Hoki:</span>
+                            <span id="resAutoAnimal" class="text-amber-400 font-bold"></span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400 font-sans">Status Akun:</span>
+                            <span class="text-emerald-400 font-bold">PREMIUM_ACTIVE</span>
+                        </div>
+                    </div>
+
+                    <!-- CARD PANDUAN & CARA LOGIN -->
+                    <div class="bg-[#151922] border border-[#232936] rounded-xl p-3 space-y-1.5 text-[11px] text-slate-300">
+                        <div class="font-bold text-cyan-400 text-[10px] uppercase tracking-wider">📚 Cara Login & Panduan:</div>
+                        <ol id="resAutoGuide" class="list-decimal list-inside space-y-1 text-[11px] text-slate-400">
+                            <!-- Diisi via Javascript -->
+                        </ol>
                     </div>
                 </div>
 
                 <div class="pt-3 border-t border-[#232936] text-[11px] text-slate-400 flex items-center justify-center">
-                    <span class="text-amber-400 font-medium">Status: Under Maintenance 🛠️</span>
+                    <span class="text-cyan-400 font-medium">Status: Online & Ready 🟢</span>
                 </div>
             </div>
 
@@ -227,6 +273,60 @@
             } finally {
                 btnVerify.disabled = false;
                 btnVerify.textContent = 'Verifikasi & Ambil Akun';
+            }
+        }
+
+        // ================= SCRIPT AUTO 1 CLICK DENGAN CARD =================
+        async function runAutoActivation() {
+            const username = document.getElementById('autoUsernameInput').value.trim();
+            const btnAutoRun = document.getElementById('btnAutoRun');
+            const autoLoading = document.getElementById('autoLoading');
+            const resultBoxAuto = document.getElementById('resultBoxAuto');
+
+            btnAutoRun.disabled = true;
+            btnAutoRun.textContent = 'Memproses Aktivasi...';
+            autoLoading.classList.remove('hidden');
+            resultBoxAuto.classList.add('hidden');
+
+            try {
+                const res = await fetch('/api/amgen', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'auto-activate', username })
+                });
+                const data = await res.json();
+
+                if (data.status && data.card) {
+                    resultBoxAuto.classList.remove('hidden');
+                    document.getElementById('resAutoEmail').textContent = data.card.email;
+                    
+                    const webLoginEl = document.getElementById('resAutoWebLogin');
+                    webLoginEl.href = data.card.weblogin;
+                    webLoginEl.textContent = data.card.weblogin;
+
+                    document.getElementById('resAutoAnimal').textContent = data.card.selamat_kamu_mendapatkan_animal;
+
+                    // Render panduan & cara login secara dinamis ke dalam list
+                    const guideList = document.getElementById('resAutoGuide');
+                    guideList.innerHTML = '';
+                    if (data.card.panduan_dan_cara_login && Array.isArray(data.card.panduan_dan_cara_login)) {
+                        data.card.panduan_dan_cara_login.forEach(step => {
+                            // Hapus nomor awal string jika ada agar tidak dobel dengan list HTML
+                            const cleanStep = step.replace(/^\d+\.\s*/, '');
+                            const li = document.createElement('li');
+                            li.textContent = cleanStep;
+                            guideList.appendChild(li);
+                        });
+                    }
+                } else {
+                    alert('Auto Aktivasi Gagal: ' + (data.error || data.message));
+                }
+            } catch (err) {
+                alert('Kesalahan koneksi: ' + err.message);
+            } finally {
+                btnAutoRun.disabled = false;
+                btnAutoRun.textContent = '🚀 Jalankan Auto Aktivasi';
+                autoLoading.classList.add('hidden');
             }
         }
     </script>
