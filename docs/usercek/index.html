@@ -27,7 +27,7 @@
                 </div>
             </div>
             
-            <a href="/" class="px-3 py-1.5 rounded-xl bg-[#1e2330] border border-[#2b3344] text-[11px] text-slate-300 hover:text-white transition-all font-medium">
+            <a href="/dashboard" class="px-3 py-1.5 rounded-xl bg-[#1e2330] border border-[#2b3344] text-[11px] text-slate-300 hover:text-white transition-all font-medium">
                 Beranda Utama
             </a>
         </div>
@@ -86,7 +86,8 @@
             checkResultBox.classList.add('hidden');
 
             try {
-                const res = await fetch('/api/checkkey', {
+                // Diarahkan ke endpoint murni /api/apikey/check sesuai engine.js backend
+                const res = await fetch('/api/apikey/check', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ apikey })
